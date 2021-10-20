@@ -4,8 +4,7 @@
 
 // External Modules ----------------------------------------------------------
 
-const customEnv = require("custom-env");
-customEnv.env(true);
+require("custom-env").env(true);
 import {Sequelize} from "sequelize-typescript";
 
 // Internal Modules ----------------------------------------------------------
@@ -17,31 +16,23 @@ import Guest from "./Guest";
 import RefreshToken from "./RefreshToken";
 import Template from "./Template";
 import User from "./User";
+import logger from "../util/ServerLogger";
 
 // Configure Database Instance ----------------------------------------------
 
 const DATABASE_URL = process.env.DATABASE_URL
     ? process.env.DATABASE_URL
-    : undefined;
+    : "test";
 
-//console.log(`DATABASE URL ${DATABASE_URL} NODE_ENV ${process.env.NODE_ENV}`);
-
-export const Database = DATABASE_URL
-        ? new Sequelize(DATABASE_URL, {
-            logging: false,
-            pool: {
-                acquire: 30000,
-                idle: 10000,
-                max: 5,
-                min: 0
-            }
-        })
-        : new Sequelize("database", "username", "password", {
-            dialect: "sqlite",
-            logging: false,
-            storage: "./test/database.sqlite"
-        })
-;
+export const Database = new Sequelize(DATABASE_URL, {
+    logging: false,
+    pool: {
+        acquire: 30000,
+        idle: 10000,
+        max: 5,
+        min: 0
+    }
+});
 
 Database.addModels([
     AccessToken,
@@ -52,5 +43,12 @@ Database.addModels([
     Template,
     User,
 ]);
+
+logger.info({
+    context: "Startup",
+    msg: "Sequelize models initialized",
+    dialect: `${Database.getDialect()}`,
+    name: `${Database.getDatabaseName()}`,
+});
 
 export default Database;
