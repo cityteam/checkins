@@ -57,7 +57,7 @@
     "pluralize": "^8.0.0",
     "reflect-metadata": "^0.1.13",
     "rotating-file-stream": "^2.1.6",
-    "sequelize": "^6.7.0",
+    "sequelize": "^6.8.0",
     "sequelize-typescript": "^2.1.1"
   },
   "devDependencies": {
