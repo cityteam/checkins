@@ -53,7 +53,7 @@
     "morgan": "^1.10.0",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
-    "pino": "^7.0.3",
+    "pino": "^7.0.5",
     "pluralize": "^8.0.0",
     "reflect-metadata": "^0.1.13",
     "rotating-file-stream": "^2.1.6",
