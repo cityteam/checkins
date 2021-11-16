@@ -57,7 +57,7 @@
     "pino": "^7.1.0",
     "pluralize": "^8.0.0",
     "reflect-metadata": "^0.1.13",
-    "rotating-file-stream": "^3.0.0",
+    "rotating-file-stream": "^3.0.1",
     "sequelize": "^6.9.0",
     "sequelize-typescript": "^2.1.1"
   },
