@@ -196,7 +196,7 @@ describe("AccessTokenServices Functional Tests", () => {
             }
 
             try {
-                const OUTPUT = await AccessTokenServices.insert(INPUT);
+                await AccessTokenServices.insert(INPUT);
                 expect.fail(`Should have thrown BadRequest`);
             } catch (error) {
                 if (error instanceof BadRequest) {
@@ -301,7 +301,7 @@ describe("AccessTokenServices Functional Tests", () => {
             } catch (error) {
                 if (error instanceof NotFound) {
                     expect((error as Error).message).to.include
-                    (`tokenId: Missing AccessToken ${INVALID_ID}`);
+                        (`tokenId: Missing AccessToken ${INVALID_ID}`);
                 } else {
                     expect.fail(`Should not have thrown '${error}'`);
                 }
@@ -348,7 +348,7 @@ describe("AccessTokenServices Functional Tests", () => {
             } catch (error) {
                 if (error instanceof BadRequest) {
                     expect(error.message).to.include
-                    (`token: Token '${INPUT.token}' is already in use`);
+                        (`token: Token '${INPUT.token}' is already in use`);
                 } else {
                     expect.fail(`Should not have thrown '${error}'`);
                 }
@@ -373,7 +373,7 @@ describe("AccessTokenServices Functional Tests", () => {
             } catch (error) {
                 if (error instanceof NotFound) {
                     expect(error.message).to.include
-                    (`tokenId: Missing AccessToken ${INVALID_ID}`);
+                        (`tokenId: Missing AccessToken ${INVALID_ID}`);
                 } else {
                     expect.fail(`Should not have thrown '${error}'`);
                 }

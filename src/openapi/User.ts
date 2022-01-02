@@ -50,8 +50,6 @@ export function update(): ob.OperationObject {
 
 export function includes(): ob.ParametersObject {
     const parameters: ob.ParametersObject = {};
-//    parameters[WITH_ACCESS_TOKENS] = parameterRef(WITH_ACCESS_TOKENS);
-//    parameters[WITH_REFRESH_TOKENS] = parameterRef(WITH_REFRESH_TOKENS);
     return parameters;
 }
 
@@ -65,13 +63,13 @@ export function matches(): ob.ParametersObject {
 // ***** Paths *****
 
 export function paths(): ob.PathsObject {
-    const paths: ob.PathsObject = {};
-    paths[API_PREFIX + "/" + pluralize(USER.toLowerCase())]
+    const thePaths: ob.PathsObject = {};
+    thePaths[API_PREFIX + "/" + pluralize(USER.toLowerCase())]
         = pathItemParentCollection(USER, all, insert);
-    paths[API_PREFIX + "/" + pluralize(USER.toLowerCase())
+    thePaths[API_PREFIX + "/" + pluralize(USER.toLowerCase())
     + "/" + pathParam(USER_ID)]
         = pathItemParentDetail(USER,  USER_ID, find, remove, update);
-    return paths;
+    return thePaths;
 }
 
 // ***** Schemas *****

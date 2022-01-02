@@ -4,7 +4,7 @@
 
 // External Modules ----------------------------------------------------------
 
-import {FindOptions, Includeable, Op, ValidationError} from "sequelize";
+import {FindOptions, Op, ValidationError} from "sequelize";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -25,7 +25,7 @@ class AccessTokenServices extends AbstractParentServices<AccessToken> {
         const options: FindOptions = this.appendMatchOptions({
             order: SortOrder.ACCESS_TOKENS,
         }, query);
-        return await AccessToken.findAll(options);
+        return AccessToken.findAll(options);
     }
 
     public async find(tokenId: number, query?: any): Promise<AccessToken> {

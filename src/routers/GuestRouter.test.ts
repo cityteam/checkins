@@ -16,12 +16,9 @@ chai.use(chaiHttp);
 // Internal Modules ----------------------------------------------------------
 
 import app from "./ExpressApplication";
-import {
-    BAD_REQUEST, FORBIDDEN, NOT_FOUND,
-    NOT_UNIQUE, OK, SERVER_ERROR
-} from "../util/HttpErrors";
+import { FORBIDDEN, OK } from "../util/HttpErrors";
 import * as SeedData from "../util/SeedData";
-import {authorization, AUTHORIZATION, loadTestData, lookupFacility, lookupUser} from "../util/TestUtils";
+import {authorization, AUTHORIZATION, loadTestData, lookupFacility} from "../util/TestUtils";
 
 // Test Specifications -------------------------------------------------------
 

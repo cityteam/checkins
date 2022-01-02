@@ -12,10 +12,7 @@ chai.use(chaiHttp);
 // Internal Modules ----------------------------------------------------------
 
 import app from "./ExpressApplication";
-import {
-    BAD_REQUEST, FORBIDDEN, NOT_FOUND,
-    NOT_UNIQUE, OK, SERVER_ERROR
-} from "../util/HttpErrors";
+import { FORBIDDEN, NOT_FOUND, OK } from "../util/HttpErrors";
 import * as SeedData from "../util/SeedData";
 import {authorization, AUTHORIZATION, loadTestData, lookupUser} from "../util/TestUtils";
 

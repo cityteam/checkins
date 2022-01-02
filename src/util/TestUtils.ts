@@ -296,8 +296,7 @@ const loadGuests
         guest.facilityId = facility.id;
     });
     try {
-        const results = await Guest.bulkCreate(guests);
-        return results;
+        return Guest.bulkCreate(guests);
     } catch (error) {
         console.info(`  Reloading Guests for Facility '${facility.name}' ERROR`, error);
         throw error;
@@ -311,8 +310,7 @@ const loadTemplates
         template.facilityId = facility.id;
     });
     try {
-        const results = await Template.bulkCreate(templates);
-        return results;
+        return Template.bulkCreate(templates);
     } catch (error) {
         console.info(`  Reloading Templates for Facility '${facility.name}' ERROR`, error);
         throw error;
@@ -320,19 +318,18 @@ const loadTemplates
 }
 
 const hashedPassword = async (password: string | undefined): Promise<string> => {
-    return await hashPassword(password ? password : "");
+    return hashPassword(password ? password : "");
 }
 
 const loadUsers = async (users: Partial<User>[]): Promise<User[]> => {
     // For tests, the unhashed password is the same as the username
-    const promises = await users.map(user => hashedPassword(user.username));
+    const promises = users.map(user => hashedPassword(user.username));
     const hashedPasswords: string[] = await Promise.all(promises);
     for(let i = 0; i < users.length; i++) {
         users[i].password = hashedPasswords[i];
     }
     try {
-        const results = await User.bulkCreate(users);
-        return results;
+        return User.bulkCreate(users);
     } catch (error) {
         console.info("  Reloading Users ERROR", error);
         throw error;

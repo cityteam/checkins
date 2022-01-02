@@ -15,7 +15,6 @@ import FacilityServices from "./FacilityServices";
 import {BadRequest, NotFound} from "../util/HttpErrors";
 import * as SeedData from "../util/SeedData";
 import {loadTestData, lookupFacility} from "../util/TestUtils";
-import {FACILITY_NAME_FIRST} from "../util/SeedData";
 
 describe("FacilityServices Functional Tests", () => {
 
@@ -194,7 +193,7 @@ describe("FacilityServices Functional Tests", () => {
             } catch (error) {
                 if (error instanceof NotFound) {
                     expect(error.message).to.include
-                    (`facilityId: Missing Facility ${INVALID_ID}`);
+                        (`facilityId: Missing Facility ${INVALID_ID}`);
                 } else {
                     expect.fail(`Should not have thrown '${error}'`);
                 }

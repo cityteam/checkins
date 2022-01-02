@@ -34,7 +34,7 @@ class GuestServices extends AbstractChildServices<Guest> {
         const options = this.appendMatchOptions({
             order: SortOrder.GUESTS
         }, query);
-        return await facility.$get("guests", options);
+        return facility.$get("guests", options);
     }
 
     public async find(facilityId: number, guestId: number, query?: any): Promise<Guest> {
@@ -172,7 +172,7 @@ class GuestServices extends AbstractChildServices<Guest> {
         const options = CheckinServices.appendMatchOptions({
             order: SortOrder.CHECKINS,
         }, query);
-        return await guest.$get("checkins", options);
+        return guest.$get("checkins", options);
     }
 
     public async exact(facilityId: number, firstName: string, lastName: string, query?: any): Promise<Guest> {
@@ -192,7 +192,7 @@ class GuestServices extends AbstractChildServices<Guest> {
         const results = await facility.$get("guests", options);
         if (results.length !== 1) {
             throw new NotFound(
-                `guestId: Missing Guest '${name}'`,
+                `name: Missing Guest '${firstName} ${lastName}'`,
                 "GuestServices.exact"
             );
         }

@@ -12,7 +12,6 @@ import {
 //    dumpRequestDetails,
     requireAdmin,
     requireAny,
-    requireNone,
     requireRegular,
     requireSuperuser
 } from "../oauth/OAuthMiddleware";
@@ -82,17 +81,6 @@ FacilityRouter.put("/:facilityId",
     });
 
 // Model-Specific Routes (with facilityId) -----------------------------------
-
-/*
-FacilityRouter.get("/:facilityId/checkins",
-    requireRegular,
-    async (req: Request, res: Response) => {
-        res.send(await FacilityServices.checkins(
-            parseInt(req.params.facilityId, 10),
-            req.query
-        ));
-    });
-*/
 
 FacilityRouter.get("/:facilityId/guests",
     requireRegular,

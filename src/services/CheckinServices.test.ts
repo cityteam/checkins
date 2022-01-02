@@ -730,14 +730,8 @@ describe("CheckinServices Functional Tests", () => {
             const INPUTS = await CheckinServices.all(facility.id, {
                 date: SeedData.CHECKIN_DATE_ONE,
             });
-            const showerTime = Times.toTimeObject("05:00");
-            //console.log(`SHOW IN=${showerTime} OUT=${Times.fromTimeObject(showerTime)}`)
-            const wakeupTime = Times.toTimeObject("04:30:15");
-            //console.log(`WAKE IN=${wakeupTime} OUT=${Times.fromTimeObject(wakeupTime)}`)
             const INPUT = {
                 comments: "Updated comments",
-                //showerTime: showerTime,
-                //wakeupTime: wakeupTime,
             }
 
             const OUTPUT = await CheckinServices.update(facility.id, INPUTS[0].id, INPUT);

@@ -17,12 +17,8 @@ import {PasswordTokenRequest, RefreshTokenRequest} from "@craigmcc/oauth-orchest
 // Internal Modules ----------------------------------------------------------
 
 import app from "../routers/ExpressApplication";
-import {
-    BAD_REQUEST, FORBIDDEN, NO_CONTENT, NOT_FOUND,
-    NOT_UNIQUE, OK, SERVER_ERROR, UNAUTHORIZED
-} from "../util/HttpErrors";
-import * as SeedData from "../util/SeedData";
-import {authorization, AUTHORIZATION, loadTestData, lookupUser} from "../util/TestUtils";
+import { NO_CONTENT, OK, UNAUTHORIZED } from "../util/HttpErrors";
+import {AUTHORIZATION, loadTestData} from "../util/TestUtils";
 
 // Test Specifications -------------------------------------------------------
 
@@ -93,8 +89,6 @@ describe("OAuthTokenRouter Functional Tests", () => {
             expect(response).to.have.status(OK);
             expect(response).to.be.json;
             expect(response.body.access_token).to.exist;
-
-            const authorization = `Bearer ${response.body.access_token}`;
 
         })
 

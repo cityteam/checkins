@@ -30,7 +30,7 @@ class FacilityServices extends AbstractParentServices<Facility> {
         const options: FindOptions = this.appendMatchOptions({
             order: SortOrder.FACILITIES,
         }, query);
-        return await Facility.findAll(options);
+        return Facility.findAll(options);
     }
 
     public async find(facilityId: number, query?: any): Promise<Facility> {
@@ -127,7 +127,7 @@ class FacilityServices extends AbstractParentServices<Facility> {
         const options = CheckinServices.appendMatchOptions({
             order: SortOrder.CHECKINS,
         }, query);
-        return await facility.$get("checkins", options);
+        return facility.$get("checkins", options);
     }
 
     public async exact(name: string, query?: any): Promise<Facility> {
@@ -157,7 +157,7 @@ class FacilityServices extends AbstractParentServices<Facility> {
         const options = GuestServices.appendMatchOptions({
             order: SortOrder.GUESTS,
         }, query);
-        return await facility.$get("guests", options);
+        return facility.$get("guests", options);
     }
 
     public async templates(facilityId: number, query?: any): Promise<Template[]> {
@@ -171,7 +171,7 @@ class FacilityServices extends AbstractParentServices<Facility> {
         const options = TemplateServices.appendMatchOptions({
             order: SortOrder.TEMPLATES,
         }, query);
-        return await facility.$get("templates", options);
+        return facility.$get("templates", options);
     }
 
     // Public Helpers --------------------------------------------------------

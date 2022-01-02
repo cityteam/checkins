@@ -65,14 +65,14 @@ export function matches(): ob.ParametersObject {
 // ***** Paths *****
 
 export function paths(): ob.PathsObject {
-    const paths: ob.PathsObject = {};
-    paths[API_PREFIX + "/" + pluralize(TEMPLATE.toLowerCase())
+    const thePaths: ob.PathsObject = {};
+    thePaths[API_PREFIX + "/" + pluralize(TEMPLATE.toLowerCase())
             + "/" + pathParam(FACILITY_ID)]
         = pathItemChildCollection(TEMPLATE, FACILITY_ID, all, insert);
-    paths[API_PREFIX + "/" + pluralize(TEMPLATE.toLowerCase())
+    thePaths[API_PREFIX + "/" + pluralize(TEMPLATE.toLowerCase())
             + "/" + pathParam(FACILITY_ID) + "/" + pathParam(TEMPLATE_ID)]
         = pathItemChildDetail(TEMPLATE, TEMPLATE_ID, FACILITY_ID, find, remove, update);
-    return paths;
+    return thePaths;
 }
 
 // ***** Schema and Schemas *****

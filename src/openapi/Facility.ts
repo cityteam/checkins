@@ -86,22 +86,22 @@ export function matches(): ob.ParametersObject {
 // ***** Paths *****
 
 export function paths(): ob.PathsObject {
-    const paths: ob.PathsObject = {};
-    paths[API_PREFIX + "/" + pluralize(FACILITY.toLowerCase())]
+    const thePaths: ob.PathsObject = {};
+    thePaths[API_PREFIX + "/" + pluralize(FACILITY.toLowerCase())]
         = pathItemParentCollection(FACILITY, all, insert);
-    paths[API_PREFIX + "/" + pluralize(FACILITY.toLowerCase())
+    thePaths[API_PREFIX + "/" + pluralize(FACILITY.toLowerCase())
             + "/" + pathParam(FACILITY_ID)]
         = pathItemParentDetail(FACILITY,  FACILITY_ID, find, remove, update);
-    paths[API_PREFIX + "/" + pluralize(FACILITY.toLowerCase())
+    thePaths[API_PREFIX + "/" + pluralize(FACILITY.toLowerCase())
             + "/" + pathParam(FACILITY_ID) + "/" + pluralize(CHECKIN.toLowerCase())]
         = pathItemParentChildren(FACILITY_ID, checkins);
-    paths[API_PREFIX + "/" + pluralize(FACILITY.toLowerCase())
+    thePaths[API_PREFIX + "/" + pluralize(FACILITY.toLowerCase())
             + "/" + pathParam(FACILITY_ID) + "/" + pluralize(GUEST.toLowerCase())]
         = pathItemParentChildren(FACILITY_ID, guests);
-    paths[API_PREFIX + "/" + pluralize(FACILITY.toLowerCase())
+    thePaths[API_PREFIX + "/" + pluralize(FACILITY.toLowerCase())
             + "/" + pathParam(FACILITY_ID) + "/" + pluralize(TEMPLATE.toLowerCase())]
         = pathItemParentChildren(FACILITY_ID, templates);
-    return paths;
+    return thePaths;
 }
 
 // ***** Schema and Schemas *****

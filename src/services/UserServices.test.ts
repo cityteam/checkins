@@ -284,7 +284,7 @@ describe("UserServices Functional Tests", () => {
             };
 
             try {
-                const OUTPUT = await UserServices.insert(INPUT);
+                await UserServices.insert(INPUT);
                 expect.fail(`Should have thrown BadRequest`);
             } catch (error) {
                 if (error instanceof BadRequest) {
@@ -401,7 +401,7 @@ describe("UserServices Functional Tests", () => {
             } catch (error) {
                 if (error instanceof NotFound) {
                     expect(error.message).to.include
-                    (`userId: Missing User ${INVALID_ID}`);
+                        (`userId: Missing User ${INVALID_ID}`);
                 } else {
                     expect.fail(`Should not have thrown '${error}'`);
                 }

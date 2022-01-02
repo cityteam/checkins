@@ -39,7 +39,7 @@ class CheckinServices extends AbstractChildServices<Checkin> {
         const options = this.appendMatchOptions({
             order: SortOrder.CHECKINS
         }, query);
-        return await facility.$get("checkins", options);
+        return facility.$get("checkins", options);
     }
 
     public async find(facilityId: number, checkinId: number, query?: any): Promise<Checkin> {
@@ -228,7 +228,7 @@ class CheckinServices extends AbstractChildServices<Checkin> {
             showerTime: assign.showerTime,
             wakeupTime: assign.wakeupTime,
         }
-        return await this.update(facilityId, checkinId, update);
+        return this.update(facilityId, checkinId, update);
 
     }
 
@@ -434,7 +434,7 @@ class CheckinServices extends AbstractChildServices<Checkin> {
             wakeupTime: assign.wakeupTime,
         }
         // @ts-ignore - we already verified assign.checkinId
-        return await this.update(facilityId, assign.checkinId, newUpdate);
+        return this.update(facilityId, assign.checkinId, newUpdate);
 
     }
 

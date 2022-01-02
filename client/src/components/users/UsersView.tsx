@@ -72,7 +72,7 @@ const UsersView = () => {
     }
 
     const handleUpdate: HandleUser = async (theUser) => {
-        await mutateUser.update(theUser);
+        mutateUser.update(theUser);
         setUser(null);
     }
 

@@ -119,21 +119,21 @@ export function matches(): ob.ParametersObject {
 // ***** Paths *****
 
 export function paths(): ob.PathsObject {
-    const paths: ob.PathsObject = {};
-    paths[API_PREFIX + "/" + pluralize(CHECKIN.toLowerCase())
+    const thePaths: ob.PathsObject = {};
+    thePaths[API_PREFIX + "/" + pluralize(CHECKIN.toLowerCase())
     + "/" + pathParam(FACILITY_ID)]
         = pathItemChildCollection(CHECKIN, FACILITY_ID, all, insert);
-    paths[API_PREFIX + "/" + pluralize(CHECKIN.toLowerCase())
+    thePaths[API_PREFIX + "/" + pluralize(CHECKIN.toLowerCase())
     + "/" + pathParam(FACILITY_ID) + "/" + pathParam(CHECKIN_ID)]
         = pathItemChildDetail(CHECKIN, CHECKIN_ID, FACILITY_ID, find, remove, update);
-    paths[API_PREFIX + "/" + pluralize(CHECKIN.toLowerCase())
+    thePaths[API_PREFIX + "/" + pluralize(CHECKIN.toLowerCase())
     + "/" + pathParam(FACILITY_ID) + "/" + pathParam(CHECKIN_ID) + "/assignment"]
         = assignmentPath();
-    paths[API_PREFIX + "/" + pluralize(CHECKIN.toLowerCase())
+    thePaths[API_PREFIX + "/" + pluralize(CHECKIN.toLowerCase())
     + "/" + pathParam(FACILITY_ID) + "/generate"
     + "/" + pathParam(CHECKIN_DATE) + "/" + pathParam(TEMPLATE_ID)]
         = generatePath();
-    return paths;
+    return thePaths;
 }
 
 // ***** Schemas *****

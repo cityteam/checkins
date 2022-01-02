@@ -79,7 +79,7 @@ export const validateCheckinKeyUnique
     }
 }
 
-export const validateFacilityId = async (facilityId: number): Promise<Boolean> => {
+export const validateFacilityId = async (facilityId: number): Promise<boolean> => {
     if (facilityId) {
         const facility = await Facility.findByPk(facilityId);
         return (facility !== null);
@@ -126,7 +126,7 @@ export const validateFacilityScopeUnique
     }
 }
 
-export const validateGuestId = async (facilityId: number, guestId: number | undefined): Promise<Boolean> => {
+export const validateGuestId = async (facilityId: number, guestId: number | undefined): Promise<boolean> => {
     if (guestId) {
         const guest = await Guest.findByPk(guestId);
         if (!guest) {

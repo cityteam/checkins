@@ -86,9 +86,6 @@ OAuthTokenRouter.post("/",
         }
         try {
             const tokenResponse = await OAuthOrchestrator.token(tokenRequest);
-            const output: any = {
-                ...tokenResponse
-            }
             res.send(tokenResponse);
         } catch (error) {
             // Handle errors with standard middleware

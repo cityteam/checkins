@@ -37,7 +37,7 @@ export const hashPassword
     = async (password: string): Promise<string> =>
 {
     const SALT_ROUNDS: number = 10;
-    return await bcrypt.hash(password, SALT_ROUNDS);
+    return bcrypt.hash(password, SALT_ROUNDS);
 }
 
 /**

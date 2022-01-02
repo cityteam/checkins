@@ -32,7 +32,6 @@ import {OpenApiObjectBuilder, TagObjectBuilder} from "@craigmcc/openapi-builders
 import {
     errorResponse, modelRequestBody, modelResponse,
     modelsResponse, queryParameter, pathParameter,
-    schemaRef
 } from "./Common";
 
 // Public Objects ------------------------------------------------------------
@@ -106,102 +105,102 @@ function license(): ob.LicenseObject {
 }
 
 function parameters(): ob.ParametersObject {
-    const parameters: ob.ParametersObject = {};
+    const theParameters: ob.ParametersObject = {};
 
     // Path Parameters
-    parameters[CHECKIN_DATE]
+    theParameters[CHECKIN_DATE]
         = pathParameter(CHECKIN_DATE, "Checkin Date for Checkins of interest");
-    parameters[CHECKIN_ID]
+    theParameters[CHECKIN_ID]
         = pathParameter(CHECKIN_ID, "ID of the specified Checkin");
-    parameters[FACILITY_ID]
+    theParameters[FACILITY_ID]
         = pathParameter(FACILITY_ID, "ID of the specified Facility");
-    parameters[GUEST_ID]
+    theParameters[GUEST_ID]
         = pathParameter(GUEST_ID, "ID of the specified Guest");
-    parameters[TEMPLATE_ID]
+    theParameters[TEMPLATE_ID]
         = pathParameter(TEMPLATE_ID, "ID of the specified Template");
-    parameters[USER_ID]
+    theParameters[USER_ID]
         = pathParameter(USER_ID, "ID of the specified User");
 
     // Query Parameters (Includes)
-    parameters[WITH_CHECKINS]
+    theParameters[WITH_CHECKINS]
         = queryParameter(WITH_CHECKINS, "Include the related Checkins", true);
-    parameters[WITH_FACILITY]
+    theParameters[WITH_FACILITY]
         = queryParameter(WITH_FACILITY, "Include the related Facility", true);
-    parameters[WITH_GUEST]
+    theParameters[WITH_GUEST]
         = queryParameter(WITH_GUEST, "Include the related Guest", true);
-    parameters[WITH_GUESTS]
+    theParameters[WITH_GUESTS]
         = queryParameter(WITH_GUESTS, "Include the related Guests", true);
-    parameters[WITH_TEMPLATES]
+    theParameters[WITH_TEMPLATES]
         = queryParameter(WITH_TEMPLATES, "Include the related Templates", true);
 
     // Query Parameters (Matches)
-    parameters[MATCH_ACTIVE]
+    theParameters[MATCH_ACTIVE]
         = queryParameter(MATCH_ACTIVE, "Return only active objects", true);
-    parameters[MATCH_NAME]
+    theParameters[MATCH_NAME]
         = queryParameter(MATCH_NAME, "Return objects matching name wildcard", false);
-    parameters[MATCH_SCOPE]
+    theParameters[MATCH_SCOPE]
         = queryParameter(MATCH_SCOPE, "Return objects matching specified scope", false);
 
     // Query Parameters (Pagination)
-    parameters[LIMIT]
+    theParameters[LIMIT]
         = queryParameter(LIMIT, "Maximum number of rows returned (default is 25)", false);
-    parameters[OFFSET]
+    theParameters[OFFSET]
         = queryParameter(OFFSET, "Zero-relative offset to the first returned row (default is 0)", false);
 
-    return parameters;
+    return theParameters;
 }
 
 function requestBodies(): ob.RequestBodiesObject {
-    const requestBodies: ob.RequestBodiesObject = {};
+    const theRequestBodies: ob.RequestBodiesObject = {};
 
     // Request bodies for model objects
     for (const model of MODELS) {
-        requestBodies[model] = modelRequestBody(model);
+        theRequestBodies[model] = modelRequestBody(model);
     }
 
-    return requestBodies;
+    return theRequestBodies;
 }
 
 function responses(): ob.ResponsesObject {
-    const responses: ob.ResponsesObject = {};
+    const theResponses: ob.ResponsesObject = {};
 
     // Responses for model objects
     for (const model of MODELS) {
-        responses[model] = modelResponse(model);
-        responses[pluralize(model)] = modelsResponse(model);
+        theResponses[model] = modelResponse(model);
+        theResponses[pluralize(model)] = modelsResponse(model);
     }
 
     // Responses for HTTP errors
-    responses[BAD_REQUEST] = errorResponse("Error in request properties");
-    responses[FORBIDDEN] = errorResponse("Requested operation is not allowed");
-    responses[NOT_FOUND] = errorResponse("Requested item is not found");
-    responses[NOT_UNIQUE] = errorResponse("Request object would violate uniqueness rules");
-    responses[SERVER_ERROR] = errorResponse("General server error occurred");
+    theResponses[BAD_REQUEST] = errorResponse("Error in request properties");
+    theResponses[FORBIDDEN] = errorResponse("Requested operation is not allowed");
+    theResponses[NOT_FOUND] = errorResponse("Requested item is not found");
+    theResponses[NOT_UNIQUE] = errorResponse("Request object would violate uniqueness rules");
+    theResponses[SERVER_ERROR] = errorResponse("General server error occurred");
 
-    return responses;
+    return theResponses;
 }
 
 function schemas(): ob.SchemasObject {
-    const schemas: ob.SchemasObject = {};
+    const theSchemas: ob.SchemasObject = {};
 
     // Application Models
-    schemas[ASSIGN] = Assign.schema();
-    schemas[pluralize(ASSIGN)] = Assign.schemas();
-    schemas[CHECKIN] = Checkin.schema();
-    schemas[pluralize(CHECKIN)] = Checkin.schemas();
-    schemas[FACILITY] = Facility.schema();
-    schemas[pluralize(FACILITY)] = Facility.schemas();
-    schemas[GUEST] = Guest.schema();
-    schemas[pluralize(GUEST)] = Guest.schemas();
-    schemas[TEMPLATE] = Template.schema();
-    schemas[pluralize(TEMPLATE)] = Template.schemas();
-    schemas[USER] = User.schema();
-    schemas[pluralize(USER)] = User.schemas();
+    theSchemas[ASSIGN] = Assign.schema();
+    theSchemas[pluralize(ASSIGN)] = Assign.schemas();
+    theSchemas[CHECKIN] = Checkin.schema();
+    theSchemas[pluralize(CHECKIN)] = Checkin.schemas();
+    theSchemas[FACILITY] = Facility.schema();
+    theSchemas[pluralize(FACILITY)] = Facility.schemas();
+    theSchemas[GUEST] = Guest.schema();
+    theSchemas[pluralize(GUEST)] = Guest.schemas();
+    theSchemas[TEMPLATE] = Template.schema();
+    theSchemas[pluralize(TEMPLATE)] = Template.schemas();
+    theSchemas[USER] = User.schema();
+    theSchemas[pluralize(USER)] = User.schemas();
 
     // Other Schemas
-    schemas[ERROR] = ErrorSchema.schema();
-    schemas[STRING] = new ob.SchemaObjectBuilder("string")
+    theSchemas[ERROR] = ErrorSchema.schema();
+    theSchemas[STRING] = new ob.SchemaObjectBuilder("string")
         .build();
 
-    return schemas;
+    return theSchemas;
 }

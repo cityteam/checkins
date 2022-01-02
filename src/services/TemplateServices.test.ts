@@ -169,7 +169,7 @@ describe("TemplateServices Functional Tests", () => {
             } catch (error) {
                 if (error instanceof NotFound) {
                     expect(error.message).to.include
-                    (`templateId: Missing Template ${INVALID_ID}`);
+                        (`templateId: Missing Template ${INVALID_ID}`);
                 } else {
                     expect.fail(`Should not have thrown '${error}'`);
                 }

@@ -57,7 +57,7 @@ class UserServices extends AbstractParentServices<User> {
                 "UserServices.insert"
             );
         }
-        user.password = await hashPassword(user.password); // TODO - leaked back to caller
+        user.password = await hashPassword(user.password); // NOTE - leaked back to caller
         try {
             const inserted = await User.create(user, {
                 fields: FIELDS,
@@ -96,7 +96,7 @@ class UserServices extends AbstractParentServices<User> {
 
     public async update(userId: number, user: any): Promise<User> {
         if (user.password && (user.password.length > 0)) {
-            user.password = await hashPassword(user.password); // TODO - leaked back to caller
+            user.password = await hashPassword(user.password); // NOTE - leaked back to caller
         } else {
             delete user.password;
         }
@@ -106,7 +106,7 @@ class UserServices extends AbstractParentServices<User> {
                 throw new NotFound(`userId: Missing User ${userId}`);
             }
             user.id = userId; // No cheating
-            const result = await User.update(user, {
+            await User.update(user, {
                 fields: FIELDS_WITH_ID,
                 where: { id: userId }
             });
@@ -142,7 +142,7 @@ class UserServices extends AbstractParentServices<User> {
             order: SortOrder.ACCESS_TOKENS,
             where: { userId: userId },
         }, query);
-        return await user.$get("accessTokens", options);
+        return user.$get("accessTokens", options);
     }
 
     public async exact(username: string, query?: any): Promise<User> {
@@ -174,7 +174,7 @@ class UserServices extends AbstractParentServices<User> {
             order: SortOrder.REFRESH_TOKENS,
             where: { userId: userId },
         }, query);
-        return await user.$get("refreshTokens", options);
+        return user.$get("refreshTokens", options);
     }
 
     // Public Helpers --------------------------------------------------------

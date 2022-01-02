@@ -4,7 +4,7 @@
 
 // External Modules ----------------------------------------------------------
 
-import {FindOptions, Includeable, Op, ValidationError} from "sequelize";
+import {FindOptions, Op, ValidationError} from "sequelize";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -25,7 +25,7 @@ class RefreshTokenServices extends AbstractParentServices<RefreshToken> {
         const options: FindOptions = this.appendMatchOptions({
             order: SortOrder.REFRESH_TOKENS,
         }, query);
-        return await RefreshToken.findAll(options);
+        return RefreshToken.findAll(options);
     }
 
     public async find(tokenId: number, query?: any): Promise<RefreshToken> {

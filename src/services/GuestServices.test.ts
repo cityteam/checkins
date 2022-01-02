@@ -141,10 +141,10 @@ describe("GuestServices Functional Tests", () => {
 
             try {
                 await GuestServices.exact(facility.id, INVALID_FIRST_NAME, VALID_LAST_NAME);
-                expect.fail("Should hvae thrown NotFound");
+                expect.fail("Should have thrown NotFound");
             } catch (error) {
                 if (error instanceof NotFound) {
-                    expect(error.message).to.include(`name:  Missing Guest '${INVALID_FIRST_NAME} ${VALID_LAST_NAME}'`);
+                    expect(error.message).to.include(`name: Missing Guest '${INVALID_FIRST_NAME} ${VALID_LAST_NAME}'`);
                 }
             }
 

@@ -93,7 +93,7 @@ describe("RefreshTokenServices Functional Tests", () => {
             } catch (error) {
                 if (error instanceof NotFound) {
                     expect((error as Error).message).to.include
-                    (`token: Missing RefreshToken '${INVALID_TOKEN}'`);
+                        (`token: Missing RefreshToken '${INVALID_TOKEN}'`);
                 } else {
                     expect.fail(`Should not have thrown '${error}'`);
                 }
@@ -145,7 +145,7 @@ describe("RefreshTokenServices Functional Tests", () => {
             } catch (error) {
                 if (error instanceof NotFound) {
                     expect((error as Error).message).to.include
-                    (`tokenId: Missing RefreshToken ${INVALID_ID}`);
+                        (`tokenId: Missing RefreshToken ${INVALID_ID}`);
                 } else {
                     expect.fail(`Should not have thrown '${error}'`);
                 }
@@ -197,7 +197,7 @@ describe("RefreshTokenServices Functional Tests", () => {
             }
 
             try {
-                const OUTPUT = await RefreshTokenServices.insert(INPUT);
+                await RefreshTokenServices.insert(INPUT);
                 expect.fail(`Should have thrown BadRequest`);
             } catch (error) {
                 if (error instanceof BadRequest) {
@@ -303,7 +303,7 @@ describe("RefreshTokenServices Functional Tests", () => {
             } catch (error) {
                 if (error instanceof NotFound) {
                     expect((error as Error).message).to.include
-                    (`tokenId: Missing RefreshToken ${INVALID_ID}`);
+                        (`tokenId: Missing RefreshToken ${INVALID_ID}`);
                 } else {
                     expect.fail(`Should not have thrown '${error}'`);
                 }
@@ -350,7 +350,7 @@ describe("RefreshTokenServices Functional Tests", () => {
             } catch (error) {
                 if (error instanceof BadRequest) {
                     expect(error.message).to.include
-                    (`token: Token '${INPUT.token}' is already in use`);
+                        (`token: Token '${INPUT.token}' is already in use`);
                 } else {
                     expect.fail(`Should not have thrown '${error}'`);
                 }
@@ -375,7 +375,7 @@ describe("RefreshTokenServices Functional Tests", () => {
             } catch (error) {
                 if (error instanceof NotFound) {
                     expect(error.message).to.include
-                    (`tokenId: Missing RefreshToken ${INVALID_ID}`);
+                        (`tokenId: Missing RefreshToken ${INVALID_ID}`);
                 } else {
                     expect.fail(`Should not have thrown '${error}'`);
                 }

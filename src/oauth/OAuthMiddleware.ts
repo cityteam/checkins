@@ -16,7 +16,6 @@ import {
 // Internal Modules ----------------------------------------------------------
 
 import OAuthOrchestrator from "./OAuthOrchestrator";
-import Facility from "../models/Facility";
 import {Forbidden} from "../util/HttpErrors";
 import logger from "../util/ServerLogger";
 import FacilityServices from "../services/FacilityServices";
@@ -245,7 +244,7 @@ const extractToken = (req: Request) : string | null => {
     return fields[1];
 }
 
-// TODO - keep it up to date when facilities info changes
+// NOTE - keep it up to date when facilities info changes
 const mapping = new Map<number, string>();
 
 const mapFacilitiesLoad = async (): Promise<void> => {

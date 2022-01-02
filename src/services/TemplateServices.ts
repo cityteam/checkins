@@ -32,7 +32,7 @@ class TemplateServices extends AbstractChildServices<Template> {
         const options = this.appendMatchOptions({
             order: SortOrder.TEMPLATES
         }, query);
-        return await facility.$get("templates", options);
+        return facility.$get("templates", options);
     }
 
     public async find(facilityId: number, templateId: number, query?: any): Promise<Template> {
