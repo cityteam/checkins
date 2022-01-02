@@ -22,9 +22,11 @@ const Api: AxiosInstance = axios.create({
 
 Api.interceptors.request.use(function (config) {
     if (LOGIN_DATA.accessToken) {
+        // @ts-ignore
         config.headers["Authorization"] = `Bearer ${LOGIN_DATA.accessToken}`;
     }
     if (LOGIN_DATA.username) {
+        // @ts-ignore
         config.headers["X-CT-Username"] = LOGIN_DATA.username;
     }
     return config;
