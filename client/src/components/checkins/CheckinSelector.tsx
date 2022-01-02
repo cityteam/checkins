@@ -71,8 +71,8 @@ const CheckinSelector = (props: Props) => {
                 value={index}
             >
                 <option key="-1" value="-1">{placeholder}</option>
-                {props.checkins.map((checkin, index) => (
-                    <option key={index} value={index}>
+                {props.checkins.map((checkin, ci) => (
+                    <option key={ci} value={ci}>
                         {checkin.matNumber}{checkin.features}
                     </option>
                 ))}

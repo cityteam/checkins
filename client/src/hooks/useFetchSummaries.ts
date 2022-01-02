@@ -65,9 +65,9 @@ const useFetchSummaries = (props: Props): State => {
                         count: theSummaries.length,
                     });
                 }
-            } catch (error) {
-                setError(error as Error);
-                ReportError("useFetchSummaries.fetchSummaries", error, {
+            } catch (anError) {
+                setError(anError as Error);
+                ReportError("useFetchSummaries.fetchSummaries", anError, {
                     facility: Abridgers.FACILITY(facilityContext.facility),
                     ...parameters,
                 });

@@ -8,17 +8,20 @@
 // External Modules ----------------------------------------------------------
 
 import React, {useEffect, useState} from "react";
+import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 // Internal Modules ----------------------------------------------------------
 
-import {HandleMonth, OnChangeInput, OnKeyDown} from "../types";
+import {HandleMonth, OnChangeInput, OnClick, OnKeyDown} from "../types";
 import logger from "../util/ClientLogger";
 import {validateMonth} from "../util/Validators";
 
 // Incoming Properties -------------------------------------------------------
 
 export interface Props {
+    actionLabel?: string;               // Label for action button [no button]
+    actionVariant?: string;             // Variant for action button [success]
     autoFocus?: boolean;                // Should element receive autoFocus? [false]
     disabled?: boolean;                 // Should element be disabled? [false]
     handleMonth?: HandleMonth;          // Handle month selection [No handler]
@@ -49,6 +52,10 @@ const MonthSelector = (props: Props) => {
     const onChange: OnChangeInput = (event): void => {
         const theValue = event.target.value;
         setValue(theValue);
+    }
+
+    const onClick: OnClick = () => {
+        processValue(value);
     }
 
     const onKeyDown: OnKeyDown = (event): void => {
@@ -106,6 +113,14 @@ const MonthSelector = (props: Props) => {
                 type={type}
                 value={value}
             />
+            {(props.actionLabel) ? (
+                <Button
+                    className="ml-2"
+                    onClick={onClick}
+                    size="sm"
+                    variant={props.actionVariant ? props.actionVariant : "success"}
+                >{props.actionLabel}</Button>
+            ) : null}
         </Form>
     )
 

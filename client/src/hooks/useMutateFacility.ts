@@ -53,9 +53,9 @@ const useMutateFacility = (props: Props): State => {
                 context: "useMutateFacility.insert",
                 facility: Abridgers.FACILITY(inserted),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateFacility.insert", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateFacility.insert", anError, {
                 facility: theFacility,
             });
         }
@@ -78,9 +78,9 @@ const useMutateFacility = (props: Props): State => {
                 context: "useMutateFacility.remove",
                 facility: Abridgers.FACILITY(removed),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateFcility.remove", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateFcility.remove", anError, {
                 facility: theFacility,
             });
         }
@@ -103,9 +103,9 @@ const useMutateFacility = (props: Props): State => {
                 context: "useMutateFacility.update",
                 facility: Abridgers.FACILITY(updated),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateFacility.update", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateFacility.update", anError, {
                 facility: theFacility,
             });
         }

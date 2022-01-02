@@ -77,9 +77,9 @@ const useFetchUsers = (props: Props): State => {
                     users: Abridgers.USERS(theUsers),
                 });
 
-            } catch (error) {
-                setError(error as Error);
-                ReportError("useFetchUsers.fetchUsers", error, {
+            } catch (anError) {
+                setError(anError as Error);
+                ReportError("useFetchUsers.fetchUsers", anError, {
                     parameters: parameters,
                 });
             }

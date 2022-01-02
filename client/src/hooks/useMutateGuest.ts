@@ -59,9 +59,9 @@ const useMutateGuest = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 guest: Abridgers.GUEST(inserted),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateGuest.insert", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateGuest.insert", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 guest: theGuest,
             });
@@ -87,9 +87,9 @@ const useMutateGuest = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 guest: Abridgers.GUEST(removed),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateGuest.remove", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateGuest.remove", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 guest: theGuest,
             });
@@ -115,9 +115,9 @@ const useMutateGuest = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 guest: Abridgers.GUEST(updated),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateGuest.update", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateGuest.update", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 guest: theGuest,
             });

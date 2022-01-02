@@ -73,9 +73,9 @@ const useFetchTemplates = (props: Props): State => {
                         templates: Abridgers.TEMPLATES(theTemplates),
                     });
                 }
-            } catch (error) {
-                setError(error as Error);
-                ReportError("useFetchTemplates.fetchTemplates", error, {
+            } catch (anError) {
+                setError(anError as Error);
+                ReportError("useFetchTemplates.fetchTemplates", anError, {
                     facility: Abridgers.FACILITY(facilityContext.facility),
                     ...parameters,
                 })

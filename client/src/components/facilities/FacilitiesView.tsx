@@ -64,13 +64,13 @@ const FacilitiesView = () => {
     }
 
     const handleInsert: HandleFacility = async (theFacility) => {
-        /*const inserted = */await mutateFacility.insert(theFacility);
+        mutateFacility.insert(theFacility);
         facilityContext.handleRefresh();
         setFacility(null);
     }
 
     const handleRemove: HandleFacility = async (theFacility) => {
-        /*const removed = */await mutateFacility.remove(theFacility);
+        mutateFacility.remove(theFacility);
         facilityContext.handleRefresh();
         setFacility(null);
     }
@@ -80,7 +80,7 @@ const FacilitiesView = () => {
     }
 
     const handleUpdate: HandleFacility = async (theFacility) => {
-        /*const updated = */await mutateFacility.update(theFacility);
+        mutateFacility.update(theFacility);
         facilityContext.handleRefresh();
         setFacility(null);
     }

@@ -53,9 +53,9 @@ const useMutateUser = (props: Props): State => {
                 context: "useMutateUser.insert",
                 user: Abridgers.USER(inserted),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateUser.insert", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateUser.insert", anError, {
                 user: {
                     ...theUser,
                     password: "*REDACTED*",
@@ -81,9 +81,9 @@ const useMutateUser = (props: Props): State => {
                 context: "useMutateUser.remove",
                 user: Abridgers.USER(removed),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateUser.remove", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateUser.remove", anError, {
                 user: {
                     ...theUser,
                     password: theUser.password ? "*REDACTED*" : null,
@@ -109,9 +109,9 @@ const useMutateUser = (props: Props): State => {
                 context: "useMutateUser.update",
                 user: Abridgers.USER(updated),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateUser.update", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateUser.update", anError, {
                 user: {
                     ...theUser,
                     password: theUser.password ? "*REDACTED*" : null,

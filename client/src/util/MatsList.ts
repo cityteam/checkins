@@ -17,7 +17,7 @@ export class MatsList {
      */
     constructor(list: string) {
         this._explode(list);
-    };
+    }
 
     #exploded: number[] = [];
     #highest: number = 0;
@@ -64,7 +64,7 @@ export class MatsList {
             }
         });
 
-    };
+    }
 
     /**
      * <p>Return the exploded list as an array of integer values.</p>

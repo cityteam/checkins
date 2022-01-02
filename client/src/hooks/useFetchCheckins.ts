@@ -81,9 +81,9 @@ const useFetchCheckins = (props: Props): State => {
                         checkins: Abridgers.CHECKINS(theCheckins),
                     });
                 }
-            } catch (error) {
-                setError(error as Error);
-                ReportError("useFetchCheckins.fetchCheckins", error, {
+            } catch (anError) {
+                setError(anError as Error);
+                ReportError("useFetchCheckins.fetchCheckins", anError, {
                     facility: Abridgers.FACILITY(facilityContext.facility),
                     ...parameters,
                 });

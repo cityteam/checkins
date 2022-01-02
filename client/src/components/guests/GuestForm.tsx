@@ -51,7 +51,7 @@ const GuestForm = (props: Props) => {
         });
     }, [props.guest, initialValues]);
 
-    const handleSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
+    const onSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
         logger.debug({
             context: "GuestForm.handleSubmit",
             template: toGuest(toNullValues(values)),
@@ -89,7 +89,7 @@ const GuestForm = (props: Props) => {
                 .test("unique-name",
                     "That name is already in use within this Facility",
                     async function (this) {
-                    return await validateGuestNameUnique(toGuest(this.parent));
+                    return validateGuestNameUnique(toGuest(this.parent));
                     }),
         })
     }
@@ -103,7 +103,7 @@ const GuestForm = (props: Props) => {
                 <Formik
                     initialValues={initialValues}
                     onSubmit={(values, actions) => {
-                        handleSubmit(values, actions);
+                        onSubmit(values, actions);
                     }}
                     validateOnBlur={true}
                     validateOnChange={false}

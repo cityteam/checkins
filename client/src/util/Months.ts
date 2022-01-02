@@ -39,7 +39,7 @@ export const fromDate = (originalDate: string): string => {
 }
 
 // Return the specified month plus increment days
-export const incrementMonth = (originalMonth: String, increment: number): string => {
+export const incrementMonth = (originalMonth: string, increment: number): string => {
     let originalDate: Date = toDateObject(originalMonth + "-01");
     let updatedDate: Date = addMonths(originalDate, increment);
     return fromDate(fromDateObject(updatedDate));

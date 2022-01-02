@@ -28,8 +28,12 @@ export interface State {
 export const FacilityContext = createContext<State>({
     facilities: [],
     facility: new Facility({name: "Never Selected"}),
-    handleRefresh: () => {},
-    handleSelect: () => {},
+    handleRefresh: () => {
+        // Will be replaced in the real returned context information
+    },
+    handleSelect: () => {
+        // Will be replaced in the real returned context information
+    },
 });
 
 // Context Provider ----------------------------------------------------------
@@ -113,9 +117,9 @@ export const FacilityContextProvider = (props: any) => {
             return;
         }
         let found = false;
-        availables.forEach(facility => {
-            if (theFacility.id === facility.id) {
-                setFacility(facility);
+        availables.forEach(aFacility => {
+            if (theFacility.id === aFacility.id) {
+                setFacility(aFacility);
                 found = true;
             }
         });

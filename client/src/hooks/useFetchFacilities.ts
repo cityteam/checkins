@@ -71,11 +71,6 @@ const useFetchFacilities = (props: Props): State => {
                     theFacilities = (await Api.get(FACILITIES_BASE
                         + `${queryParameters(parameters)}`)).data;
                     theFacilities.forEach(theFacility => {
-/*
-                        if (theFacility.checkins && (theFacility.checkins.length > 0)) {
-                            theFacility.checkins = Sorters.CHECKINS(theFacility.checkins);
-                        }
-*/
                         if (theFacility.guests && (theFacility.guests.length > 0)) {
                             theFacility.guests = Sorters.GUESTS(theFacility.guests);
                         }
@@ -90,9 +85,9 @@ const useFetchFacilities = (props: Props): State => {
                     facilities: Abridgers.FACILITIES(theFacilities),
                 });
 
-            } catch (error) {
-                setError(error as Error);
-                ReportError("useFetchFacilities.fetchFacilities", error, {
+            } catch (anError) {
+                setError(anError as Error);
+                ReportError("useFetchFacilities.fetchFacilities", anError, {
                     parameters: parameters,
                 })
             }

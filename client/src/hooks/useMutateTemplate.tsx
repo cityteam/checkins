@@ -58,9 +58,9 @@ const useMutateTemplate = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 template: Abridgers.TEMPLATE(inserted),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateTemplate.insert", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateTemplate.insert", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 template: theTemplate,
             });
@@ -85,9 +85,9 @@ const useMutateTemplate = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 template: Abridgers.TEMPLATE(removed),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateTemplate.remove", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateTemplate.remove", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 template: theTemplate,
             });
@@ -112,9 +112,9 @@ const useMutateTemplate = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 template: Abridgers.TEMPLATE(updated),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateTemplate.update", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateTemplate.update", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 template: theTemplate,
             })

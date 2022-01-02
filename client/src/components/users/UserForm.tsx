@@ -51,7 +51,7 @@ const UserForm = (props: Props) => {
         });
     }, [props.user, initialValues]);
 
-    const handleSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
+    const onSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
         if (adding) {
             props.handleInsert(toUser(toNullValues(values)));
         } else {
@@ -74,14 +74,14 @@ const UserForm = (props: Props) => {
 
     // NOTE - there is no server-side equivalent for this because there is
     // not an individual logged-in user performing the request
-    // TODO - needs LoginContext to provide validateScope() method
+    // NOTE - needs LoginContext to provide validateScope() method
     const validateRequestedScope = (requested: string | undefined): boolean => {
-        return true; // TODO
+        return true; // NOTE - need server side validation
 /*
         if (!requested || ("" === requested)) {
             return true;  // Not asking for scope but should be required
         } else {
-            // TODO - deal with log:<level> pseudo-scopes
+            // NOTE - deal with log:<level> pseudo-scopes
             return loginContext.validateScope(requested);
         }
 */
@@ -92,7 +92,7 @@ const UserForm = (props: Props) => {
             active: Yup.boolean(),
             name: Yup.string()
                 .required("Name is required"),
-            password: Yup.string(), // TODO - required on add, optional on edit
+            password: Yup.string(), // NOTE - required on add, optional on edit
             scope: Yup.string()
                 .required("Scope is required")
                 .test("allowed-scope",
@@ -105,7 +105,7 @@ const UserForm = (props: Props) => {
                 .test("unique-username",
                     "That username is already in use",
                     async function (this) {
-                        return await validateUserUsernameUnique(toUser(toNullValues(this.parent)))
+                        return validateUserUsernameUnique(toUser(toNullValues(this.parent)))
                     }),
         });
     }
@@ -120,7 +120,7 @@ const UserForm = (props: Props) => {
                 <Formik
                     initialValues={initialValues}
                     onSubmit={(values, actions) => {
-                        handleSubmit(values, actions);
+                        onSubmit(values, actions);
                     }}
                     validateOnBlur={true}
                     validateOnChange={false}

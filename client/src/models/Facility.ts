@@ -4,7 +4,6 @@
 
 // Internal Modules ----------------------------------------------------------
 
-// import Checkin from "./Checkin";
 import Guest from "./Guest";
 import Model from "./Model";
 import Template from "./Template";

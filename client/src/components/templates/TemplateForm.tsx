@@ -55,7 +55,7 @@ const TemplateForm = (props: Props) => {
         });
     }, [props.template, initialValues]);
 
-    const handleSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
+    const onSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
         logger.debug({
             context: "TemplateForm.handleSubmit",
             template: toTemplate(toNullValues(values)),
@@ -102,14 +102,14 @@ const TemplateForm = (props: Props) => {
                     "Not a subset of all mats",
                     function (this) {
                         return validateMatsSubset
-                        (this.parent.allMats, this.parent.handicapMats)
+                            (this.parent.allMats, this.parent.handicapMats)
                     }),
             name: Yup.string()
                 .required("Name is required")
                 .test("unique-name",
                     "That name is already in use within this Facility",
                     async function (this) {
-                        return await validateTemplateNameUnique(toTemplate(this.parent));
+                        return validateTemplateNameUnique(toTemplate(this.parent));
                     }
                 ),
             socketMats: Yup.string()
@@ -149,7 +149,7 @@ const TemplateForm = (props: Props) => {
                 <Formik
                     initialValues={initialValues}
                     onSubmit={(values, actions) => {
-                        handleSubmit(values, actions);
+                        onSubmit(values, actions);
                     }}
                     validateOnBlur={true}
                     validateOnChange={false}

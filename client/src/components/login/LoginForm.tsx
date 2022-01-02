@@ -34,7 +34,7 @@ export const LoginForm = (props: Props) => {
         username: ""
     });
 
-    const handleSubmit = async (values: FormikValues) => {
+    const onSubmit = async (values: FormikValues) => {
         props.handleLogin({
             password: values.password,
             username: values.username,
@@ -57,7 +57,7 @@ export const LoginForm = (props: Props) => {
             <Formik
                 initialValues={initialValues}
                 onSubmit={(values) => {
-                    handleSubmit(values);
+                    onSubmit(values);
                 }}
                 validateOnBlur={true}
                 validateOnChange={false}

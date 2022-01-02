@@ -36,7 +36,7 @@ const AssignForm = (props: Props) => {
 
     const [initialValues] = useState(toEmptyStrings(props.assign));
 
-    const handleSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
+    const onSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
         const assign = toAssign(toNullValues(values));
         logger.debug({
             context: "AssignForm.handleSubmit",
@@ -88,7 +88,7 @@ const AssignForm = (props: Props) => {
             <Formik
                 initialValues={initialValues}
                 onSubmit={(values, actions) => {
-                    handleSubmit(values, actions);
+                    onSubmit(values, actions);
                 }}
                 validateOnBlur={true}
                 validateOnChange={false}

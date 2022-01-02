@@ -89,7 +89,6 @@ const MonthlySummaryReport = () => {
 
             <Row className="ml-1 mr-1">
                 <SummariesTable
-                    // handleSummary={handleSummary} TODO
                     summaries={fetchSummaries.summaries}
                     withCheckinDate
                 />

@@ -69,9 +69,9 @@ const useMutateCheckin = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(assigned),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateCheckin.assign", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateCheckin.assign", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(props.checkin),
                 assign: theAssign,
@@ -98,9 +98,9 @@ const useMutateCheckin = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(deassigned),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateCheckin.deassign", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateCheckin.deassign", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(theCheckin),
             })
@@ -113,7 +113,6 @@ const useMutateCheckin = (props: Props): State => {
 
     const generate: HandleGenerate = async (checkinDate, template) => {
 
-//        let checkins: Checkin[] = [];
         setError(null);
         setExecuting(true);
 
@@ -128,9 +127,9 @@ const useMutateCheckin = (props: Props): State => {
                 template: Abridgers.TEMPLATE(template),
 //                checkins: Abridgers.CHECKINS(checkins),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateCheckin.generate", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateCheckin.generate", anError, {
                 checkinDate: checkinDate,
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 template: Abridgers.TEMPLATE(template),
@@ -156,9 +155,9 @@ const useMutateCheckin = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(reassigned),
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateCheckin.reassign", error, {
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateCheckin.reassign", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(props.checkin),
                 assign: theAssign,
@@ -185,14 +184,14 @@ const useMutateCheckin = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: updated,
             });
-        } catch (error) {
+        } catch (anError) {
             logger.error({
                 context: "useMutateCheckin.update",
                 checkin: theCheckin,
-                error: error,
+                error: anError,
             });
-            setError(error as Error);
-            ReportError("useMutateCheckin.update", error, {
+            setError(anError as Error);
+            ReportError("useMutateCheckin.update", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(theCheckin),
             })

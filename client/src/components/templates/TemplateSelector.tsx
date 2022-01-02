@@ -72,8 +72,8 @@ const TemplateSelector = (props: Props) => {
                 value={index}
             >
                 <option key="-1" value="-1">{placeholder}</option>
-                {props.templates.map((template, index) => (
-                    <option key={index} value={index}>
+                {props.templates.map((template, ti) => (
+                    <option key={ti} value={ti}>
                         {template.name}
                     </option>
                 ))}

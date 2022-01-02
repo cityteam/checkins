@@ -70,8 +70,8 @@ const CheckinsListSubview = (props: Props) => {
 
         // Calculate and store the summary totals to be displayed
         const theSummary = new Summary(facilityContext.facility.id, props.checkinDate);
-        fetchCheckins.checkins.forEach(checkin => {
-            theSummary.includeCheckin(checkin);
+        fetchCheckins.checkins.forEach(aCheckin => {
+            theSummary.includeCheckin(aCheckin);
         });
         setSummary(theSummary);
 
@@ -83,7 +83,7 @@ const CheckinsListSubview = (props: Props) => {
             checkinDate: props.checkinDate,
             template: Abridgers.TEMPLATE(template),
         });
-        await mutateCheckin.generate(props.checkinDate, template);
+        mutateCheckin.generate(props.checkinDate, template);
         fetchCheckins.refresh();
     }
 

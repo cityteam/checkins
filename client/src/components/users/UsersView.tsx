@@ -58,12 +58,12 @@ const UsersView = () => {
     }
 
     const handleInsert: HandleUser = async (theUser) => {
-        /*const inserted = */await mutateUser.insert(theUser);
+        mutateUser.insert(theUser);
         setUser(null);
     }
 
     const handleRemove: HandleUser = async (theUser) => {
-        /*const removed = */await mutateUser.remove(theUser);
+        mutateUser.remove(theUser);
         setUser(null);
     }
 
@@ -72,7 +72,7 @@ const UsersView = () => {
     }
 
     const handleUpdate: HandleUser = async (theUser) => {
-        /*const updated = */await mutateUser.update(theUser);
+        await mutateUser.update(theUser);
         setUser(null);
     }
 

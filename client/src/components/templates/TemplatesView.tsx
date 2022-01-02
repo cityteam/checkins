@@ -62,12 +62,12 @@ const TemplatesView = () => {
     }
 
     const handleInsert: HandleTemplate = async (theTemplate) => {
-        /*const inserted = */await mutateTemplate.insert(theTemplate);
+        mutateTemplate.insert(theTemplate);
         setTemplate(null);
     }
 
     const handleRemove: HandleTemplate = async (theTemplate) => {
-        /*const removed = */await mutateTemplate.remove(theTemplate);
+        mutateTemplate.remove(theTemplate);
         setTemplate(null);
     }
 
@@ -76,7 +76,7 @@ const TemplatesView = () => {
     }
 
     const handleUpdate: HandleTemplate = async (theTemplate) => {
-        /*const updated = */await mutateTemplate.update(theTemplate);
+        mutateTemplate.update(theTemplate);
         setTemplate(null);
     }
 

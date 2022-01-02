@@ -50,9 +50,9 @@ const useMutateDatabase = (props: Props): State => {
                 msg: "Successful database backup",
                 result: results,
             });
-        } catch (error) {
-            setError(error as Error);
-            ReportError("useMutateDtabase.backup", error);
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateDtabase.backup", anError);
         }
 
         setExecuting(false);

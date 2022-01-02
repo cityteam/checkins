@@ -61,7 +61,7 @@ const FacilityForm = (props: Props) => {
         });
     }, [props.facility, initialValues]);
 
-    const handleSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
+    const onSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
         if (adding) {
             props.handleInsert(toFacility(toNullValues(values)));
         } else {
@@ -99,7 +99,7 @@ const FacilityForm = (props: Props) => {
                 .test("unique-name",
                     "That name is already in use",
                     async function (this) {
-                        return await validateFacilityNameUnique(toFacility(this.parent));
+                        return validateFacilityNameUnique(toFacility(this.parent));
                     }
                 ),
             phone: Yup.string()
@@ -118,7 +118,7 @@ const FacilityForm = (props: Props) => {
                 .test("unique-scope",
                     "That scope is already in use",
                     async function(value) {
-                        return await validateFacilityScopeUnique(toFacility(this.parent));
+                        return validateFacilityScopeUnique(toFacility(this.parent));
                     }),
             state: Yup.string()
                 .test("valid-state",
@@ -145,7 +145,7 @@ const FacilityForm = (props: Props) => {
                 <Formik
                     initialValues={initialValues}
                     onSubmit={(values, actions) => {
-                        handleSubmit(values, actions);
+                        onSubmit(values, actions);
                     }}
                     validateOnBlur={true}
                     validateOnChange={false}

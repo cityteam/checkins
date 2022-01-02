@@ -74,9 +74,9 @@ const useFetchGuests = (props: Props): State => {
                         guests: Abridgers.GUESTS(theGuests),
                     });
                 }
-            } catch (error) {
-                setError(error as Error);
-                ReportError("useFetchGuests.fetchGuests", error, {
+            } catch (anError) {
+                setError(anError as Error);
+                ReportError("useFetchGuests.fetchGuests", anError, {
                     facility: Abridgers.FACILITY(facilityContext.facility),
                     ...parameters,
                 });
