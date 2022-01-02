@@ -16,7 +16,6 @@ import Checkin from "../models/Checkin";
 import {fromDateObject, toDateObject} from "../util/Dates";
 import {BadRequest, NotFound} from "../util/HttpErrors";
 import * as SeedData from "../util/SeedData";
-import * as Times from "../util/Times";
 import FacilityServices from "./FacilityServices";
 
 // Test Specifications -------------------------------------------------------
