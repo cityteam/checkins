@@ -38,7 +38,7 @@ const write = async (object: any, level: number): Promise<void> => {
 }
 // Public Objects ------------------------------------------------------------
 
-export let LOG_LEVEL: number = 20;  // Default to debug level (TODO - go back to info later)
+export let LOG_LEVEL: number = 30;
 
 export const logger = require("pino")({
     base: null, // Remove "name", "pid", and "hostname" since we do not need them
@@ -53,7 +53,8 @@ export const logger = require("pino")({
             warn:       (object: any) => { write(object, 40) },
         },
     },
-    timestamp: false, // Server will timestamp for us
+    level: "trace",     // write() will ignore things based on dynamic level set
+    timestamp: false,   // Server will timestamp for us
 });
 
 export const setLevel = (newName: string): void => {

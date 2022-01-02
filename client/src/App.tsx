@@ -92,9 +92,11 @@ function App() {
                   <NavDropdown.Item>Users</NavDropdown.Item>
                 </LinkContainer>
               </NavDropdown>
-              <LinkContainer to="/open-api">
+{/*
+              <LinkContainer to="/openapi">
                 <NavItem className="nav-link">OpenAPI Docs</NavItem>
               </LinkContainer>
+*/}
               <NavDropdown id="help" title="Help">
                 <LinkContainer to="/help/regular-user.html">
                   <NavDropdown.Item>Regular User</NavDropdown.Item>
@@ -121,7 +123,7 @@ function App() {
         </Navbar>
 
         <Switch>
-          <Route exact path="/open-api">
+          <Route exact path="/openapi">
             <OpenApiView/>
           </Route>
           <Route exact path="/checkins">

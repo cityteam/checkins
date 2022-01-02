@@ -47,8 +47,12 @@ export const LoginContext = createContext<State>({
         scope: null,
         username: null,
     },
-    handleLogin: (username, tokenResponse): void => {},
-    handleLogout: (): void => {},
+    handleLogin: (username, tokenResponse): void => {
+        // Will be replaced in the real returned context information
+    },
+    handleLogout: (): void => {
+        // Will be replaced in the real returned context information
+    },
     validateFacility: (facility: Facility): boolean => { return false },
     validateScope: (scope: string): boolean => { return false },
 });

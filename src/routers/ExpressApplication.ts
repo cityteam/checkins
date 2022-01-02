@@ -5,9 +5,7 @@
 // External Modules ----------------------------------------------------------
 
 import bodyParser from "body-parser";
-import cors from "cors";
 import express from "express";
-import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 const rfs = require("rotating-file-stream");
@@ -25,33 +23,12 @@ import {toLocalISO} from "../util/Timestamps";
 // Public Objects ------------------------------------------------------------
 
 const app = express();
-
-// Configure global middleware
-app.use(cors({
-    origin: "*",
-}));
 app.disable("x-powered-by");
 
 // Configure Helmet application security.  For more information:
 // https://helmetjs.github.io
-// TODO - disabled until why it fails on even localhost:8080 in production mode is discovered:
+// NOTE - disabled until why it fails on even localhost:8080 in production mode is discovered:
 // Refused to execute inline script because it violates the following Content Security Policy directive: "script-src 'self'". Either the 'unsafe-inline' keyword, a hash ('sha256-pTq8zZ7widEuz1OlVSSEwJcLZwxAc9dw6hsbGfOeiNQ='), or a nonce ('nonce-...') is required to enable inline execution.
-
-/*
-app.use(helmet.contentSecurityPolicy());                // TODO ???
-app.use(helmet.crossOriginEmbedderPolicy());
-app.use(helmet.crossOriginOpenerPolicy({ policy: "same-origin" }));
-app.use(helmet.crossOriginResourcePolicy({ policy: "same-origin" }));
-app.use(helmet.dnsPrefetchControl({ allow: true }));
-app.use(helmet.expectCt());                             // TODO ???
-app.use(helmet.hidePoweredBy());
-app.use(helmet.hsts());                                 // TODO: ??
-app.use(helmet.ieNoOpen());                             // TODO ???
-app.use(helmet.noSniff());                              // TODO ???
-app.use(helmet.permittedCrossDomainPolicies());         // TODO ???
-app.use(helmet.referrerPolicy());                       // TODO ???
-app.use(helmet.xssFilter());                            // TODO ???
-*/
 
 // Configure access log management
 const ACCESS_LOG = process.env.ACCESS_LOG ? process.env.ACCESS_LOG : "stderr";
