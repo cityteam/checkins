@@ -6,6 +6,7 @@
 
 import bodyParser from "body-parser";
 import express from "express";
+import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 const rfs = require("rotating-file-stream");
@@ -23,7 +24,8 @@ import {toLocalISO} from "../util/Timestamps";
 // Public Objects ------------------------------------------------------------
 
 const app = express();
-app.disable("x-powered-by");
+//app.disable("x-powered-by");
+app.use(helmet());
 
 // Configure Helmet application security.  For more information:
 // https://helmetjs.github.io
