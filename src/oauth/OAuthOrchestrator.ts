@@ -12,6 +12,6 @@ import {Orchestrator} from "@craigmcc/oauth-orchestrator";
 
 import OAuthOrchestratorHandlers from "./OAuthOrchestratorHandlers";
 export const OAuthOrchestrator: Orchestrator
-    = new Orchestrator(OAuthOrchestratorHandlers);
+    = new Orchestrator(OAuthOrchestratorHandlers, { issueRefreshToken: false });
 
 export default OAuthOrchestrator;
