@@ -50,7 +50,7 @@
     "cross-env": "^7.0.3",
     "custom-env": "^2.0.1",
     "express": "^5.0.0-alpha.8",
-    "helmet": "^5.0.1",
+    "helmet": "^5.0.2",
     "morgan": "^1.10.0",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
