@@ -19,7 +19,9 @@ import Pagination from "../Pagination";
 import SearchBar from "../SearchBar";
 import {HandleBoolean, HandleGuest, HandleValue, OnAction} from "../../types";
 import useFetchGuests from "../../hooks/useFetchGuests";
+import Guest from "../../models/Guest";
 import logger from "../../util/ClientLogger";
+import * as Sorters from "../../util/Sorters";
 import {listValue} from "../../util/Transformations";
 
 // Incoming Properties -------------------------------------------------------
@@ -31,6 +33,7 @@ export interface Props {
     handleAdd?: OnAction;               // Handle request to add a Guest [no handler]
     handleSelect: HandleGuest;          // Handle request to select a Guest
     withActive?: boolean;               // Offer "Active Guests Only?" filter [true]
+    withCheckinDates?: boolean;         // Offer "With Checkin Dates?" filter [true]
 }
 
 // Component Details ---------------------------------------------------------
@@ -38,17 +41,21 @@ export interface Props {
 const GuestsList = (props: Props) => {
 
     const [active, setActive] = useState<boolean>(false);
+    const [checkinDates, setCheckinDates] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [pageSize] = useState<number>(25);
+    const [pageSize] = useState<number>(15);
     const [searchText, setSearchText] = useState<string>("");
     const [withActive] =
         useState<boolean>(props.withActive !== undefined ? props.withActive : true);
+    const [withCheckinDates] =
+        useState<boolean>(props.withCheckinDates !== undefined ? props.withCheckinDates : true);
 
     const fetchGuests = useFetchGuests({
         active: active,
         currentPage: currentPage,
         name: (searchText.length > 0) ? searchText : undefined,
         pageSize: pageSize,
+        withCheckins: withCheckinDates,
     });
 
     useEffect(() => {
@@ -59,12 +66,29 @@ const GuestsList = (props: Props) => {
 
     }, [fetchGuests.guests]);
 
+    const checkins = (guest: Guest): string => {
+        const results: string[] = [];
+        if (guest.checkins) {
+            const checkins = Sorters.CHECKINS(guest.checkins);
+            checkins.forEach(checkin => {
+                if (checkin.checkinDate) {
+                    results.push(checkin.checkinDate);
+                }
+            })
+        }
+        return results.join(" ");
+    }
+
     const handleActive: HandleBoolean = (theActive) => {
         setActive(theActive);
     }
 
     const handleChange: HandleValue = (theSearchText) => {
         setSearchText(theSearchText);
+    }
+
+    const handleCheckinDates: HandleBoolean = (theCheckinDates) => {
+        setCheckinDates(theCheckinDates);
     }
 
     const onNext: OnAction = () => {
@@ -94,6 +118,16 @@ const GuestsList = (props: Props) => {
                             id="activeOnly"
                             initialValue={active}
                             label="Active Guests Only?"
+                        />
+                    </Col>
+                ) : null}
+                {withCheckinDates ? (
+                    <Col>
+                        <CheckBox
+                            handleChange={handleCheckinDates}
+                            id="checkinDates"
+                            initialValue={checkinDates}
+                            label="With Checkin Dates?"
                         />
                     </Col>
                 ) : null}
@@ -133,9 +167,15 @@ const GuestsList = (props: Props) => {
                     <tr className="table-secondary">
                         <th scope="col">First Name</th>
                         <th scope="col">Last Name</th>
-                        <th scope="col">Active</th>
-                        <th scope="col">Comments</th>
-                        <th scope="col">Favorite</th>
+                        {(checkinDates) ? (
+                            <th scope="col">Checkin Dates</th>
+                        ) : (
+                            <>
+                            <th scope="col">Active</th>
+                            <th scope="col">Comments</th>
+                            <th scope="col">Favorite</th>
+                            </>
+                        )}
                     </tr>
                     </thead>
 
@@ -152,15 +192,25 @@ const GuestsList = (props: Props) => {
                             <td key={1000 + (rowIndex * 100) + 2}>
                                 {guest.lastName}
                             </td>
-                            <td key={1000 + (rowIndex * 100) + 3}>
-                                {listValue(guest.active)}
-                            </td>
-                            <td key={1000 + (rowIndex * 100) + 4}>
-                                {guest.comments}
-                            </td>
-                            <td key={1000 + (rowIndex * 100) + 5}>
-                                {guest.favorite}
-                            </td>
+                            {(checkinDates) ? (
+                                <td key={1000 + (rowIndex * 100) + 99}>
+                                    {checkins(guest)}
+                                </td>
+                            ) : (
+                                <>
+                                    <td key={1000 + (rowIndex * 100) + 3}>
+                                        {listValue(guest.active)}
+                                    </td>
+                                    <td key={1000 + (rowIndex * 100) + 4}>
+                                        {guest.comments}
+                                    </td>
+                                    <td key={1000 + (rowIndex * 100) + 5}>
+                                        {guest.favorite}
+                                    </td>
+                                </>
+                            )}
+
+
                         </tr>
                     ))}
                     </tbody>

@@ -4,9 +4,10 @@
 
 // Internal Modules ----------------------------------------------------------
 
+import Checkin from "./Checkin";
 import Facility from "./Facility";
 import Model from "./Model";
-import {toFacility} from "../util/ToModelTypes";
+import {toCheckins, toFacility} from "../util/ToModelTypes";
 
 // Public Objects ------------------------------------------------------------
 
@@ -25,6 +26,7 @@ class Guest extends Model {
         this.firstName = data.firstName ? data.firstName : null;
         this.lastName = data.lastName ? data.lastName : null;
 
+        this.checkins = data.checkins ? toCheckins(data.checkins) : null;
         this.facility = data.facility ? toFacility(data.facility) : null;
 
     }
@@ -36,6 +38,7 @@ class Guest extends Model {
     firstName!: string;
     lastName!: string;
 
+    checkins: Checkin[] | null;
     facility: Facility | null;
 
 }

@@ -24,6 +24,7 @@ export interface Props {
     currentPage?: number;               // One-relative current page number [1]
     pageSize?: number;                  // Number of entries per page [25]
     name?: string;                      // Select Guests matching pattern [none]
+    withCheckins?: boolean;             // Include child Checkins? [false]
     withFacility?: boolean;             // Include parent Facility? [false]
 }
 
@@ -58,6 +59,7 @@ const useFetchGuests = (props: Props): State => {
                 limit: limit,
                 offset: offset,
                 name: props.name ? props.name : undefined,
+                withCheckins: props.withCheckins ? "" : undefined,
                 withFacility: props.withFacility ? "" : undefined,
             }
 
@@ -90,7 +92,7 @@ const useFetchGuests = (props: Props): State => {
         fetchGuests();
 
     }, [props.active, props.currentPage, facilityContext.facility,
-        props.pageSize, props.name, props.withFacility]);
+        props.pageSize, props.name, props.withCheckins, props.withFacility]);
 
     return {
         error: error ? error : null,
