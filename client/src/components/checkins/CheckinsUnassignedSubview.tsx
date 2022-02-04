@@ -177,7 +177,7 @@ const CheckinsUnassignedSubview = (props: Props) => {
                                 handleAdd={handleNewGuest}
                                 handleSelect={handleSelectedGuest}
                                 withActive={false}
-                                withCheckinDates={false}
+                                withCheckinDates={true}
                             />
                             <Row className="ml-4 mb-3">
                                 <Button

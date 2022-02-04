@@ -242,11 +242,21 @@ class GuestServices extends AbstractChildServices<Guest> {
             const names = query.name.trim().split(" ");
             const firstMatch = names[0];
             const lastMatch = (names.length > 1) ? names[1] : names[0];
-            where = {
-                ...where,
-                [Op.or]: {
-                    firstName: {[Op.iLike]: `%${firstMatch}%`},
-                    lastName: {[Op.iLike]: `%${lastMatch}%`},
+            if (names.length > 1) {
+                where = {
+                    ...where,
+                    [Op.and]: {
+                        firstName: {[Op.iLike]: `%${firstMatch}%`},
+                        lastName: {[Op.iLike]: `%${lastMatch}%`},
+                    }
+                }
+            } else {
+                where = {
+                    ...where,
+                    [Op.or]: {
+                        firstName: {[Op.iLike]: `%${firstMatch}%`},
+                        lastName: {[Op.iLike]: `%${lastMatch}%`},
+                    }
                 }
             }
         }

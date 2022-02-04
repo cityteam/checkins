@@ -55,7 +55,7 @@ const GuestsList = (props: Props) => {
         currentPage: currentPage,
         name: (searchText.length > 0) ? searchText : undefined,
         pageSize: pageSize,
-        withCheckins: withCheckinDates,
+        withCheckins: checkinDates,
     });
 
     useEffect(() => {
