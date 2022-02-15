@@ -24,7 +24,6 @@ import {toLocalISO} from "../util/Timestamps";
 // Public Objects ------------------------------------------------------------
 
 const app = express();
-//app.disable("x-powered-by");
 app.use(helmet());
 
 // Configure Helmet application security.  For more information:

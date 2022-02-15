@@ -92,7 +92,8 @@ describe("OAuthTokenRouter Functional Tests", () => {
 
         })
 
-        it("should pass on valid REFRESH grant type request", async () => {
+        // NOTE - Refresh tokens are turned off, so cannot test this
+        it.skip("should pass on valid REFRESH grant type request", async () => {
 
             // Request an access token
             const request1: PasswordTokenRequest = {

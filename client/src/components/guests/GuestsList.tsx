@@ -69,8 +69,8 @@ const GuestsList = (props: Props) => {
     const checkins = (guest: Guest): string => {
         const results: string[] = [];
         if (guest.checkins) {
-            const checkins = Sorters.CHECKINS(guest.checkins);
-            checkins.forEach(checkin => {
+            const theCheckins = Sorters.CHECKINS(guest.checkins);
+            theCheckins.forEach(checkin => {
                 if (checkin.checkinDate) {
                     results.push(checkin.checkinDate);
                 }

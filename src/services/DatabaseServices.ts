@@ -41,11 +41,11 @@ class DatabaseServices {
         }
         const FILENAME = `${this.databaseName()}-${nowDateTime()}.sql`;
         const PATHNAME = path.resolve(BACKUP_DIRECTORY, FILENAME);
-        const COMMAND = `pg_dump ${DATABASE_URL} > ${PATHNAME}`;
+        const THE_COMMAND = `pg_dump ${DATABASE_URL} > ${PATHNAME}`;
 
         let output = "";
         try {
-            output = execSync(COMMAND).toString();
+            output = execSync(THE_COMMAND).toString();
             const result = {
                 context: "DatabaseServices.backup",
                 msg: "Successful database backup",
