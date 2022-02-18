@@ -4,8 +4,10 @@
 .migraterc*
 backup/
 dist/
+fullchain.pem
 log/
 node_modules/
+privkey.pem
 test/database.sqlite
 transfer/*.csv
 client/.eslintcache
