@@ -16,7 +16,7 @@ import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";
 import {queryParameters} from "../util/QueryParameters";
 import ReportError from "../util/ReportError";
-import {toCheckins} from "../util/ToModelTypes";
+import * as ToModel from "../util/ToModel";
 
 // Incoming Properties and Outgoing State ------------------------------------
 
@@ -71,7 +71,7 @@ const useFetchCheckins = (props: Props): State => {
             try {
                 // Too many Checkins for a useful non-filtered fetch
                 if ((facilityContext.facility.id > 0) && (props.date || props.guestId)) {
-                    theCheckins = toCheckins((await Api.get(CHECKINS_BASE
+                    theCheckins = ToModel.CHECKINS((await Api.get(CHECKINS_BASE
                         + `/${facilityContext.facility.id}${queryParameters(parameters)}`))
                         .data);
                     logger.debug({

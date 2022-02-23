@@ -16,11 +16,11 @@ import User from "../models/User";
 
 // Public Objects ------------------------------------------------------------
 
-export const toAccessToken = (value: object): AccessToken => {
+export const ACCESS_TOKEN = (value: object): AccessToken => {
     return new AccessToken(value);
 }
 
-export const toAccessTokens = (values: object[]): AccessToken[] => {
+export const ACCESS_TOKENS = (values: object[]): AccessToken[] => {
     const results: AccessToken[] = [];
     values.forEach(value => {
         results.push(new AccessToken(value));
@@ -28,11 +28,11 @@ export const toAccessTokens = (values: object[]): AccessToken[] => {
     return results;
 }
 
-export const toAssign = (value: object): Assign => {
+export const ASSIGN = (value: object): Assign => {
     return new Assign(value);
 }
 
-export const toAssigns = (values: object[]): Assign[] => {
+export const ASSIGNS = (values: object[]): Assign[] => {
     const results: Assign[] = [];
     values.forEach(value => {
         results.push(new Assign(value));
@@ -40,11 +40,11 @@ export const toAssigns = (values: object[]): Assign[] => {
     return results;
 }
 
-export const toCheckin = (value: object): Checkin => {
+export const CHECKIN = (value: object): Checkin => {
     return new Checkin(value);
 }
 
-export const toCheckins = (values: object[]): Checkin[] => {
+export const CHECKINS = (values: object[]): Checkin[] => {
     const results: Checkin[] = [];
     values.forEach(value => {
         results.push(new Checkin(value));
@@ -52,11 +52,11 @@ export const toCheckins = (values: object[]): Checkin[] => {
     return results;
 }
 
-export const toFacility = (value: object): Facility => {
+export const FACILITY = (value: object): Facility => {
     return new Facility(value);
 }
 
-export const toFacilities = (values: object[]): Facility[] => {
+export const FACILITIES = (values: object[]): Facility[] => {
     const results: Facility[] = [];
     values.forEach(value => {
         results.push(new Facility(value));
@@ -64,11 +64,11 @@ export const toFacilities = (values: object[]): Facility[] => {
     return results;
 }
 
-export const toGuest = (value: object): Guest => {
+export const GUEST = (value: object): Guest => {
     return new Guest(value);
 }
 
-export const toGuests = (values: object[]): Guest[] => {
+export const GUESTS = (values: object[]): Guest[] => {
     const results: Guest[] = [];
     values.forEach(value => {
         results.push(new Guest(value));
@@ -76,11 +76,11 @@ export const toGuests = (values: object[]): Guest[] => {
     return results;
 }
 
-export const toRefreshToken = (value: object): RefreshToken => {
+export const REFRESH_TOKEN = (value: object): RefreshToken => {
     return new RefreshToken(value);
 }
 
-export const toRefreshTokens = (values: object[]): RefreshToken[] => {
+export const REFRESH_TOKENS = (values: object[]): RefreshToken[] => {
     const results: RefreshToken[] = [];
     values.forEach(value => {
         results.push(new RefreshToken(value));
@@ -88,11 +88,11 @@ export const toRefreshTokens = (values: object[]): RefreshToken[] => {
     return results;
 }
 
-export const toSummary = (value: object): Summary => {
+export const SUMMARY = (value: object): Summary => {
     return Summary.clone(value);
 }
 
-export const toSummaries = (values: object[]): Summary[] => {
+export const SUMMARIES = (values: object[]): Summary[] => {
     const results: Summary[] = [];
     values.forEach(value => {
         results.push(Summary.clone(value));
@@ -100,11 +100,11 @@ export const toSummaries = (values: object[]): Summary[] => {
     return results;
 }
 
-export const toTemplate = (value: object): Template => {
+export const TEMPLATE = (value: object): Template => {
     return new Template(value);
 }
 
-export const toTemplates = (values: object[]): Template[] => {
+export const TEMPLATES = (values: object[]): Template[] => {
     const results: Template[] = [];
     values.forEach(value => {
         results.push(new Template(value));
@@ -112,11 +112,11 @@ export const toTemplates = (values: object[]): Template[] => {
     return results;
 }
 
-export const toUser = (value: object): User => {
+export const USER = (value: object): User => {
     return new User(value);
 }
 
-export const toUsers = (values: object[]): User[] => {
+export const USERS = (values: object[]): User[] => {
     const results: User[] = [];
     values.forEach(value => {
         results.push(new User(value));

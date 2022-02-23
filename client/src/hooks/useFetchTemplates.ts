@@ -15,7 +15,7 @@ import logger from "../util/ClientLogger";
 import {queryParameters} from "../util/QueryParameters";
 import FacilityContext from "../components/facilities/FacilityContext";
 import ReportError from "../util/ReportError";
-import {toTemplates} from "../util/ToModelTypes";
+import * as ToModel from "../util/ToModel";
 
 // Incoming Properties and Outgoing State ------------------------------------
 
@@ -63,7 +63,7 @@ const useFetchTemplates = (props: Props): State => {
 
             try {
                 if (facilityContext.facility.id > 0) {
-                    theTemplates = toTemplates((await Api.get(TEMPLATES_BASE
+                    theTemplates = ToModel.TEMPLATES((await Api.get(TEMPLATES_BASE
                         + `/${facilityContext.facility.id}${queryParameters(parameters)}`))
                         .data);
                     logger.debug({

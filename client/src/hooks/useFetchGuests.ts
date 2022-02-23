@@ -15,7 +15,7 @@ import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";
 import {queryParameters} from "../util/QueryParameters";
 import ReportError from "../util/ReportError";
-import {toGuests} from "../util/ToModelTypes";
+import * as ToModel from "../util/ToModel";
 
 // Incoming Properties and Outgoing State ------------------------------------
 
@@ -66,7 +66,7 @@ const useFetchGuests = (props: Props): State => {
             try {
                 // Too many Guests for a useful non-filtered fetch
                 if ((facilityContext.facility.id > 0) && props.name) {
-                    theGuests = toGuests((await Api.get(GUESTS_BASE
+                    theGuests = ToModel.GUESTS((await Api.get(GUESTS_BASE
                         + `/${facilityContext.facility.id}${queryParameters(parameters)}`))
                         .data);
                     logger.debug({

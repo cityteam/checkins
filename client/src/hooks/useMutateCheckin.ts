@@ -18,7 +18,7 @@ import Template from "../models/Template";
 import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";
 import ReportError from "../util/ReportError";
-import {toCheckin, toCheckins} from "../util/ToModelTypes";
+import * as ToModel from "../util/ToModel";
 
 // Incoming Properties and Outgoing State ------------------------------------
 
@@ -61,7 +61,7 @@ const useMutateCheckin = (props: Props): State => {
         setExecuting(true);
 
         try {
-            assigned = toCheckin((await Api.post(CHECKINS_BASE
+            assigned = ToModel.CHECKIN((await Api.post(CHECKINS_BASE
                 + `/${facilityContext.facility.id}/${props.checkin.id}/assignment`, theAssign))
                 .data);
             logger.debug({
@@ -90,7 +90,7 @@ const useMutateCheckin = (props: Props): State => {
         setExecuting(true);
 
         try {
-            deassigned = toCheckin((await Api.delete(CHECKINS_BASE
+            deassigned = ToModel.CHECKIN((await Api.delete(CHECKINS_BASE
                 + `/${facilityContext.facility.id}/${props.checkin.id}/assignment`))
                 .data);
             logger.debug({
@@ -117,7 +117,7 @@ const useMutateCheckin = (props: Props): State => {
         setExecuting(true);
 
         try {
-            /* checkins = */toCheckins((await Api.post(CHECKINS_BASE
+            /* checkins = */ToModel.CHECKINS((await Api.post(CHECKINS_BASE
                 + `/${facilityContext.facility.id}/generate/${checkinDate}/${template.id}`))
                 .data);
             logger.debug({
@@ -147,7 +147,7 @@ const useMutateCheckin = (props: Props): State => {
         setExecuting(true);
 
         try {
-            reassigned = toCheckin((await Api.put(CHECKINS_BASE
+            reassigned = ToModel.CHECKIN((await Api.put(CHECKINS_BASE
                 + `/${facilityContext.facility.id}/${props.checkin.id}/assignment`, theAssign))
                 .data);
             logger.debug({
@@ -176,7 +176,7 @@ const useMutateCheckin = (props: Props): State => {
         setExecuting(true);
 
         try {
-            updated = toCheckin((await Api.put(CHECKINS_BASE
+            updated = ToModel.CHECKIN((await Api.put(CHECKINS_BASE
                 + `/${facilityContext.facility.id}/${theCheckin.id}`, theCheckin))
                 .data);
             logger.debug({

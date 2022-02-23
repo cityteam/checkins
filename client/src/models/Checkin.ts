@@ -9,7 +9,7 @@
 import Facility from "./Facility";
 import Guest from "./Guest";
 import Model from "./Model";
-import {toFacility, toGuest} from "../util/ToModelTypes";
+import * as ToModel from "../util/ToModel";
 
 // Public Objects -----------------------------------------------------------
 
@@ -34,8 +34,8 @@ class Checkin extends Model {
 
         this.matNumberAndFeatures = this.calculateMatNumberAndFeatures();
 
-        this.facility = data.facility ? toFacility(data.facility) : null;
-        this.guest = data.guest ? toGuest(data.guest) : null;
+        this.facility = data.facility ? ToModel.FACILITY(data.facility) : null;
+        this.guest = data.guest ? ToModel.GUEST(data.guest) : null;
 
     }
 

@@ -23,7 +23,7 @@ import {
     validateFacilityScopeUnique
 } from "../../util/AsyncValidators";
 import logger from "../../util/ClientLogger";
-import {toFacility} from "../../util/ToModelTypes";
+import * as ToModel from "../../util/ToModel";
 import {toEmptyStrings, toNullValues} from "../../util/Transformations";
 import {
     validateEmail,
@@ -63,9 +63,9 @@ const FacilityForm = (props: Props) => {
 
     const onSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
         if (adding) {
-            props.handleInsert(toFacility(toNullValues(values)));
+            props.handleInsert(ToModel.FACILITY(toNullValues(values)));
         } else {
-            props.handleUpdate(toFacility(toNullValues(values)));
+            props.handleUpdate(ToModel.FACILITY(toNullValues(values)));
         }
     }
 
@@ -99,7 +99,7 @@ const FacilityForm = (props: Props) => {
                 .test("unique-name",
                     "That name is already in use",
                     async function (this) {
-                        return validateFacilityNameUnique(toFacility(this.parent));
+                        return validateFacilityNameUnique(ToModel.FACILITY(this.parent));
                     }
                 ),
             phone: Yup.string()
@@ -118,7 +118,7 @@ const FacilityForm = (props: Props) => {
                 .test("unique-scope",
                     "That scope is already in use",
                     async function(value) {
-                        return validateFacilityScopeUnique(toFacility(this.parent));
+                        return validateFacilityScopeUnique(ToModel.FACILITY(this.parent));
                     }),
             state: Yup.string()
                 .test("valid-state",

@@ -14,6 +14,7 @@ import Facility, {FACILITIES_BASE} from "../models/Facility";
 import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";
 import ReportError from "../util/ReportError";
+import * as ToModel from "../util/ToModel";
 
 // Incoming Properties and Outgoing State ------------------------------------
 
@@ -48,7 +49,8 @@ const useMutateFacility = (props: Props): State => {
         setExecuting(true);
 
         try {
-            inserted = (await Api.post(FACILITIES_BASE, theFacility)).data;
+            inserted = ToModel.FACILITY((await Api.post(FACILITIES_BASE, theFacility))
+                .data);
             logger.debug({
                 context: "useMutateFacility.insert",
                 facility: Abridgers.FACILITY(inserted),
@@ -72,8 +74,9 @@ const useMutateFacility = (props: Props): State => {
         setExecuting(true);
 
         try {
-            removed = (await Api.delete(FACILITIES_BASE
-                + `/${theFacility.id}`)).data;
+            removed = ToModel.FACILITY((await Api.delete(FACILITIES_BASE
+                + `/${theFacility.id}`))
+                .data);
             logger.debug({
                 context: "useMutateFacility.remove",
                 facility: Abridgers.FACILITY(removed),
@@ -97,8 +100,9 @@ const useMutateFacility = (props: Props): State => {
         setExecuting(true);
 
         try {
-            updated = (await Api.put(FACILITIES_BASE
-                + `/${theFacility.id}`, theFacility)).data;
+            updated = ToModel.FACILITY((await Api.put(FACILITIES_BASE
+                + `/${theFacility.id}`, theFacility))
+                .data);
             logger.debug({
                 context: "useMutateFacility.update",
                 facility: Abridgers.FACILITY(updated),

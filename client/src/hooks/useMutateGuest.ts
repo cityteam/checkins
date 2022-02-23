@@ -15,7 +15,7 @@ import Guest, {GUESTS_BASE} from "../models/Guest";
 import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";
 import ReportError from "../util/ReportError";
-import {toGuest} from "../util/ToModelTypes";
+import * as ToModel from "../util/ToModel";
 
 // Incoming Properties and Outgoing State ------------------------------------
 
@@ -52,7 +52,7 @@ const useMutateGuest = (props: Props): State => {
         setExecuting(true);
 
         try {
-            inserted = toGuest((await Api.post(GUESTS_BASE
+            inserted = ToModel.GUEST((await Api.post(GUESTS_BASE
                 + `/${facilityContext.facility.id}`, theGuest)).data);
             logger.debug({
                 context: "useMutateGuest.insert",
@@ -79,7 +79,7 @@ const useMutateGuest = (props: Props): State => {
         setExecuting(true);
 
         try {
-            removed = toGuest((await Api.delete(GUESTS_BASE
+            removed = ToModel.GUEST((await Api.delete(GUESTS_BASE
                 + `/${facilityContext.facility.id}/${theGuest.id}`))
                 .data);
             logger.debug({
@@ -107,7 +107,7 @@ const useMutateGuest = (props: Props): State => {
         setExecuting(true);
 
         try {
-            updated = toGuest((await Api.put(GUESTS_BASE
+            updated = ToModel.GUEST((await Api.put(GUESTS_BASE
                 + `/${facilityContext.facility.id}/${theGuest.id}`, theGuest))
                 .data);
             logger.debug({

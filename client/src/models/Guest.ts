@@ -7,7 +7,7 @@
 import Checkin from "./Checkin";
 import Facility from "./Facility";
 import Model from "./Model";
-import {toCheckins, toFacility} from "../util/ToModelTypes";
+import * as ToModel from "../util/ToModel";
 
 // Public Objects ------------------------------------------------------------
 
@@ -26,8 +26,8 @@ class Guest extends Model {
         this.firstName = data.firstName ? data.firstName : null;
         this.lastName = data.lastName ? data.lastName : null;
 
-        this.checkins = data.checkins ? toCheckins(data.checkins) : null;
-        this.facility = data.facility ? toFacility(data.facility) : null;
+        this.checkins = data.checkins ? ToModel.CHECKINS(data.checkins) : null;
+        this.facility = data.facility ? ToModel.FACILITY(data.facility) : null;
 
     }
 

@@ -24,7 +24,7 @@ import {
 } from "../../util/ApplicationValidators";
 import {validateTemplateNameUnique} from "../../util/AsyncValidators";
 import logger from "../../util/ClientLogger";
-import {toTemplate} from "../../util/ToModelTypes";
+import * as ToModel from "../../util/ToModel";
 import {toEmptyStrings, toNullValues} from "../../util/Transformations";
 
 // Incoming Properties -------------------------------------------------------
@@ -58,13 +58,13 @@ const TemplateForm = (props: Props) => {
     const onSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
         logger.debug({
             context: "TemplateForm.handleSubmit",
-            template: toTemplate(toNullValues(values)),
+            template: ToModel.TEMPLATE(toNullValues(values)),
             values: values,
         });
         if (adding) {
-            props.handleInsert(toTemplate(toNullValues(values)));
+            props.handleInsert(ToModel.TEMPLATE(toNullValues(values)));
         } else {
-            props.handleUpdate(toTemplate(toNullValues(values)));
+            props.handleUpdate(ToModel.TEMPLATE(toNullValues(values)));
         }
     }
 
@@ -109,7 +109,7 @@ const TemplateForm = (props: Props) => {
                 .test("unique-name",
                     "That name is already in use within this Facility",
                     async function (this) {
-                        return validateTemplateNameUnique(toTemplate(this.parent));
+                        return validateTemplateNameUnique(ToModel.TEMPLATE(this.parent));
                     }
                 ),
             socketMats: Yup.string()

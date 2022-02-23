@@ -15,6 +15,7 @@ import Template, {TEMPLATES_BASE} from "../models/Template";
 import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";
 import ReportError from "../util/ReportError";
+import * as ToModel from "../util/ToModel";
 
 // Incoming Properties and Outgoing State ------------------------------------
 
@@ -51,8 +52,9 @@ const useMutateTemplate = (props: Props): State => {
         setExecuting(true);
 
         try {
-            inserted = (await Api.post(TEMPLATES_BASE
-                + `/${facilityContext.facility.id}`, theTemplate)).data;
+            inserted = ToModel.TEMPLATE((await Api.post(TEMPLATES_BASE
+                + `/${facilityContext.facility.id}`, theTemplate))
+                .data);
             logger.debug({
                 context: "useMutateTemplate.insert",
                 facility: Abridgers.FACILITY(facilityContext.facility),
@@ -78,8 +80,9 @@ const useMutateTemplate = (props: Props): State => {
         setExecuting(true);
 
         try {
-            removed = (await Api.delete(TEMPLATES_BASE
-                + `/${facilityContext.facility.id}/${theTemplate.id}`)).data;
+            removed = ToModel.TEMPLATE((await Api.delete(TEMPLATES_BASE
+                + `/${facilityContext.facility.id}/${theTemplate.id}`))
+                .data);
             logger.debug({
                 context: "useMutateTemplate.remove",
                 facility: Abridgers.FACILITY(facilityContext.facility),
@@ -105,8 +108,9 @@ const useMutateTemplate = (props: Props): State => {
         setExecuting(true);
 
         try {
-            updated = (await Api.put(TEMPLATES_BASE
-                + `/${facilityContext.facility.id}/${theTemplate.id}`, theTemplate)).data;
+            updated = ToModel.TEMPLATE((await Api.put(TEMPLATES_BASE
+                + `/${facilityContext.facility.id}/${theTemplate.id}`, theTemplate))
+                .data);
             logger.debug({
                 context: "useMutateTemplate.update",
                 facility: Abridgers.FACILITY(facilityContext.facility),

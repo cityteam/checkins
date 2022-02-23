@@ -7,7 +7,7 @@
 
 import Facility from "./Facility";
 import Model from "./Model";
-import {toFacility} from "../util/ToModelTypes";
+import * as ToModel from "../util/ToModel";
 
 // Public Objects ------------------------------------------------------------
 
@@ -28,7 +28,7 @@ class Template extends Model {
         this.socketMats = data.socketMats ? data.socketMats : null;
         this.workMats = data.workMats ? data.workMats : null;
 
-        this.facility = data.facility ? toFacility(data.facility) : null;
+        this.facility = data.facility ? ToModel.FACILITY(data.facility) : null;
 
     }
 

@@ -7,7 +7,7 @@
 import Guest from "./Guest";
 import Model from "./Model";
 import Template from "./Template";
-import {/*toCheckins, */toGuests, toTemplates} from "../util/ToModelTypes";
+import * as ToModel from "../util/ToModel";
 
 // Public Objects ------------------------------------------------------------
 
@@ -29,8 +29,8 @@ class Facility extends Model {
         this.state = data.state ? data.state : null;
         this.zipCode = data.zipCode ? data.zipCode : null;
 
-        this.guests = data.guests ? toGuests(data.guests) : undefined;
-        this.templates = data.templates ? toTemplates(data.templates) : undefined;
+        this.guests = data.guests ? ToModel.GUESTS(data.guests) : undefined;
+        this.templates = data.templates ? ToModel.TEMPLATES(data.templates) : undefined;
 
     }
 

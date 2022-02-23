@@ -18,7 +18,7 @@ import * as Yup from "yup";
 import {HandleAssign, PaymentType} from "../../types";
 import Assign from "../../models/Assign";
 import logger from "../../util/ClientLogger";
-import {toAssign} from "../../util/ToModelTypes";
+import * as ToModel from "../../util/ToModel";
 import {toEmptyStrings, toNullValues} from "../../util/Transformations";
 import {validateTime} from "../../util/Validators";
 
@@ -37,7 +37,7 @@ const AssignForm = (props: Props) => {
     const [initialValues] = useState(toEmptyStrings(props.assign));
 
     const onSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
-        const assign = toAssign(toNullValues(values));
+        const assign = ToModel.ASSIGN(toNullValues(values));
         logger.debug({
             context: "AssignForm.handleSubmit",
             assign: assign,

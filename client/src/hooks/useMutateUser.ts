@@ -14,6 +14,7 @@ import User, {USERS_BASE} from "../models/User";
 import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";
 import ReportError from "../util/ReportError";
+import * as ToModel from "../util/ToModel";
 
 // Incoming Properties and Outgoing State ------------------------------------
 
@@ -48,7 +49,8 @@ const useMutateUser = (props: Props): State => {
         setExecuting(true);
 
         try {
-            inserted = (await Api.post(USERS_BASE, theUser)).data;
+            inserted = ToModel.USER((await Api.post(USERS_BASE, theUser))
+                .data);
             logger.debug({
                 context: "useMutateUser.insert",
                 user: Abridgers.USER(inserted),
@@ -75,8 +77,9 @@ const useMutateUser = (props: Props): State => {
         setExecuting(true);
 
         try {
-            removed = (await Api.delete(USERS_BASE
-                + `/${theUser.id}`)).data;
+            removed = ToModel.USER((await Api.delete(USERS_BASE
+                + `/${theUser.id}`))
+                .data);
             logger.debug({
                 context: "useMutateUser.remove",
                 user: Abridgers.USER(removed),
@@ -103,8 +106,9 @@ const useMutateUser = (props: Props): State => {
         setExecuting(true);
 
         try {
-            updated = (await Api.put(USERS_BASE
-                + `/${theUser.id}`, theUser)).data;
+            updated = ToModel.USER((await Api.put(USERS_BASE
+                + `/${theUser.id}`, theUser))
+                .data);
             logger.debug({
                 context: "useMutateUser.update",
                 user: Abridgers.USER(updated),

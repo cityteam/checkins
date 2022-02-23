@@ -7,7 +7,7 @@
 import AccessToken from "./AccessToken";
 import Model from "./Model";
 import RefreshToken from "./RefreshToken";
-import {toAccessTokens, toRefreshTokens} from "../util/ToModelTypes";
+import * as ToModel from "../util/ToModel";
 
 // Public Objects ------------------------------------------------------------
 
@@ -24,8 +24,8 @@ class User extends Model {
         this.scope = data.scope ? data.scope : null;
         this.username = data.username ? data.username : null;
 
-        this.accessTokens = data.accessTokens ? toAccessTokens(data.accessTokens) : [];
-        this.refreshTokens = data.refreshTokens ? toRefreshTokens(data.refreshTokens) : [];
+        this.accessTokens = data.accessTokens ? ToModel.ACCESS_TOKENS(data.accessTokens) : [];
+        this.refreshTokens = data.refreshTokens ? ToModel.REFRESH_TOKENS(data.refreshTokens) : [];
 
     }
 

@@ -20,7 +20,7 @@ import {HandleGuest} from "../../types";
 import Guest from "../../models/Guest";
 import {validateGuestNameUnique} from "../../util/AsyncValidators";
 import logger from"../../util/ClientLogger";
-import {toGuest} from "../../util/ToModelTypes";
+import * as ToModel from "../../util/ToModel";
 import {toEmptyStrings, toNullValues} from "../../util/Transformations";
 
 // Incoming Properties -------------------------------------------------------
@@ -54,13 +54,13 @@ const GuestForm = (props: Props) => {
     const onSubmit = (values: FormikValues, actions: FormikHelpers<FormikValues>): void => {
         logger.debug({
             context: "GuestForm.handleSubmit",
-            template: toGuest(toNullValues(values)),
+            template: ToModel.GUEST(toNullValues(values)),
             values: values,
         });
         if (adding) {
-            props.handleInsert(toGuest(toNullValues(values)));
+            props.handleInsert(ToModel.GUEST(toNullValues(values)));
         } else {
-            props.handleUpdate(toGuest(toNullValues(values)));
+            props.handleUpdate(ToModel.GUEST(toNullValues(values)));
         }
     }
 
@@ -89,7 +89,7 @@ const GuestForm = (props: Props) => {
                 .test("unique-name",
                     "That name is already in use within this Facility",
                     async function (this) {
-                    return validateGuestNameUnique(toGuest(this.parent));
+                    return validateGuestNameUnique(ToModel.GUEST(this.parent));
                     }),
         })
     }

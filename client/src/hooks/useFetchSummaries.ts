@@ -15,7 +15,7 @@ import Summary from "../models/Summary";
 import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";
 import ReportError from "../util/ReportError";
-import {toSummaries} from "../util/ToModelTypes";
+import * as ToModel from "../util/ToModel";
 
 // Incoming Properties and Outgoing State ------------------------------------
 
@@ -55,7 +55,7 @@ const useFetchSummaries = (props: Props): State => {
 
             try {
                 if (facilityContext.facility.id > 0) {
-                    theSummaries = toSummaries((await Api.get(CHECKINS_BASE
+                    theSummaries = ToModel.SUMMARIES((await Api.get(CHECKINS_BASE
                         + `/${facilityContext.facility.id}/summaries/${props.checkinDateFrom}/${props.checkinDateTo}`))
                         .data);
                     logger.debug({
