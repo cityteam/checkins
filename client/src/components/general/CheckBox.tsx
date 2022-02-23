@@ -9,7 +9,7 @@ import Form from "react-bootstrap/Form";
 
 // Internal Modules ----------------------------------------------------------
 
-import {HandleBoolean, OnChangeInput} from "../types";
+import {HandleBoolean, OnChangeInput} from "../../types";
 
 // Incoming Properties -------------------------------------------------------
 

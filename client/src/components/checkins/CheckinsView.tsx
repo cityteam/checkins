@@ -14,7 +14,7 @@ import Row from "react-bootstrap/Row";
 import CheckinsAssignedSubview from "./CheckinsAssignedSubview";
 import CheckinsListSubview from "./CheckinsListSubview";
 import CheckinsUnassignedSubview from "./CheckinsUnassignedSubview";
-import DateSelector from "../DateSelector";
+import DateSelector from "../general/DateSelector";
 import FacilityContext from "../contexts/FacilityContext";
 import LoginContext from "../contexts/LoginContext";
 import {HandleCheckin, HandleDate, Scope} from "../../types";

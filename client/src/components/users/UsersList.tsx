@@ -14,9 +14,9 @@ import Table from "react-bootstrap/Table";
 
 // Internal Modules ----------------------------------------------------------
 
-import CheckBox from "../CheckBox";
-import Pagination from "../Pagination";
-import SearchBar from "../SearchBar";
+import CheckBox from "../general/CheckBox";
+import Pagination from "../general/Pagination";
+import SearchBar from "../general/SearchBar";
 import {HandleBoolean, HandleUser, HandleValue, OnAction} from "../../types";
 import useFetchUsers from "../../hooks/useFetchUsers";
 import User from "../../models/User";

@@ -11,7 +11,7 @@ import Row from "react-bootstrap/Row";
 
 // Internal Modules ----------------------------------------------------------
 
-import MonthSelector from "../MonthSelector";
+import MonthSelector from "../general/MonthSelector";
 import FacilityContext from "../contexts/FacilityContext";
 import SummariesTable from "../summaries/SummariesTable";
 import {HandleMonth} from "../../types";
