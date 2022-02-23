@@ -5,7 +5,6 @@
 // Internal Modules ----------------------------------------------------------
 
 import Guest from "./Guest";
-import Model from "./Model";
 import Template from "./Template";
 import * as ToModel from "../util/ToModel";
 
@@ -13,11 +12,10 @@ import * as ToModel from "../util/ToModel";
 
 export const FACILITIES_BASE = "/facilities";
 
-class Facility extends Model {
+export class FacilityData {
 
-    constructor (data: any = {}) {
-
-        super(data);
+    constructor(data: any = {}) {
+        this.id = data.id ? data.id : -1;
         this.active = (data.active !== undefined) ? data.active : true;
         this.address1 = data.address1 ? data.address1 : null;
         this.address2 = data.address2 ? data.address2 : null;
@@ -28,26 +26,40 @@ class Facility extends Model {
         this.scope = data.scope ? data.scope : null;
         this.state = data.state ? data.state : null;
         this.zipCode = data.zipCode ? data.zipCode : null;
+    }
+
+    id: number;
+    active: boolean;
+    address1: string;
+    address2: string;
+    city: string;
+    email: string;
+    name: string;
+    phone: string;
+    scope: string;
+    state: string;
+    zipCode: string;
+
+}
+
+class Facility extends FacilityData {
+
+    constructor (data: any = {}) {
+
+        super(data);
 
         this.guests = data.guests ? ToModel.GUESTS(data.guests) : undefined;
         this.templates = data.templates ? ToModel.TEMPLATES(data.templates) : undefined;
 
+        this._model = "Facility";
+        this._title = this.name;
     }
 
-    active!: boolean;
-    address1?: string;
-    address2?: string;
-    city?: string;
-    email?: string;
-    name!: string;
-    phone?: string;
-    scope!: string;
-    state?: string;
-    zipCode?: string;
-
-    // checkins?: Checkin[];
     guests?: Guest[];
     templates?: Template[];
+
+    _model: string;
+    _title: string;
 
 }
 

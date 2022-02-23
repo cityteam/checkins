@@ -8,51 +8,42 @@
 
 import Facility from "./Facility";
 import Guest from "./Guest";
-import Model from "./Model";
 import * as ToModel from "../util/ToModel";
 
 // Public Objects -----------------------------------------------------------
 
 export const CHECKINS_BASE = "/checkins";
 
-class Checkin extends Model {
+export class CheckinData {
 
     constructor(data: any = {}) {
-
-        super(data);
-
+        this.id = data.id ? data.id : -1;
         this.checkinDate = data.checkinDate ? data.checkinDate : null;
         this.comments = data.comments ? data.comments : null;
         this.facilityId = data.facilityId ? data.facilityId : null;
         this.features = data.features ? data.features : null;
         this.guestId = data.guestId ? data.guestId : null;
         this.matNumber = data.matNumber ? data.matNumber : null;
+        this.matNumberAndFeatures = this.calculateMatNumberAndFeatures();
         this.paymentAmount = data.paymentAmount ? data.paymentAmount : null;
         this.paymentType = data.paymentType ? data.paymentType : null;
         this.showerTime = data.showerTime ? data.showerTime : null;
         this.wakeupTime = data.wakeupTime ? data.wakeupTime : null;
 
-        this.matNumberAndFeatures = this.calculateMatNumberAndFeatures();
-
-        this.facility = data.facility ? ToModel.FACILITY(data.facility) : null;
-        this.guest = data.guest ? ToModel.GUEST(data.guest) : null;
-
     }
 
-    checkinDate!: string;
-    comments?: string;
-    facilityId!: number;
-    features?: string;
-    guestId?: number;
-    matNumber!: number;
-    matNumberAndFeatures?: string;
-    paymentAmount?: number;
-    paymentType?: string;
-    showerTime?: string;
-    wakeupTime?: string;
-
-    facility: Facility | null;
-    guest: Guest | null;
+    id: number;
+    checkinDate: string;
+    comments: string;
+    facilityId: number;
+    features: string;
+    guestId: number;
+    matNumber: number;
+    matNumberAndFeatures: string;
+    paymentAmount: number;
+    paymentType: string;
+    showerTime: string;
+    wakeupTime: string;
 
     private calculateMatNumberAndFeatures() {
         let result = "" + (this.matNumber ? this.matNumber : "*");
@@ -61,6 +52,24 @@ class Checkin extends Model {
         }
         return result;
     }
+
+}
+
+class Checkin extends CheckinData {
+
+    constructor(data: any = {}) {
+        super(data);
+        this.facility = data.facility ? ToModel.FACILITY(data.facility) : undefined;
+        this.guest = data.guest ? ToModel.GUEST(data.guest) : undefined;
+        this._model = "Checkin";
+        this._title = `Guest ${this.guestId} on ${this.checkinDate}`;
+    }
+
+    facility?: Facility;
+    guest?: Guest;
+
+    _model: string;
+    _title: string;
 
 }
 

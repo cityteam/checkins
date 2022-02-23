@@ -6,19 +6,16 @@
 // Internal Modules ----------------------------------------------------------
 
 import Facility from "./Facility";
-import Model from "./Model";
 import * as ToModel from "../util/ToModel";
 
 // Public Objects ------------------------------------------------------------
 
 export const TEMPLATES_BASE = "/templates";
 
-class Template extends Model {
+export class TemplateData {
 
     constructor(data: any = {}) {
-
-        super(data);
-
+        this.id = data.id ? data.id : -1;
         this.active = (data.active !== undefined) ? data.active : true;
         this.allMats = data.allMats ? data.allMats : null;
         this.comments = data.comments ? data.comments : null;
@@ -27,21 +24,38 @@ class Template extends Model {
         this.name = data.name ? data.name : null;
         this.socketMats = data.socketMats ? data.socketMats : null;
         this.workMats = data.workMats ? data.workMats : null;
+    }
 
-        this.facility = data.facility ? ToModel.FACILITY(data.facility) : null;
+    id: number;
+    active: boolean;
+    allMats: string;
+    comments: string;
+    facilityId: number;
+    handicapMats: string;
+    name: string;
+    socketMats: string;
+    workMats: string;
+
+}
+
+class Template extends TemplateData {
+
+    constructor(data: any = {}) {
+
+        super(data);
+
+        this.facility = data.facility ? ToModel.FACILITY(data.facility) : undefined;
+
+        this._model = "Template";
+        this._title = this.name;
 
     }
 
-    active!: boolean;
-    allMats!: string;
-    comments?: string;
-    facilityId!: number;
-    handicapMats?: string;
-    name!: string;
-    socketMats?: string;
-    workMats?: string;
 
-    facility: Facility | null;
+    facility?: Facility;
+
+    _model: string;
+    _title: string;
 
 }
 
