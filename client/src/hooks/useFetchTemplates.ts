@@ -13,7 +13,7 @@ import Template, {TEMPLATES_BASE} from "../models/Template";
 import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";
 import {queryParameters} from "../util/QueryParameters";
-import FacilityContext from "../components/contexts/FacilityContext";
+import FacilityContext from "../components/facilities/FacilityContext";
 import ReportError from "../util/ReportError";
 import {toTemplates} from "../util/ToModelTypes";
 

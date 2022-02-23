@@ -9,7 +9,7 @@ import React, {createContext, useContext, useEffect, useState} from "react";
 
 // Internal Modules ----------------------------------------------------------
 
-import LoginContext from "./LoginContext";
+import LoginContext from "../login/LoginContext";
 import {HandleAction, HandleFacility} from "../../types";
 import useFetchFacilities from "../../hooks/useFetchFacilities";
 import Facility from "../../models/Facility";

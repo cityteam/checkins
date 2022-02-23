@@ -10,7 +10,7 @@ import {useContext, useEffect, useState} from "react";
 
 import {HandleAction} from "../types";
 import Api from "../clients/Api";
-import FacilityContext from "../components/contexts/FacilityContext";
+import FacilityContext from "../components/facilities/FacilityContext";
 import Checkin, {CHECKINS_BASE} from "../models/Checkin";
 import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";

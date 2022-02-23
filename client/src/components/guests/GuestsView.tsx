@@ -14,8 +14,8 @@ import Row from "react-bootstrap/Row";
 
 import GuestForm from "./GuestForm";
 import GuestsList from "./GuestsList";
-import FacilityContext from "../contexts/FacilityContext";
-import LoginContext from "../contexts/LoginContext";
+import FacilityContext from "../facilities/FacilityContext";
+import LoginContext from "../login/LoginContext";
 import {HandleGuest, OnAction, Scope} from "../../types";
 import useMutateGuest from "../../hooks/useMutateGuest";
 import Guest from "../../models/Guest";

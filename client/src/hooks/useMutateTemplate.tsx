@@ -10,7 +10,7 @@ import {useContext, useEffect, useState} from "react";
 
 import {HandleTemplate} from "../types";
 import Api from "../clients/Api";
-import FacilityContext from "../components/contexts/FacilityContext";
+import FacilityContext from "../components/facilities/FacilityContext";
 import Template, {TEMPLATES_BASE} from "../models/Template";
 import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";

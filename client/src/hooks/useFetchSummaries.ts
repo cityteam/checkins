@@ -9,7 +9,7 @@ import {useContext, useEffect, useState} from "react";
 // Internal Modules ----------------------------------------------------------
 
 import Api from "../clients/Api";
-import FacilityContext from "../components/contexts/FacilityContext";
+import FacilityContext from "../components/facilities/FacilityContext";
 import {CHECKINS_BASE} from "../models/Checkin";
 import Summary from "../models/Summary";
 import * as Abridgers from "../util/Abridgers";

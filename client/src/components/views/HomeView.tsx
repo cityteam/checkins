@@ -9,7 +9,7 @@ import Container from "react-bootstrap/Container";
 
 // Internal Modules ----------------------------------------------------------
 
-import LoginContext from "../contexts/LoginContext";
+import LoginContext from "../login/LoginContext";
 
 // Component Details ---------------------------------------------------------
 

@@ -9,7 +9,7 @@ import axios, {AxiosInstance} from "axios";
 
 // Internal Modules ----------------------------------------------------------
 
-import {LOGIN_DATA} from "../components/contexts/LoginContext";
+import {LOGIN_DATA} from "../components/login/LoginContext";
 
 // Public Objects ------------------------------------------------------------
 

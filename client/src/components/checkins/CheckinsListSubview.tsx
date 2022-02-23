@@ -15,7 +15,7 @@ import Row from "react-bootstrap/Row";
 // Internal Modules ----------------------------------------------------------
 
 import CheckinsTable from "./CheckinsTable";
-import FacilityContext from "../contexts/FacilityContext";
+import FacilityContext from "../facilities/FacilityContext";
 import SummariesTable from "../summaries/SummariesTable";
 import TemplateSelector from "../templates/TemplateSelector";
 import {HandleCheckin, HandleTemplate} from "../../types";

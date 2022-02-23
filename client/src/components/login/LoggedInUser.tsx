@@ -13,7 +13,7 @@ import {useHistory} from "react-router-dom";
 // Internal Modules ----------------------------------------------------------
 
 import LoginForm from "./LoginForm";
-import LoginContext from "../contexts/LoginContext";
+import LoginContext from "./LoginContext";
 import OAuth from "../../clients/OAuth";
 import Credentials from "../../models/Credentials";
 import PasswordTokenRequest from "../../models/PasswordTokenRequest";

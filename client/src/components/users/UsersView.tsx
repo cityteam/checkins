@@ -14,7 +14,7 @@ import Row from "react-bootstrap/Row";
 
 import UserForm from "./UserForm";
 import UsersList from "./UsersList";
-import LoginContext from "../contexts/LoginContext";
+import LoginContext from "../login/LoginContext";
 import {HandleUser, OnAction, Scope} from "../../types";
 import useMutateUser from "../../hooks/useMutateUser";
 import User from "../../models/User";

@@ -10,7 +10,7 @@ import {useContext, useEffect, useState} from "react";
 
 import {HandleGuestPromise} from "../types";
 import Api from "../clients/Api";
-import FacilityContext from "../components/contexts/FacilityContext";
+import FacilityContext from "../components/facilities/FacilityContext";
 import Guest, {GUESTS_BASE} from "../models/Guest";
 import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";

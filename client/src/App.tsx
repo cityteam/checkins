@@ -28,8 +28,8 @@ import DatabaseView from "./components/views/DatabaseView";
 import HelpView from "./components/views/HelpView";
 import HomeView from "./components/views/HomeView";
 import OpenApiView from "./components/views/OpenApiView";
-import {FacilityContextProvider} from "./components/contexts/FacilityContext";
-import {LoginContextProvider} from "./components/contexts/LoginContext";
+import {FacilityContextProvider} from "./components/facilities/FacilityContext";
+import {LoginContextProvider} from "./components/login/LoginContext";
 
 // Component Details ---------------------------------------------------------
 

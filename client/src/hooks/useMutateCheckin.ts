@@ -11,7 +11,7 @@ import {useContext, useEffect, useState} from "react";
 
 import {HandleAssignPromise, HandleCheckinPromise} from "../types";
 import Api from "../clients/Api";
-import FacilityContext from "../components/contexts/FacilityContext";
+import FacilityContext from "../components/facilities/FacilityContext";
 import Assign from "../models/Assign";
 import Checkin, {CHECKINS_BASE} from "../models/Checkin";
 import Template from "../models/Template";

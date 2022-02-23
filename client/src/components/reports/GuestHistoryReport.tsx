@@ -13,7 +13,7 @@ import Row from "react-bootstrap/Row";
 // Internal Modules ----------------------------------------------------------
 
 import CheckinsTable from "../checkins/CheckinsTable";
-import FacilityContext from "../contexts/FacilityContext";
+import FacilityContext from "../facilities/FacilityContext";
 import GuestsList from "../guests/GuestsList";
 import {HandleGuest} from "../../types";
 import useFetchCheckins from "../../hooks/useFetchCheckins";

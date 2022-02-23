@@ -14,8 +14,8 @@ import Row from "react-bootstrap/Row";
 
 import TemplateForm from "./TemplateForm";
 import TemplatesList from "./TemplatesList";
-import FacilityContext from "../contexts/FacilityContext";
-import LoginContext from "../contexts/LoginContext";
+import FacilityContext from "../facilities/FacilityContext";
+import LoginContext from "../login/LoginContext";
 import {HandleTemplate, OnAction, Scope} from "../../types";
 import useMutateTemplate from "../../hooks/useMutateTemplate";
 import Template from "../../models/Template";
