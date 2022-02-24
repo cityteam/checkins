@@ -8,7 +8,7 @@ import {useEffect, useState} from "react";
 
 // Internal Modules ----------------------------------------------------------
 
-import {HandleFacility} from "../types";
+import {ProcessFacility} from "../types";
 import Api from "../clients/Api";
 import Facility, {FACILITIES_BASE} from "../models/Facility";
 import * as Abridgers from "../util/Abridgers";
@@ -24,15 +24,16 @@ export interface Props {
 export interface State {
     error: Error | null;                // I/O error (if any)
     executing: boolean;                 // Are we currently executing?
-    insert: HandleFacility;             // Function to insert a new Facility
-    remove: HandleFacility;             // Function to remove an existing Facility
-    update: HandleFacility;             // Function to update an existing Facility
+    insert: ProcessFacility;            // Function to insert a new Facility
+    remove: ProcessFacility;            // Function to remove an existing Facility
+    update: ProcessFacility;            // Function to update an existing Facility
 }
 
 // Component Details ---------------------------------------------------------
 
 const useMutateFacility = (props: Props): State => {
 
+// NOTE -    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
     const [executing, setExecuting] = useState<boolean>(false);
 
@@ -42,24 +43,26 @@ const useMutateFacility = (props: Props): State => {
         });
     });
 
-    const insert: HandleFacility = async (theFacility): Promise<Facility> => {
+    const insert: ProcessFacility = async (theFacility): Promise<Facility> => {
 
+        const url = FACILITIES_BASE;
         let inserted = new Facility();
         setError(null);
         setExecuting(true);
 
         try {
-            inserted = ToModel.FACILITY((await Api.post(FACILITIES_BASE, theFacility))
-                .data);
+            inserted = ToModel.FACILITY((await Api.post(url, theFacility)).data);
             logger.debug({
                 context: "useMutateFacility.insert",
                 facility: Abridgers.FACILITY(inserted),
+                url: url,
             });
         } catch (anError) {
             setError(anError as Error);
             ReportError("useMutateFacility.insert", anError, {
                 facility: theFacility,
-            });
+                url: url,
+            }/*, alertPopup*/);
         }
 
         setExecuting(false);
@@ -67,25 +70,26 @@ const useMutateFacility = (props: Props): State => {
 
     }
 
-    const remove: HandleFacility = async (theFacility): Promise<Facility> => {
+    const remove: ProcessFacility = async (theFacility): Promise<Facility> => {
 
+        const url = `${FACILITIES_BASE}/${theFacility.id}`;
         let removed = new Facility();
         setError(null);
         setExecuting(true);
 
         try {
-            removed = ToModel.FACILITY((await Api.delete(FACILITIES_BASE
-                + `/${theFacility.id}`))
-                .data);
+            removed = ToModel.FACILITY((await Api.delete(url)).data);
             logger.debug({
                 context: "useMutateFacility.remove",
                 facility: Abridgers.FACILITY(removed),
+                url: url,
             });
         } catch (anError) {
             setError(anError as Error);
             ReportError("useMutateFcility.remove", anError, {
                 facility: theFacility,
-            });
+                url: url,
+            }/*, alertPopup */);
         }
 
         setExecuting(false);
@@ -93,25 +97,26 @@ const useMutateFacility = (props: Props): State => {
 
     }
 
-    const update: HandleFacility = async (theFacility): Promise<Facility> => {
+    const update: ProcessFacility = async (theFacility): Promise<Facility> => {
 
+        const url = `${FACILITIES_BASE}/${theFacility.id}`;
         let updated = new Facility();
         setError(null);
         setExecuting(true);
 
         try {
-            updated = ToModel.FACILITY((await Api.put(FACILITIES_BASE
-                + `/${theFacility.id}`, theFacility))
-                .data);
+            updated = ToModel.FACILITY((await Api.put(url, theFacility)).data);
             logger.debug({
                 context: "useMutateFacility.update",
                 facility: Abridgers.FACILITY(updated),
+                url: url,
             });
         } catch (anError) {
             setError(anError as Error);
             ReportError("useMutateFacility.update", anError, {
                 facility: theFacility,
-            });
+                url: url,
+            }/*, alertPopup*/);
         }
 
         setExecuting(false);

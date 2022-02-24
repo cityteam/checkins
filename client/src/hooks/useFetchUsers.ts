@@ -15,6 +15,7 @@ import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";
 import {queryParameters} from "../util/QueryParameters";
 import ReportError from "../util/ReportError";
+import * as ToModel from "../util/ToModel";
 
 // Incoming Properties and Outgoing State ------------------------------------
 
@@ -63,21 +64,29 @@ const useFetchUsers = (props: Props): State => {
                 withAccessTokens: props.withAccessTokens ? "" : undefined,
                 withRefreshTokens: props.withRefreshTokens ? "" : undefined,
             }
+            const url = `${USERS_BASE}${queryParameters(parameters)}`;
 
             try {
-                if (loginContext.data.loggedIn) {
-                    theUsers = (await Api.get(USERS_BASE
-                        + `${queryParameters(parameters)}`)).data;
+                const tryFetch = loginContext.data.loggedIn;
+                if (tryFetch) {
+                    theUsers = ToModel.USERS((await Api.get<User[]>(url)).data);
                     logger.debug({
                         context: "useFetchUsers.fetchUsers",
-                        parameters: parameters,
+                        url: url,
                         users: Abridgers.USERS(theUsers),
+                    });
+                } else {
+                    logger.debug({
+                        context: "useFetchUsers.fetchUsers",
+                        msg: "Skipped fetching Users",
+                        url: url,
+                        loggedIn: loginContext.data.loggedIn,
                     });
                 }
             } catch (anError) {
                 setError(anError as Error);
                 ReportError("useFetchUsers.fetchUsers", anError, {
-                    parameters: parameters,
+                    url: url,
                 }/*, alertPopup*/);
             }
 

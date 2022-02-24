@@ -73,6 +73,14 @@ const UserSegment = () => {
         setView(View.DETAILS);
     }
 
+    // Handle return from View.DETAILS to redisplay View.OPTIONS
+    const handleBack: HandleAction = () => {
+        logger.debug({
+            context: "UserSegment.handleReturn",
+        });
+        setView(View.OPTIONS);
+    }
+
     // Handle selection of a User to edit details
     const handleEdit: HandleUser = (theUser) => {
         logger.debug({
@@ -91,7 +99,7 @@ const UserSegment = () => {
             context: "UserSegment.handleInsert",
             title: title,
             user: Abridgers.USER(inserted),
-        })
+        });
         setView(View.OPTIONS);
     }
 
@@ -103,14 +111,6 @@ const UserSegment = () => {
             context: "UserSegment.remove",
             title: title,
             user: Abridgers.USER(removed),
-        });
-        setView(View.OPTIONS);
-    }
-
-    // Handle return from View.DETAILS to redisplay View.OPTIONS
-    const handleReturn: HandleAction = () => {
-        logger.debug({
-            context: "UserSegment.handleReturn",
         });
         setView(View.OPTIONS);
     }
@@ -141,7 +141,7 @@ const UserSegment = () => {
             {(view === View.DETAILS) ? (
                 <UserDetails
                     autoFocus
-                    handleBack={handleReturn}
+                    handleBack={handleBack}
                     handleInsert={canInsert ? handleInsert : undefined}
                     handleRemove={canRemove ? handleRemove : undefined}
                     handleUpdate={canUpdate ? handleUpdate : undefined}
@@ -151,8 +151,8 @@ const UserSegment = () => {
 
             {(view === View.OPTIONS) ? (
                 <UserOptions
-                    handleAdd={handleAdd}
-                    handleEdit={handleEdit}
+                    handleAdd={canInsert ? handleAdd : undefined}
+                    handleEdit={canUpdate ? handleEdit : undefined}
                 />
             ) : null }
 

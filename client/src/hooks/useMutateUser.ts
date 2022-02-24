@@ -73,8 +73,7 @@ const useMutateUser = (props: Props = {}): State => {
 
     const remove: ProcessUser = async (theUser) => {
 
-        const url = USERS_BASE
-            + `/${theUser.id}`;
+        const url = `${USERS_BASE}/${theUser.id}`;
         let removed = new User();
         setError(null);
         setExecuting(true);
@@ -101,8 +100,7 @@ const useMutateUser = (props: Props = {}): State => {
 
     const update: ProcessUser = async (theUser) => {
 
-        const url = USERS_BASE
-            + `/${theUser.id}`;
+        const url = `${USERS_BASE}/${theUser.id}`;
         let updated = new User();
         setError(null);
         setExecuting(true);

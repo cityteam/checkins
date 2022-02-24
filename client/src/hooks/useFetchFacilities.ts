@@ -22,6 +22,7 @@ import * as ToModel from "../util/ToModel";
 
 export interface Props {
     active?: boolean;                   // Select only active Facilities? [false]
+    alertPopup?: boolean;               // Pop up browser alert on error? [true]
     currentPage?: number;               // One-relative current page number [1]
     pageSize?: number;                  // Number of entries per page [25]
     name?: string;                      // Select Facilities matching pattern [none]
@@ -42,6 +43,7 @@ const useFetchFacilities = (props: Props): State => {
 
     const loginContext = useContext(LoginContext);
 
+// NOTE -    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [facilities, setFacilities] = useState<Facility[]>([]);
@@ -65,13 +67,12 @@ const useFetchFacilities = (props: Props): State => {
                 withGuests: props.withGuests ? "" : undefined,
                 withTemplates: props.withTemplates ? "" : undefined,
             };
-
+            const url = `${FACILITIES_BASE}${queryParameters(parameters)}`;
 
             try {
-                if (loginContext.data.loggedIn) {
-                    theFacilities = ToModel.FACILITIES((await Api.get(FACILITIES_BASE
-                        + `${queryParameters(parameters)}`))
-                        .data);
+                const tryFetch = loginContext.data.loggedIn;
+                if (tryFetch) {
+                    theFacilities = ToModel.FACILITIES((await Api.get<Facility[]>(url)).data);
                     theFacilities.forEach(theFacility => {
                         if (theFacility.guests && (theFacility.guests.length > 0)) {
                             theFacility.guests = Sorters.GUESTS(theFacility.guests);
@@ -80,22 +81,28 @@ const useFetchFacilities = (props: Props): State => {
                             theFacility.templates = Sorters.TEMPLATES(theFacility.templates);
                         }
                     });
+                    logger.debug({
+                        context: "useFetchFacilities.fetchFacilities",
+                        url: url,
+                        facilities: Abridgers.FACILITIES(theFacilities),
+                    });
+                } else {
+                    logger.debug({
+                        context: "useFetchFacilities.fetchFacilities",
+                        msg: "Skipped fetching Facilities",
+                        url: url,
+                        loggedIn: loginContext.data.loggedIn,
+                    });
                 }
-                logger.debug({
-                    context: "useFetchFacilities.fetchFacilities",
-                    parameters: parameters,
-                    facilities: Abridgers.FACILITIES(theFacilities),
-                });
-
             } catch (anError) {
                 setError(anError as Error);
                 ReportError("useFetchFacilities.fetchFacilities", anError, {
-                    parameters: parameters,
-                })
+                    url: url,
+                }/*, alertPopup*/);
             }
 
-            setLoading(false);
             setFacilities(theFacilities);
+            setLoading(false);
 
         }
 

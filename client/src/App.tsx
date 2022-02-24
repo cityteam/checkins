@@ -16,8 +16,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // Internal Modules ----------------------------------------------------------
 
 import CheckinsView from "./components/checkins/CheckinsView";
+import FacilitySegment from "./components/facilities/FacilitySegment";
 import FacilitySelector from "./components/facilities/FacilitySelector";
-import FacilitiesView from "./components/facilities/FacilitiesView";
 import GuestsView from "./components/guests/GuestsView";
 import LoggedInUser from "./components/login/LoggedInUser";
 import GuestHistoryReport from "./components/reports/GuestHistoryReport";
@@ -133,7 +133,7 @@ function App() {
             <DatabaseView/>
           </Route>
           <Route exact path="/facilities">
-            <FacilitiesView/>
+            <FacilitySegment/>
           </Route>
           <Route exact path="/guests">
             <GuestsView/>

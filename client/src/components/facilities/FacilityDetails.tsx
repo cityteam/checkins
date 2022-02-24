@@ -1,6 +1,6 @@
-// UserForm ------------------------------------------------------------------
+// FacilityDetails ------------------------------------------------------------------
 
-// Detail editing form for User objects.
+// Detail editing form for Facility objects.
 
 // NOTE - style classes: text-left, text-right
 
@@ -21,28 +21,38 @@ import * as Yup from "yup";
 
 import CheckBoxField from "../general/CheckBoxField";
 import TextField from "../general/TextField";
-import {HandleAction, HandleUser} from "../../types";
-import User, {UserData} from "../../models/User";
-import {validateUserUsernameUnique} from "../../util/AsyncValidators";
+import {HandleAction, HandleFacility} from "../../types";
+import Facility, {FacilityData} from "../../models/Facility";
+import {
+    validateFacilityNameUnique,
+    validateFacilityScopeUnique
+} from "../../util/AsyncValidators";
 import * as ToModel from "../../util/ToModel";
 import {toNullValues} from "../../util/Transformations";
+import {
+    validateEmail,
+    validateFacilityScope,
+    validatePhone,
+    validateState,
+    validateZipCode
+} from "../../util/Validators";
 
 // Incoming Properties ------------------------------------------------------
 
 export interface Props {
     autoFocus?: boolean;                // First element receive autoFocus? [false]
+    facility: Facility;                 // Initial values (id < 0 for adding)
     handleBack: HandleAction;           // Handle return to previous view
-    handleInsert?: HandleUser;          // Handle User insert request [not allowed]
-    handleRemove?: HandleUser;          // Handle User remove request [not allowed]
-    handleUpdate?: HandleUser;          // Handle User update request [not allowed]
-    user: User;                         // Initial values (id < 0 for adding)
+    handleInsert?: HandleFacility;      // Handle Facility insert request [not allowed]
+    handleRemove?: HandleFacility;      // Handle Facility remove request [not allowed]
+    handleUpdate?: HandleFacility;      // Handle Facility update request [not allowed]
 }
 
 // Component Details ---------------------------------------------------------
 
-const UserForm = (props: Props) => {
+const FacilityDetails = (props: Props) => {
 
-    const [adding] = useState<boolean>(props.user.id < 0);
+    const [adding] = useState<boolean>(props.facility.id < 0);
     const [showConfirm, setShowConfirm] = useState<boolean>(false);
 
     const onConfirm = (): void => {
@@ -56,61 +66,82 @@ const UserForm = (props: Props) => {
     const onConfirmPositive = (): void => {
         setShowConfirm(false);
         if (props.handleRemove) {
-            props.handleRemove(props.user)
+            props.handleRemove(props.facility);
         }
     }
 
-    const onSubmit: SubmitHandler<UserData> = (values) => {
-        const theUser = new User({
-            ...props.user,
+    const onSubmit: SubmitHandler<FacilityData> = (values) => {
+        const theFacility = new Facility({
+            ...props.facility,
             ...values,
         });
         if (adding && props.handleInsert) {
-            props.handleInsert(theUser);
+            props.handleInsert(theFacility);
         } else if (!adding && props.handleUpdate) {
-            props.handleUpdate(theUser);
+            props.handleUpdate(theFacility);
         }
-    }
-
-    // NOTE - there is no server-side equivalent for this because there is
-    // not an individual logged-in user performing the request
-    // NOTE - needs LoginContext to provide validateScope() method
-    const validateRequestedScope = (requested: string | undefined): boolean => {
-        return true; // NOTE - need server side validation
-        /*
-                if (!requested || ("" === requested)) {
-                    return true;  // Not asking for scope but should be required
-                } else {
-                    // NOTE - deal with log:<level> pseudo-scopes
-                    return loginContext.validateScope(requested);
-                }
-        */
     }
 
     const validationSchema = Yup.object().shape({
         active: Yup.boolean(),
+        address1: Yup.string()
+            .nullable(),
+        address2: Yup.string()
+            .nullable(),
+        city: Yup.string()
+            .nullable(),
+        email: Yup.string()
+            .nullable()
+            .test("valid-email",
+                "Invalid email format",
+                function (value) {
+                    return validateEmail(value ? value : "");
+                }),
         name: Yup.string()
-            .required("Name is required"),
-        password: Yup.string()
-            .nullable(), // NOTE - required on add, optional on edit
+            .required("Name is required")
+            .test("unique-name",
+                "That name is already in use",
+                async function (this) {
+                    return validateFacilityNameUnique(ToModel.FACILITY(toNullValues(this.parent)));
+                }
+            ),
+        phone: Yup.string()
+            .nullable()
+            .test("valid-phone",
+                "Invalid phone number format",
+                function (value) {
+                    return validatePhone(value ? value : "");
+                }),
         scope: Yup.string()
             .required("Scope is required")
-            .test("allowed-scope",
-                "You are not allowed to assign a scope you do not possess",
+            .test("valid-scope",
+                "Only alphanumeric (a-z, A-Z, 0-9) characters are allowed",
                 function(value) {
-                    return validateRequestedScope(value);
+                    return validateFacilityScope(value);
+                })
+            .test("unique-scope",
+                "That scope is already in use",
+                async function(value) {
+                    return validateFacilityScopeUnique(ToModel.FACILITY(this.parent));
                 }),
-        username: Yup.string()
-            .required("Username is required")
-            .test("unique-username",
-                "That username is already in use",
-                async function (this) {
-                    return validateUserUsernameUnique(ToModel.USER(toNullValues(this.parent)))
+        state: Yup.string()
+            .nullable()
+            .test("valid-state",
+                "Invalid state abbreviation",
+                function(value) {
+                    return validateState(value ? value : "");
                 }),
-    });
+        zipCode: Yup.string()
+            .nullable()
+            .test("valid-zip-code",
+                "Invalid zip code format",
+                function(value) {
+                    return validateZipCode(value ? value : "");
+                }),
+        });
 
-    const {formState: {errors}, handleSubmit, register} = useForm<UserData>({
-        defaultValues: new UserData(props.user),
+    const {formState: {errors}, handleSubmit, register} = useForm<FacilityData>({
+        defaultValues: new FacilityData(props.facility),
         mode: "onBlur",
         resolver: yupResolver(validationSchema),
     });
@@ -120,7 +151,7 @@ const UserForm = (props: Props) => {
         <>
 
             {/* Details Form */}
-            <Container id="UserDetails">
+            <Container id="FacilityDetails">
 
                 <Row className="mb-3">
                     <Col className="text-center">
@@ -130,7 +161,7 @@ const UserForm = (props: Props) => {
                             ) : (
                                 <span>Edit Existing</span>
                             )}
-                            &nbsp;User
+                            &nbsp;Facility
                         </strong>
                     </Col>
                     <Col className="text-right">
@@ -144,7 +175,7 @@ const UserForm = (props: Props) => {
                 </Row>
 
                 <Form
-                    id="UserDetails"
+                    id="FacilityDetails"
                     noValidate
                     onSubmit={handleSubmit(onSubmit)}
                 >
@@ -156,31 +187,66 @@ const UserForm = (props: Props) => {
                             label="Name:"
                             name="name"
                             register={register}
-                            valid="Name of this User."
+                            valid="Name of this Facility (must be unique)."
                         />
                         <TextField
                             errors={errors}
                             label="Scope:"
                             name="scope"
                             register={register}
-                            valid="Space-separated scope(s) granted to this user."
+                            valid="Scope belonging to this Facility (must be alphanumeric and unique)."
                         />
                     </Row>
 
-                    <Row className="g-3 mb-3" id="usernamePasswordRow">
+                    <Row className="g-3 mb-3" id="addressRow">
                         <TextField
                             errors={errors}
-                            label="Username:"
-                            name="username"
+                            label="Address 1:"
+                            name="address1"
                             register={register}
-                            valid="Login username of this User (must be unique)."
                         />
                         <TextField
                             errors={errors}
-                            label="Password:"
-                            name="password"
+                            label="Address 2:"
+                            name="address2"
                             register={register}
-                            valid="Login password of this User (set this ONLY on new Users or if you want to change the password for an existing User)."
+                        />
+                    </Row>
+
+                    <Row className="g-3 mb-3" id="cityStateZipRow">
+                        <TextField
+                            className="col-6"
+                            errors={errors}
+                            label="City:"
+                            name="city"
+                            register={register}
+                        />
+                        <TextField
+                            errors={errors}
+                            label="State:"
+                            name="state"
+                            register={register}
+                        />
+                        <TextField
+                            errors={errors}
+                            label="Zip Code:"
+                            name="zipCode"
+                            register={register}
+                        />
+                    </Row>
+
+                    <Row className="g-3 mb-3" id="emailPhoneRow">
+                        <TextField
+                            errors={errors}
+                            label="Email Address:"
+                            name="email"
+                            register={register}
+                        />
+                        <TextField
+                            errors={errors}
+                            label="Phone Number:"
+                            name="phone"
+                            register={register}
                         />
                     </Row>
 
@@ -236,12 +302,12 @@ const UserForm = (props: Props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <p>
-                        Removing this User is not reversible, and
+                        Removing this Facility is not reversible, and
                         <strong>
                             &nbsp;will also remove ALL related information.
                         </strong>.
                     </p>
-                    <p>Consider marking this User as inactive instead.</p>
+                    <p>Consider marking this Facility as inactive instead.</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -268,4 +334,4 @@ const UserForm = (props: Props) => {
     )
 }
 
-export default UserForm;
+export default FacilityDetails;

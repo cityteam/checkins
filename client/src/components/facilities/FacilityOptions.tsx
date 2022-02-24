@@ -1,7 +1,7 @@
-// UserOptions -----------------------------------------------------------------
+// FacilityOptions -----------------------------------------------------------
 
-// List Users that match search criteria, offering callbacks for adding,
-// editing, and removing Users.
+// List Facilities that match search criteria, offering callbacks for adding,
+// editing, and removing Facilities.
 
 // NOTE - style classes: ml-1, mr-1, text-right
 
@@ -20,44 +20,46 @@ import CheckBoxComponent from "../general/CheckBoxComponent";
 // NOTE - import LoadingProgress from "../general/LoadingProgress";
 import PaginationComponent from "../general/PaginationComponent";
 import SearchBar from "../general/SearchBar";
+import FacilityContext from "./FacilityContext";
 import LoginContext from "../login/LoginContext";
-import {HandleAction, HandleBoolean, HandleUser, HandleValue, Scope} from "../../types";
-import useFetchUsers from "../../hooks/useFetchUsers";
-import User from "../../models/User";
+import {HandleAction, HandleBoolean, HandleFacility, HandleValue, Scope} from "../../types";
+import Facility from "../../models/Facility";
+import useFetchFacilities from "../../hooks/useFetchFacilities";
 import logger from "../../util/ClientLogger";
 import {listValue} from "../../util/Transformations";
 
 // Incoming Properties -------------------------------------------------------
 
 export interface Props {
-    handleAdd?: HandleAction;           // Handle request to add a User [not allowed]
-    handleEdit?: HandleUser;            // Handle request to edit a User [not allowed]
+    handleAdd?: HandleAction;           // Handle request to add a Facility [not allowed]
+    handleEdit?: HandleFacility;        // Handle request to edit a Facility [not allowed]
 }
 
 // Component Details ---------------------------------------------------------
 
-const UserOptions = (props: Props) => {
+const FacilityOptions = (props: Props) => {
 
+    const facilityContext = useContext(FacilityContext);
     const loginContext = useContext(LoginContext);
 
     const [active, setActive] = useState<boolean>(false);
-    const [availables, setAvailables] = useState<User[]>([]);
+    const [availables, setAvailables] = useState<Facility[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageSize] = useState<number>(100);
     const [searchText, setSearchText] = useState<string>("");
 
-    const fetchUsers = useFetchUsers({
+    const fetchFacilities = useFetchFacilities({
         active: active,
         // NOTE - alertPopup: false,
         currentPage: currentPage,
+        name: (searchText.length > 0) ? searchText : undefined,
         pageSize: pageSize,
-        username: (searchText.length > 0) ? searchText : undefined,
     });
 
     useEffect(() => {
 
         logger.debug({
-            context: "UserOptions.useEffect",
+            context: "FacilityOptions.useEffect",
             active: active,
             currentPage: currentPage,
             searchText: searchText,
@@ -65,14 +67,15 @@ const UserOptions = (props: Props) => {
 
         const isSuperuser = loginContext.validateScope(Scope.SUPERUSER);
         if (isSuperuser) {
-            setAvailables(fetchUsers.users);
+            setAvailables(fetchFacilities.facilities);
         } else {
-            setAvailables([]);
+            setAvailables(facilityContext.facilities);
         }
 
-    }, [loginContext, loginContext.data.loggedIn,
+    }, [facilityContext, facilityContext.facilities,
+        loginContext, loginContext.data.loggedIn,
         active, currentPage, searchText,
-        fetchUsers.users]);
+        fetchFacilities.facilities]);
 
     const handleActive: HandleBoolean = (theActive) => {
         setActive(theActive);
@@ -88,9 +91,9 @@ const UserOptions = (props: Props) => {
         setSearchText(theSearchText);
     }
 
-    const handleEdit: HandleUser = (theUser) => {
+    const handleEdit: HandleFacility = (theFacility) => {
         if (props.handleEdit) {
-            props.handleEdit(theUser);
+            props.handleEdit(theFacility);
         }
     }
 
@@ -103,15 +106,15 @@ const UserOptions = (props: Props) => {
     }
 
     return (
-        <Container fluid id="UserOptions">
+        <Container fluid id="FacilityOptions">
 
-{/* NOTE - not yet implemented
+            {/* NOTE - not yet implemented
             <LoadingProgress
-                error={fetchUsers.error}
-                loading={fetchUsers.loading}
-                title="Selected Users"
+                error={fetchFacilities.error}
+                loading={fetchUFacilities.loading}
+                title="Selected Facilities"
             />
-*/}
+            */}
 
             <Row className="mb-3 ml-1 mr-1">
                 <Col className="col-6">
@@ -119,14 +122,14 @@ const UserOptions = (props: Props) => {
                         autoFocus
                         handleChange={handleChange}
                         htmlSize={50}
-                        label="Search For Users:"
-                        placeholder="Search by all or part of username"
+                        label="Search For Facilities:"
+                        placeholder="Search by all or part of name"
                     />
                 </Col>
                 <Col>
                     <CheckBoxComponent
                         handleChange={handleActive}
-                        label="Active Users Only?"
+                        label="Active Facilities Only?"
                         name="activeOnly"
                         value={active}
                     />
@@ -136,15 +139,15 @@ const UserOptions = (props: Props) => {
                         currentPage={currentPage}
                         handleNext={handleNext}
                         handlePrevious={handlePrevious}
-                        lastPage={(availables.length === 0) ||
-                            (availables.length < pageSize)}
+                        lastPage={(fetchFacilities.facilities.length === 0) ||
+                            (fetchFacilities.facilities.length < pageSize)}
                         variant="secondary"
                     />
                 </Col>
                 <Col className="text-right">
                     <Button
                         disabled={!props.handleAdd}
-                        onClick={handleAdd}
+                        onClick={props.handleAdd}
                         size="sm"
                         variant="primary"
                     >Add</Button>
@@ -161,31 +164,35 @@ const UserOptions = (props: Props) => {
 
                     <thead>
                     <tr className="table-secondary">
-                        <th scope="col">Username</th>
-                        <th scope="col">Active</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Active</th>
+                        <th scope="col">City</th>
+                        <th scope="col">State</th>
                         <th scope="col">Scope</th>
                     </tr>
                     </thead>
 
                     <tbody>
-                    {availables.map((user, ri) => (
+                    {availables.map((facility, ri) => (
                         <tr
                             className="table-default"
-                            key={`UO-${ri}-TR`}
-                            onClick={props.handleEdit ? (() => handleEdit(user)) : undefined}
+                            key={`FO-${ri}-TR`}
+                            onClick={props.handleEdit ? (() => handleEdit(facility)) : undefined}
                         >
-                            <td key={`UO-${ri}-username`}>
-                                {user.username}
+                            <td key={`FO-${ri}-name`}>
+                                {facility.name}
                             </td>
-                            <td key={`UO-${ri}-active`}>
-                                {listValue(user.active)}
+                            <td key={`FO-${ri}-active`}>
+                                {listValue(facility.active)}
                             </td>
-                            <td key={`UO-${ri}-name`}>
-                                {user.name}
+                            <td key={`FO-${ri}-city`}>
+                                {facility.city}
                             </td>
-                            <td key={`UO-${ri}-scope`}>
-                                {user.scope}
+                            <td key={`FO-${ri}-state`}>
+                                {facility.state}
+                            </td>
+                            <td key={`FO-${ri}-scope`}>
+                                {facility.scope}
                             </td>
                         </tr>
                     ))}
@@ -211,4 +218,4 @@ const UserOptions = (props: Props) => {
 
 }
 
-export default UserOptions;
+export default FacilityOptions;
