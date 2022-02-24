@@ -79,3 +79,9 @@ export type HandleSummary = (summary: Summary) => void;
 export type HandleTemplate = (template: Template) => void;
 export type HandleUser = (user: User) => void;
 
+export type ProcessCheckin = (checkin: Checkin) => Promise<Checkin>;
+export type ProcessFacility = (facility: Facility) => Promise<Facility>;
+export type ProcessGuest = (guest: Guest) => Promise<Guest>;
+export type ProcessTemplate = (template: Template) => Promise<Template>;
+export type ProcessUser = (user: User) => Promise<User>;
+

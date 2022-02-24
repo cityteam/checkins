@@ -23,7 +23,7 @@ import LoggedInUser from "./components/login/LoggedInUser";
 import GuestHistoryReport from "./components/reports/GuestHistoryReport";
 import MonthlySummaryReport from "./components/reports/MonthlySummaryReport";
 import TemplatesView from "./components/templates/TemplatesView";
-import UsersView from "./components/users/UsersView";
+import UserSegment from "./components/users/UserSegment";
 import DatabaseView from "./components/views/DatabaseView";
 import HelpView from "./components/views/HelpView";
 import HomeView from "./components/views/HomeView";
@@ -148,7 +148,7 @@ function App() {
             <TemplatesView/>
           </Route>
           <Route exact path="/users">
-            <UsersView/>
+            <UserSegment/>
           </Route>
           <Route path="/help/:resource">
             <HelpView/>

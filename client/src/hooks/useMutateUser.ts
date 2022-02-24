@@ -1,4 +1,4 @@
-// useMutateUser -------------------------------------------------------------
+// useMutateUser ---------------------------------------------------------
 
 // Custom hook to encapsulate mutation operations on a User.
 
@@ -8,7 +8,7 @@ import {useEffect, useState} from "react";
 
 // Internal Modules ----------------------------------------------------------
 
-import {HandleUser} from "../types";
+import {ProcessUser} from "../types";
 import Api from "../clients/Api";
 import User, {USERS_BASE} from "../models/User";
 import * as Abridgers from "../util/Abridgers";
@@ -19,20 +19,22 @@ import * as ToModel from "../util/ToModel";
 // Incoming Properties and Outgoing State ------------------------------------
 
 export interface Props {
+    alertPopup?: boolean;               // Pop up browser alert on error? [true]
 }
 
 export interface State {
     error: Error | null;                // I/O error (if any)
     executing: boolean;                 // Are we currently executing?
-    insert: HandleUser;                 // Function to insert a new User
-    remove: HandleUser;                 // Function to remove an existing User
-    update: HandleUser;                 // Function to update an existing User
+    insert: ProcessUser;                // Function to insert a new User
+    remove: ProcessUser;                // Function to remove an existing User
+    update: ProcessUser;                // Function to update an existing User
 }
 
 // Component Details ---------------------------------------------------------
 
-const useMutateUser = (props: Props): State => {
+const useMutateUser = (props: Props = {}): State => {
 
+// NOTE -    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
     const [executing, setExecuting] = useState<boolean>(false);
 
@@ -42,27 +44,26 @@ const useMutateUser = (props: Props): State => {
         });
     });
 
-    const insert: HandleUser = async (theUser): Promise<User> => {
+    const insert: ProcessUser = async (theUser) => {
 
+        const url = USERS_BASE;
         let inserted = new User();
         setError(null);
         setExecuting(true);
 
         try {
-            inserted = ToModel.USER((await Api.post(USERS_BASE, theUser))
-                .data);
+            inserted = ToModel.USER((await Api.post(url, theUser)).data);
             logger.debug({
                 context: "useMutateUser.insert",
                 user: Abridgers.USER(inserted),
+                url: url,
             });
         } catch (anError) {
             setError(anError as Error);
             ReportError("useMutateUser.insert", anError, {
-                user: {
-                    ...theUser,
-                    password: "*REDACTED*",
-                }
-            });
+                user: Abridgers.USER(theUser),
+                url: url,
+            }/*, alertPopup*/);
         }
 
         setExecuting(false);
@@ -70,28 +71,27 @@ const useMutateUser = (props: Props): State => {
 
     }
 
-    const remove: HandleUser = async (theUser): Promise<User> => {
+    const remove: ProcessUser = async (theUser) => {
 
+        const url = USERS_BASE
+            + `/${theUser.id}`;
         let removed = new User();
         setError(null);
         setExecuting(true);
 
         try {
-            removed = ToModel.USER((await Api.delete(USERS_BASE
-                + `/${theUser.id}`))
-                .data);
+            removed = ToModel.USER((await Api.delete(url)).data);
             logger.debug({
                 context: "useMutateUser.remove",
                 user: Abridgers.USER(removed),
+                url: url,
             });
         } catch (anError) {
             setError(anError as Error);
-            ReportError("useMutateUser.remove", anError, {
-                user: {
-                    ...theUser,
-                    password: theUser.password ? "*REDACTED*" : null,
-                }
-            });
+            ReportError("useMutateFcility.remove", anError, {
+                user: ToModel.USER(theUser),
+                url: url,
+            }/*, alertPopup*/);
         }
 
         setExecuting(false);
@@ -99,28 +99,27 @@ const useMutateUser = (props: Props): State => {
 
     }
 
-    const update: HandleUser = async (theUser): Promise<User> => {
+    const update: ProcessUser = async (theUser) => {
 
+        const url = USERS_BASE
+            + `/${theUser.id}`;
         let updated = new User();
         setError(null);
         setExecuting(true);
 
         try {
-            updated = ToModel.USER((await Api.put(USERS_BASE
-                + `/${theUser.id}`, theUser))
-                .data);
+            updated = ToModel.USER((await Api.put(url, theUser)).data);
             logger.debug({
                 context: "useMutateUser.update",
                 user: Abridgers.USER(updated),
+                url: url,
             });
         } catch (anError) {
             setError(anError as Error);
             ReportError("useMutateUser.update", anError, {
-                user: {
-                    ...theUser,
-                    password: theUser.password ? "*REDACTED*" : null,
-                }
-            });
+                user: Abridgers.USER(theUser),
+                url: url,
+            }/*, alertPopup*/);
         }
 
         setExecuting(false);

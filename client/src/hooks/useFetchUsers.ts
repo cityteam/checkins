@@ -1,31 +1,31 @@
-// useFetchUsers -------------------------------------------------------------
+// useFetchUsers ---------------------------------------------------------
 
 // Custom hook to fetch User objects that correspond to input properties.
 
 // External Modules ----------------------------------------------------------
 
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 
 // Internal Modules ----------------------------------------------------------
 
 import Api from "../clients/Api";
+import LoginContext from "../components/login/LoginContext";
 import User, {USERS_BASE} from "../models/User";
 import * as Abridgers from "../util/Abridgers";
 import logger from "../util/ClientLogger";
 import {queryParameters} from "../util/QueryParameters";
 import ReportError from "../util/ReportError";
-import * as Sorters from "../util/Sorters";
-import * as ToModel from "../util/ToModel";
 
 // Incoming Properties and Outgoing State ------------------------------------
 
 export interface Props {
     active?: boolean;                   // Select only active Users? [false]
-    currentPage?: number;               // One-relative current page number [1]
-    pageSize?: number;                  // Number of entries per page [25]
-    username?: string;                  // Select Users matching pattern [none]
-    withAccessTokens?: boolean;         // Include child AccessTokens? [false]
-    withRefreshTokens?: boolean;        // Include nested RefreshTokens? [false]
+    alertPopup?: boolean;               // Pop up browser alert on error? [true]
+    currentPage?: number;               // One-relative page number [1]
+    pageSize?: number;                  // Number of Users to be returned [25]
+    username?: string;                  // Select Users with matching username? [none]
+    withAccessTokens?: boolean;         // Include child Access Tokens? [false]
+    withRefreshTokens?: boolean;        // Include child Refresh Tokens? [false]
 }
 
 export interface State {
@@ -38,9 +38,12 @@ export interface State {
 
 const useFetchUsers = (props: Props): State => {
 
+    const loginContext = useContext(LoginContext);
+
+    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
     const [users, setUsers] = useState<User[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
 
@@ -59,48 +62,42 @@ const useFetchUsers = (props: Props): State => {
                 username: props.username ? props.username : undefined,
                 withAccessTokens: props.withAccessTokens ? "" : undefined,
                 withRefreshTokens: props.withRefreshTokens ? "" : undefined,
-            };
+            }
 
             try {
-                theUsers = ToModel.USERS((await Api.get(USERS_BASE
-                    + `${queryParameters(parameters)}`))
-                    .data);
-                theUsers.forEach(theUser => {
-                    if (theUser.accessTokens && (theUser.accessTokens.length > 0)) {
-                        theUser.accessTokens = Sorters.ACCESS_TOKENS(theUser.accessTokens);
-                    }
-                    if (theUser.refreshTokens && (theUser.refreshTokens.length > 0)) {
-                        theUser.refreshTokens = Sorters.REFRESH_TOKENS(theUser.refreshTokens);
-                    }
-                });
-                logger.debug({
-                    context: "useFetchUsers.fetchUsers",
-                    parameters: parameters,
-                    users: Abridgers.USERS(theUsers),
-                });
-
+                if (loginContext.data.loggedIn) {
+                    theUsers = (await Api.get(USERS_BASE
+                        + `${queryParameters(parameters)}`)).data;
+                    logger.debug({
+                        context: "useFetchUsers.fetchUsers",
+                        parameters: parameters,
+                        users: Abridgers.USERS(theUsers),
+                    });
+                }
             } catch (anError) {
                 setError(anError as Error);
                 ReportError("useFetchUsers.fetchUsers", anError, {
                     parameters: parameters,
-                });
+                }/*, alertPopup*/);
             }
 
-            setLoading(false);
             setUsers(theUsers);
+            setLoading(false);
 
         }
 
         fetchUsers();
 
-    }, [props.active, props.currentPage, props.pageSize, props.username,
-        props.withAccessTokens, props.withRefreshTokens]);
+    }, [props.active, props.currentPage, props.pageSize,
+        props.username, props.withAccessTokens, props.withRefreshTokens,
+        alertPopup,
+        loginContext.data.loggedIn]);
 
     return {
         error: error ? error : null,
         loading: loading,
         users: users,
-    };
+    }
 
 }
 
