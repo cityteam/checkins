@@ -10,6 +10,7 @@ import React from "react";
 
 import Assign from "./models/Assign";
 import Checkin from"./models/Checkin";
+import Credentials from "./models/Credentials";
 import Facility from "./models/Facility";
 import Guest from "./models/Guest";
 import Summary from "./models/Summary";
@@ -70,6 +71,7 @@ export type HandleAssign = (assign: Assign) => void;
 export type HandleAssignPromise = (assign: Assign) => Promise<Checkin>;
 export type HandleCheckin = (checkin: Checkin) => void;
 export type HandleCheckinPromise = (checkin: Checkin) => Promise<Checkin>;
+export type HandleCredentials = (credentials: Credentials) => void;
 export type HandleDate = (date: string) => void;
 export type HandleFacility = (facility: Facility) => void;
 export type HandleGuest = (guest: Guest) => void;
