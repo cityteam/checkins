@@ -1,7 +1,7 @@
-// FacilityOptions -----------------------------------------------------------
+// TemplateOptions -----------------------------------------------------------
 
-// List Facilities that match search criteria, offering callbacks for adding,
-// editing, and removing Facilities.
+// List Templates that match search criteria, offering callbacks for adding,
+// editing, and removing Templates.
 
 // NOTE - style classes: ml-1, mr-1, text-right
 
@@ -16,39 +16,36 @@ import Table from "react-bootstrap/Table";
 
 // Internal Modules ----------------------------------------------------------
 
+import FacilityContext from "../facilities/FacilityContext";
 import CheckBoxComponent from "../general/CheckBoxComponent";
 // NOTE - import LoadingProgress from "../general/LoadingProgress";
 import PaginationComponent from "../general/PaginationComponent";
 import SearchBar from "../general/SearchBar";
-import FacilityContext from "./FacilityContext";
-import LoginContext from "../login/LoginContext";
-import {HandleAction, HandleBoolean, HandleFacility, HandleValue, Scope} from "../../types";
-import Facility from "../../models/Facility";
-import useFetchFacilities from "../../hooks/useFetchFacilities";
+import {HandleAction, HandleBoolean, HandleTemplate, HandleValue} from "../../types";
+import useFetchTemplates from "../../hooks/useFetchTemplates";
+import * as Abridgers from "../../util/Abridgers";
 import logger from "../../util/ClientLogger";
 import {listValue} from "../../util/Transformations";
 
 // Incoming Properties -------------------------------------------------------
 
 export interface Props {
-    handleAdd?: HandleAction;           // Handle request to add a Facility [not allowed]
-    handleEdit?: HandleFacility;        // Handle request to edit a Facility [not allowed]
+    handleAdd?: HandleAction;           // Handle request to add a Template [not allowed]
+    handleEdit?: HandleTemplate;        // Handle request to edit a Template [not allowed]
 }
 
 // Component Details ---------------------------------------------------------
 
-const FacilityOptions = (props: Props) => {
+const TemplateOptions = (props: Props) => {
 
     const facilityContext = useContext(FacilityContext);
-    const loginContext = useContext(LoginContext);
 
     const [active, setActive] = useState<boolean>(false);
-    const [availables, setAvailables] = useState<Facility[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageSize] = useState<number>(100);
     const [searchText, setSearchText] = useState<string>("");
 
-    const fetchFacilities = useFetchFacilities({
+    const fetchTemplates = useFetchTemplates({
         active: active,
         // NOTE - alertPopup: false,
         currentPage: currentPage,
@@ -59,23 +56,16 @@ const FacilityOptions = (props: Props) => {
     useEffect(() => {
 
         logger.debug({
-            context: "FacilityOptions.useEffect",
+            context: "TemplateOptions.useEffect",
+            facility: Abridgers.FACILITY(facilityContext.facility),
             active: active,
             currentPage: currentPage,
             searchText: searchText,
         });
 
-        const isSuperuser = loginContext.validateScope(Scope.SUPERUSER);
-        if (isSuperuser) {
-            setAvailables(fetchFacilities.facilities);
-        } else {
-            setAvailables(facilityContext.facilities);
-        }
-
-    }, [facilityContext, facilityContext.facilities,
-        loginContext, loginContext.data.loggedIn,
+    }, [facilityContext.facility,
         active, currentPage, searchText,
-        fetchFacilities.facilities]);
+        fetchTemplates.templates]);
 
     const handleActive: HandleBoolean = (theActive) => {
         setActive(theActive);
@@ -91,9 +81,9 @@ const FacilityOptions = (props: Props) => {
         setSearchText(theSearchText);
     }
 
-    const handleEdit: HandleFacility = (theFacility) => {
+    const handleEdit: HandleTemplate = (theTemplate) => {
         if (props.handleEdit) {
-            props.handleEdit(theFacility);
+            props.handleEdit(theTemplate);
         }
     }
 
@@ -106,19 +96,22 @@ const FacilityOptions = (props: Props) => {
     }
 
     return (
-        <Container fluid id="FacilityOptions">
+        <Container fluid id="TemplateOptions">
 
             {/* NOTE - not yet implemented
             <LoadingProgress
-                error={fetchFacilities.error}
-                loading={fetchFacilities.loading}
-                title="Selected Facilities"
+                error={fetchTemplates.error}
+                loading={fetchTemplates.loading}
+                title="Selected Templates"
             />
             */}
 
             <Row className="mb-3">
                 <Col className="text-center">
-                    <strong>Manage Facilities</strong>
+                    <strong>
+                        <span>Manage Templates for Facility&nbsp;</span>
+                        <span className="text-info">{facilityContext.facility.name}</span>
+                    </strong>
                 </Col>
             </Row>
 
@@ -127,15 +120,14 @@ const FacilityOptions = (props: Props) => {
                     <SearchBar
                         autoFocus
                         handleChange={handleChange}
-                        htmlSize={50}
-                        label="Search For Facilities:"
+                        label="Search For Templates:"
                         placeholder="Search by all or part of name"
                     />
                 </Col>
                 <Col>
                     <CheckBoxComponent
                         handleChange={handleActive}
-                        label="Active Facilities Only?"
+                        label="Active Templates Only?"
                         name="activeOnly"
                         value={active}
                     />
@@ -145,8 +137,8 @@ const FacilityOptions = (props: Props) => {
                         currentPage={currentPage}
                         handleNext={handleNext}
                         handlePrevious={handlePrevious}
-                        lastPage={(fetchFacilities.facilities.length === 0) ||
-                            (fetchFacilities.facilities.length < pageSize)}
+                        lastPage={(fetchTemplates.templates.length === 0) ||
+                            (fetchTemplates.templates.length < pageSize)}
                         variant="secondary"
                     />
                 </Col>
@@ -160,7 +152,7 @@ const FacilityOptions = (props: Props) => {
                 </Col>
             </Row>
 
-            <Row className="g-2 ml-1 mr-1">
+            <Row className="ml-1 mr-1">
                 <Table
                     bordered={true}
                     hover={true}
@@ -172,33 +164,41 @@ const FacilityOptions = (props: Props) => {
                     <tr className="table-secondary">
                         <th scope="col">Name</th>
                         <th scope="col">Active</th>
-                        <th scope="col">City</th>
-                        <th scope="col">State</th>
-                        <th scope="col">Scope</th>
+                        <th scope="col">Comments</th>
+                        <th scope="col">All Mats</th>
+                        <th scope="col">Handicap Mats</th>
+                        <th scope="col">Socket Mats</th>
+                        <th scope="col">Work Mats</th>
                     </tr>
                     </thead>
 
                     <tbody>
-                    {availables.map((facility, ri) => (
+                    {fetchTemplates.templates.map((template, ri) => (
                         <tr
                             className="table-default"
-                            key={`FO-${ri}-TR`}
-                            onClick={props.handleEdit ? (() => handleEdit(facility)) : undefined}
+                            key={`TO-${ri}-TR`}
+                            onClick={props.handleEdit ? (() => handleEdit(template)) : undefined}
                         >
-                            <td key={`FO-${ri}-name`}>
-                                {facility.name}
+                            <td key={`TO-${ri}-name`}>
+                                {template.name}
                             </td>
-                            <td key={`FO-${ri}-active`}>
-                                {listValue(facility.active)}
+                            <td key={`TO-${ri}-active`}>
+                                {listValue(template.active)}
                             </td>
-                            <td key={`FO-${ri}-city`}>
-                                {facility.city}
+                            <td key={`TO-${ri}-comments`}>
+                                {template.comments}
                             </td>
-                            <td key={`FO-${ri}-state`}>
-                                {facility.state}
+                            <td key={`TO-${ri}-allMats`}>
+                                {template.allMats}
                             </td>
-                            <td key={`FO-${ri}-scope`}>
-                                {facility.scope}
+                            <td key={`TO-${ri}-handicapMats`}>
+                                {template.handicapMats}
+                            </td>
+                            <td key={`TO-${ri}-socketMats`}>
+                                {template.socketMats}
+                            </td>
+                            <td key={`TO-${ri}-workMats`}>
+                                {template.workMats}
                             </td>
                         </tr>
                     ))}
@@ -219,9 +219,8 @@ const FacilityOptions = (props: Props) => {
             </Row>
 
         </Container>
-
     )
 
 }
 
-export default FacilityOptions;
+export default TemplateOptions;

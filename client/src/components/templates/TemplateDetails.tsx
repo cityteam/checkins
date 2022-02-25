@@ -1,12 +1,12 @@
-// UserForm ------------------------------------------------------------------
+// TemplateDetails -----------------------------------------------------------
 
-// Detail editing form for User objects.
+// Detail editing form for Template objects.
 
 // NOTE - style classes: text-left, text-right
 
 // External Modules ----------------------------------------------------------
 
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import Button from "react-bootstrap/button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -19,30 +19,37 @@ import * as Yup from "yup";
 
 // Internal Modules ----------------------------------------------------------
 
+import FacilityContext from "../facilities/FacilityContext";
 import CheckBoxField from "../general/CheckBoxField";
 import TextField from "../general/TextField";
-import {HandleAction, HandleUser} from "../../types";
-import User, {UserData} from "../../models/User";
-import {validateUserUsernameUnique} from "../../util/AsyncValidators";
+import {HandleAction, HandleTemplate} from "../../types";
+import Template, {TemplateData} from "../../models/Template";
+import {
+    validateMatsList,
+    validateMatsSubset
+} from "../../util/ApplicationValidators";
+import {validateTemplateNameUnique} from "../../util/AsyncValidators";
 import * as ToModel from "../../util/ToModel";
 import {toNullValues} from "../../util/Transformations";
 
-// Incoming Properties ------------------------------------------------------
+// Incoming Properties -------------------------------------------------------
 
 export interface Props {
     autoFocus?: boolean;                // First element receive autoFocus? [false]
     handleBack: HandleAction;           // Handle return to previous view
-    handleInsert?: HandleUser;          // Handle User insert request [not allowed]
-    handleRemove?: HandleUser;          // Handle User remove request [not allowed]
-    handleUpdate?: HandleUser;          // Handle User update request [not allowed]
-    user: User;                         // Initial values (id < 0 for adding)
+    handleInsert?: HandleTemplate;      // Handle Template insert request [not allowed]
+    handleRemove?: HandleTemplate;      // Handle Template remove request [not allowed]
+    handleUpdate?: HandleTemplate;      // Handle Template update request [not allowed]
+    template: Template;                 // Initial values (id < 0 for adding)
 }
 
 // Component Details ---------------------------------------------------------
 
-const UserForm = (props: Props) => {
+const TemplateDetails = (props: Props) => {
 
-    const [adding] = useState<boolean>(props.user.id < 0);
+    const facilityContext = useContext(FacilityContext);
+
+    const [adding] = useState<boolean>(props.template.id < 0);
     const [showConfirm, setShowConfirm] = useState<boolean>(false);
 
     const onConfirm = (): void => {
@@ -56,61 +63,84 @@ const UserForm = (props: Props) => {
     const onConfirmPositive = (): void => {
         setShowConfirm(false);
         if (props.handleRemove) {
-            props.handleRemove(props.user)
+            props.handleRemove(props.template);
         }
     }
 
-    const onSubmit: SubmitHandler<UserData> = (values) => {
-        const theUser = new User({
-            ...props.user,
-            ...values,
+    const onSubmit: SubmitHandler<TemplateData> = (values) => {
+        const theTemplate = new Template({
+            ...props.template,
+            ...values
         });
         if (adding && props.handleInsert) {
-            props.handleInsert(theUser);
+            props.handleInsert(theTemplate);
         } else if (!adding && props.handleUpdate) {
-            props.handleUpdate(theUser);
+            props.handleUpdate(theTemplate);
         }
-    }
-
-    // NOTE - there is no server-side equivalent for this because there is
-    // not an individual logged-in user performing the request
-    // NOTE - needs LoginContext to provide validateScope() method
-    const validateRequestedScope = (requested: string | undefined): boolean => {
-        return true; // NOTE - need server side validation
-        /*
-                if (!requested || ("" === requested)) {
-                    return true;  // Not asking for scope but should be required
-                } else {
-                    // NOTE - deal with log:<level> pseudo-scopes
-                    return loginContext.validateScope(requested);
-                }
-        */
     }
 
     const validationSchema = Yup.object().shape({
         active: Yup.boolean(),
-        name: Yup.string()
-            .required("Name is required"),
-        password: Yup.string()
-            .nullable(), // NOTE - required on add, optional on edit
-        scope: Yup.string()
-            .required("Scope is required")
-            .test("allowed-scope",
-                "You are not allowed to assign a scope you do not possess",
+        allMats: Yup.string()
+            .required("All Mats is required")
+            .test("valid-all-mats",
+                "Invalid mats list format",
                 function(value) {
-                    return validateRequestedScope(value);
+                    return validateMatsList(value ? value : "");
                 }),
-        username: Yup.string()
-            .required("Username is required")
-            .test("unique-username",
-                "That username is already in use",
+        comments: Yup.string()
+            .nullable(),
+        handicapMats: Yup.string()
+            .nullable()
+            .test("valid-handicap-mats",
+                "Invalid mats list format",
+                function (value) {
+                    return validateMatsList(value ? value : "");
+                })
+            .test("subset-handicap-mats",
+                "Not a subset of all mats",
+                function (this) {
+                    return validateMatsSubset
+                    (this.parent.allMats, this.parent.handicapMats)
+                }),
+        name: Yup.string()
+            .required("Name is required")
+            .test("unique-name",
+                "That name is already in use within this Facility",
                 async function (this) {
-                    return validateUserUsernameUnique(ToModel.USER(toNullValues(this.parent)))
+                    return validateTemplateNameUnique(ToModel.TEMPLATE(toNullValues(this.parent)));
+                }
+            ),
+        socketMats: Yup.string()
+            .nullable()
+            .test("valid-socket-mats",
+                "Invalid mats list format",
+                function (value) {
+                    return validateMatsList(value ? value : "");
+                })
+            .test("subset-socket-mats",
+                "Not a subset of all mats",
+                function (this) {
+                    return validateMatsSubset
+                    (this.parent.allMats, this.parent.socketMats)
+                }),
+        workMats: Yup.string()
+            .nullable()
+            .test("valid-work-mats",
+                "Invalid mats list format",
+                function (value) {
+                    return validateMatsList(value ? value : "");
+                })
+            .test("subset-work-mats",
+                "Not a subset of all mats",
+                function (this) {
+                    return validateMatsSubset
+                    (this.parent.allMats, this.parent.workMats)
                 }),
     });
 
-    const {formState: {errors}, handleSubmit, register} = useForm<UserData>({
-        defaultValues: new UserData(props.user),
+    const {formState: {errors}, handleSubmit, register} = useForm<TemplateData>({
+        defaultValues: new TemplateData(props.template),
         mode: "onBlur",
         resolver: yupResolver(validationSchema),
     });
@@ -120,7 +150,7 @@ const UserForm = (props: Props) => {
         <>
 
             {/* Details Form */}
-            <Container id="UserDetails">
+            <Container id="TemplateDetails">
 
                 <Row className="mb-3">
                     <Col className="text-left">
@@ -130,7 +160,10 @@ const UserForm = (props: Props) => {
                             ) : (
                                 <span>Edit Existing</span>
                             )}
-                            &nbsp;User
+                            &nbsp;Template for Facility&nbsp;
+                            <span className="text-info">
+                                {facilityContext.facility.name}
+                            </span>
                         </strong>
                     </Col>
                     <Col className="text-right">
@@ -144,43 +177,62 @@ const UserForm = (props: Props) => {
                 </Row>
 
                 <Form
-                    id="UserForm"
+                    id="TemplateForm"
                     noValidate
                     onSubmit={handleSubmit(onSubmit)}
                 >
 
-                    <Row className="g-3 mb-3" id="nameScopeRow">
+                    <Row className="g-3 mb-3" id="nameRow">
                         <TextField
                             autoFocus={(props.autoFocus !== undefined) ? props.autoFocus : undefined}
                             errors={errors}
                             label="Name:"
                             name="name"
                             register={register}
-                            valid="Name of this User."
-                        />
-                        <TextField
-                            errors={errors}
-                            label="Scope:"
-                            name="scope"
-                            register={register}
-                            valid="Space-separated scope(s) granted to this user."
+                            valid="Name of this Template (must be unique)."
                         />
                     </Row>
 
-                    <Row className="g-3 mb-3" id="usernamePasswordRow">
+                    <Row className="g-3 mb-3" id="commentsRow">
                         <TextField
                             errors={errors}
-                            label="Username:"
-                            name="username"
+                            label="Comments:"
+                            name="comments"
                             register={register}
-                            valid="Login username of this User (must be unique)."
+                        />
+                    </Row>
+
+                    <Row id="allMatsHandicapMatsRow">
+                        <TextField
+                            errors={errors}
+                            label="All Mats:"
+                            name="allMats"
+                            register={register}
+                            valid="Mats that should be generated for this template."
                         />
                         <TextField
                             errors={errors}
-                            label="Password:"
-                            name="password"
+                            label="Handicap Mats:"
+                            name="handicapMats"
                             register={register}
-                            valid="Login password of this User (set this ONLY on new Users or if you want to change the password for an existing User)."
+                            valid="Mats that should be marked 'H' (handicap accessible)."
+                        />
+                    </Row>
+
+                    <Row id="socketMatsWorkMatsRow">
+                        <TextField
+                            errors={errors}
+                            label="Socket Mats:"
+                            name="socketMats"
+                            register={register}
+                            valid="Mats that should be marked 'S' (socket nearby)."
+                        />
+                        <TextField
+                            errors={errors}
+                            label="Work Mats:"
+                            name="workMats"
+                            register={register}
+                            valid="Mats that should be marked 'W' (work mats)."
                         />
                     </Row>
 
@@ -236,12 +288,12 @@ const UserForm = (props: Props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <p>
-                        Removing this User is not reversible, and
+                        Removing this Template is not reversible, and
                         <strong>
                             &nbsp;will also remove ALL related information.
                         </strong>.
                     </p>
-                    <p>Consider marking this User as inactive instead.</p>
+                    <p>Consider marking this Template as inactive instead.</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -266,6 +318,7 @@ const UserForm = (props: Props) => {
         </>
 
     )
+
 }
 
-export default UserForm;
+export default TemplateDetails;

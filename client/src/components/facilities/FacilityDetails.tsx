@@ -154,7 +154,7 @@ const FacilityDetails = (props: Props) => {
             <Container id="FacilityDetails">
 
                 <Row className="mb-3">
-                    <Col className="text-center">
+                    <Col className="text-left">
                         <strong>
                             {(adding)? (
                                 <span>Add New</span>
@@ -175,7 +175,7 @@ const FacilityDetails = (props: Props) => {
                 </Row>
 
                 <Form
-                    id="FacilityDetails"
+                    id="FacilityForm"
                     noValidate
                     onSubmit={handleSubmit(onSubmit)}
                 >

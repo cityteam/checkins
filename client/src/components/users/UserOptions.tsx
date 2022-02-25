@@ -113,6 +113,12 @@ const UserOptions = (props: Props) => {
             />
 */}
 
+            <Row className="mb-3">
+                <Col className="text-center">
+                    <strong>Manage Users</strong>
+                </Col>
+            </Row>
+
             <Row className="mb-3 ml-1 mr-1">
                 <Col className="col-6">
                     <SearchBar

@@ -8,7 +8,7 @@ import {useContext, useEffect, useState} from "react";
 
 // Internal Modules ----------------------------------------------------------
 
-import {HandleTemplate} from "../types";
+import {ProcessTemplate} from "../types";
 import Api from "../clients/Api";
 import FacilityContext from "../components/facilities/FacilityContext";
 import Template, {TEMPLATES_BASE} from "../models/Template";
@@ -25,9 +25,9 @@ export interface Props {
 export interface State {
     error: Error | null;                // I/O error (if any)
     executing: boolean;                 // Are we currently executing?
-    insert: HandleTemplate;             // Function to insert a new Template
-    remove: HandleTemplate;             // Function to remove an existing Template
-    update: HandleTemplate;             // Function to update an existing Template
+    insert: ProcessTemplate;            // Function to insert a new Template
+    remove: ProcessTemplate;            // Function to remove an existing Template
+    update: ProcessTemplate;            // Function to update an existing Template
 }
 
 // Component Details ---------------------------------------------------------
@@ -45,27 +45,27 @@ const useMutateTemplate = (props: Props): State => {
         });
     });
 
-    const insert: HandleTemplate = async (theTemplate): Promise<Template> => {
+    const insert: ProcessTemplate = async (theTemplate) => {
 
+        const url = `${TEMPLATES_BASE}/${facilityContext.facility.id}`;
         let inserted = new Template();
         setError(null);
         setExecuting(true);
 
         try {
-            inserted = ToModel.TEMPLATE((await Api.post(TEMPLATES_BASE
-                + `/${facilityContext.facility.id}`, theTemplate))
-                .data);
+            inserted = ToModel.TEMPLATE((await Api.post(url, theTemplate)).data);
             logger.debug({
                 context: "useMutateTemplate.insert",
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 template: Abridgers.TEMPLATE(inserted),
+                url: url,
             });
         } catch (anError) {
             setError(anError as Error);
             ReportError("useMutateTemplate.insert", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
-                template: theTemplate,
-            });
+                url: url,
+            }/*, alertPopup*/);
         }
 
         setExecuting(false);
@@ -73,27 +73,27 @@ const useMutateTemplate = (props: Props): State => {
 
     }
 
-    const remove: HandleTemplate = async (theTemplate): Promise<Template> => {
+    const remove: ProcessTemplate = async (theTemplate) => {
 
+        const url = `${TEMPLATES_BASE}/${facilityContext.facility.id}/${theTemplate.id}`;
         let removed = new Template();
         setError(null);
         setExecuting(true);
 
         try {
-            removed = ToModel.TEMPLATE((await Api.delete(TEMPLATES_BASE
-                + `/${facilityContext.facility.id}/${theTemplate.id}`))
-                .data);
+            removed = ToModel.TEMPLATE((await Api.delete(url)).data);
             logger.debug({
                 context: "useMutateTemplate.remove",
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 template: Abridgers.TEMPLATE(removed),
+                url: url,
             });
         } catch (anError) {
             setError(anError as Error);
             ReportError("useMutateTemplate.remove", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
-                template: theTemplate,
-            });
+                url: url,
+            }/*, alertPopup*/);
         }
 
         setExecuting(false);
@@ -101,27 +101,27 @@ const useMutateTemplate = (props: Props): State => {
 
     }
 
-    const update: HandleTemplate = async (theTemplate): Promise<Template> => {
+    const update: ProcessTemplate = async (theTemplate) => {
 
+        const url = `${TEMPLATES_BASE}/${facilityContext.facility.id}/${theTemplate.id}`;
         let updated = new Template();
         setError(null);
         setExecuting(true);
 
         try {
-            updated = ToModel.TEMPLATE((await Api.put(TEMPLATES_BASE
-                + `/${facilityContext.facility.id}/${theTemplate.id}`, theTemplate))
-                .data);
+            updated = ToModel.TEMPLATE((await Api.put(url, theTemplate)).data);
             logger.debug({
                 context: "useMutateTemplate.update",
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 template: Abridgers.TEMPLATE(updated),
+                url: url,
             });
         } catch (anError) {
             setError(anError as Error);
             ReportError("useMutateTemplate.update", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
-                template: theTemplate,
-            })
+                url: url,
+            });
         }
 
         setExecuting(false);

@@ -1,6 +1,6 @@
-// FacilitySegment -----------------------------------------------------------
+// TemplateSegment -----------------------------------------------------------
 
-// Top-level view for managing Facility objects.
+// Top-level view for managing Template objects.
 
 // External Modules ----------------------------------------------------------
 
@@ -8,14 +8,13 @@ import React, {useContext, useEffect, useState} from "react";
 
 // Internal Modules ----------------------------------------------------------
 
-import FacilityContext from "./FacilityContext";
-import FacilityDetails from "./FacilityDetails";
-import FacilityOptions from "./FacilityOptions";
-// NOTE - import SavingProgress from "../general/SavingProgress";
+import TemplateDetails from "./TemplateDetails";
+import TemplateOptions from "./TemplateOptions";
+import FacilityContext from "../facilities/FacilityContext";
 import LoginContext from "../login/LoginContext";
-import {HandleAction, HandleFacility, Scope} from "../../types";
-import useMutateFacility from "../../hooks/useMutateFacility";
-import Facility from "../../models/Facility";
+import {HandleAction, HandleTemplate, Scope} from "../../types";
+import useMutateTemplate from "../../hooks/useMutateTemplate";
+import Template from "../../models/Template";
 import * as Abridgers from "../../util/Abridgers";
 import logger from "../../util/ClientLogger";
 
@@ -26,7 +25,7 @@ enum View {
     OPTIONS = "Options",
 }
 
-const FacilitySegment = () => {
+const TemplateSegment = () => {
 
     const facilityContext = useContext(FacilityContext);
     const loginContext = useContext(LoginContext);
@@ -34,101 +33,96 @@ const FacilitySegment = () => {
     const [canInsert, setCanInsert] = useState<boolean>(false);
     const [canRemove, setCanRemove] = useState<boolean>(false);
     const [canUpdate, setCanUpdate] = useState<boolean>(false);
-    const [facility, setFacility] = useState<Facility>(new Facility());
+    const [template, setTemplate] = useState<Template>(new Template());
     const [title, setTitle] = useState<string>("");
     const [view, setView] = useState<View>(View.OPTIONS);
 
-    const mutateFacility = useMutateFacility({
+    const mutateTemplate = useMutateTemplate({
         // NOTE - alertPopup: false,
     });
 
     useEffect(() => {
 
         logger.debug({
-            context: "FacilitySegment.useEffect",
+            context: "TemplateSegment.useEffect",
             facility: Abridgers.FACILITY(facilityContext.facility),
             view: view.toString(),
         });
 
+        const isAdmin = loginContext.validateFacility(facilityContext.facility, Scope.ADMIN);
         const isSuperuser = loginContext.validateScope(Scope.SUPERUSER);
-        setCanInsert(isSuperuser);
+        setCanInsert(isAdmin || isSuperuser);
         setCanRemove(isSuperuser);
-        setCanUpdate(isSuperuser);
+        setCanUpdate(isAdmin || isSuperuser);
 
-    }, [loginContext, loginContext.data.loggedIn,
-        facility, view,
-        facilityContext.facility]);
+    }, [facilityContext.facility, loginContext, loginContext.data.loggedIn,
+        template, view]);
 
-    // Create an empty Facility to be added
+    // Create an empty Template to be added
     const handleAdd: HandleAction = () => {
-        setFacility(new Facility({
+        setTemplate(new Template({
             active: true,
-            address1: null,
-            address2: null,
-            city: null,
-            email: null,
+            allMats: null,
+            comments: null,
+            facilityId: facilityContext.facility.id,
+            handicapMats: null,
             name: null,
-            phone: null,
-            scope: null,
-            state: null,
-            zipCode: null,
+            socketMats: null,
+            workMats: null,
         }));
     }
 
     // Handle return from View.DETAILS to redisplay View.OPTIONS
     const handleBack: HandleAction = () => {
         logger.debug({
-            context: "FacilitySegment.handleReturn",
+            context: "TemplateSegment.handleReturn",
         });
         setView(View.OPTIONS);
     }
 
-    // Handle selection of a Facility to edit details
-    const handleEdit: HandleFacility = (theFacility) => {
+    // Handle selection of a Template to edit details
+    const handleEdit: HandleTemplate = (theTemplate) => {
         logger.debug({
-            context: "FacilitySegment.handleEdit",
-            facility: Abridgers.FACILITY(theFacility),
+            context: "TemplateSegment.handleEdit",
+            template: Abridgers.TEMPLATE(theTemplate),
         });
-        setFacility(theFacility);
+        setTemplate(theTemplate);
         setView(View.DETAILS);
     }
 
-    // Handle insert of a new Facility
-    const handleInsert: HandleFacility = async (theFacility) => {
-        setTitle(theFacility.name);
-        const inserted = await mutateFacility.insert(theFacility);
+    // Handle insert of a new Template
+    const handleInsert: HandleTemplate = async (theTemplate) => {
+        setTitle(theTemplate.name);
+        const inserted = await mutateTemplate.insert(theTemplate);
         logger.debug({
-            context: "FacilitySegment.handleInsert",
+            context: "TemplateSegment.handleInsert",
             title: title,
-            facility: Abridgers.FACILITY(inserted),
+            template: Abridgers.TEMPLATE(inserted),
         });
-        facilityContext.handleRefresh();
         setView(View.OPTIONS);
     }
 
-    // Handle remove of an existing Facility
-    const handleRemove: HandleFacility = async (theFacility) => {
-        setTitle(theFacility.name);
-        const removed = await mutateFacility.remove(theFacility);
+    // Handle remove of an existing Template
+    const handleRemove: HandleTemplate = async (theTemplate) => {
+        setTitle(theTemplate.name);
+        const removed = await mutateTemplate.remove(theTemplate);
         logger.debug({
-            context: "FacilitySegment.handleRemove",
+            context: "TemplateSegment.handleRemove",
             title: title,
-            facility: Abridgers.FACILITY(removed),
+            template: Abridgers.TEMPLATE(removed),
         });
-        facilityContext.handleRefresh();
         setView(View.OPTIONS);
     }
 
-    // Handle update of an existing Facility
-    const handleUpdate: HandleFacility = async (theFacility) => {
-        setTitle(theFacility.name);
-        const updated = await mutateFacility.update(theFacility);
+    // Handle update of an existing Template
+    const handleUpdate: HandleTemplate = async (theTemplate) => {
+        setTitle(theTemplate.name);
+        const updated = await mutateTemplate.update(theTemplate);
         logger.debug({
-            context: "FacilitySegment.handleUpdate",
+            context: "TemplateSegment.handleUpdate",
             title: title,
-            facility: Abridgers.FACILITY(updated),
+            template: Abridgers.TEMPLATE(updated),
         });
-        facilityContext.handleRefresh();
         setView(View.OPTIONS);
     }
 
@@ -144,26 +138,27 @@ const FacilitySegment = () => {
             */}
 
             {(view === View.DETAILS) ? (
-                <FacilityDetails
+                <TemplateDetails
                     autoFocus
-                    facility={facility}
                     handleBack={handleBack}
                     handleInsert={canInsert ? handleInsert : undefined}
                     handleRemove={canRemove ? handleRemove : undefined}
                     handleUpdate={canUpdate ? handleUpdate : undefined}
+                    template={template}
                 />
             ) : null }
 
             {(view === View.OPTIONS) ? (
-                <FacilityOptions
+                <TemplateOptions
                     handleAdd={canInsert ? handleAdd : undefined}
                     handleEdit={canUpdate ? handleEdit : undefined}
                 />
             ) : null }
 
         </>
+
     )
 
 }
 
-export default FacilitySegment;
+export default TemplateSegment;
