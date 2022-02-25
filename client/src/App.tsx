@@ -18,7 +18,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import CheckinsView from "./components/checkins/CheckinsView";
 import FacilitySegment from "./components/facilities/FacilitySegment";
 import FacilitySelector from "./components/facilities/FacilitySelector";
-import GuestsView from "./components/guests/GuestsView";
+import GuestSegment from "./components/guests/GuestSegment";
 import LoggedInUser from "./components/login/LoggedInUser";
 import GuestHistoryReport from "./components/reports/GuestHistoryReport";
 import MonthlySummaryReport from "./components/reports/MonthlySummaryReport";
@@ -136,7 +136,7 @@ function App() {
             <FacilitySegment/>
           </Route>
           <Route exact path="/guests">
-            <GuestsView/>
+            <GuestSegment/>
           </Route>
           <Route exact path="/report-guest">
             <GuestHistoryReport/>

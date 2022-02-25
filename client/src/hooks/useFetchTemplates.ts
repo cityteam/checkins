@@ -71,8 +71,8 @@ const useFetchTemplates = (props: Props): State => {
                     logger.debug({
                         context: "useFetchTemplates.fetchTemplates",
                         facility: Abridgers.FACILITY(facilityContext.facility),
-                        url: url,
                         templates: Abridgers.TEMPLATES(theTemplates),
+                        url: url,
                     });
                 } else {
                     logger.debug({
@@ -96,7 +96,7 @@ const useFetchTemplates = (props: Props): State => {
         fetchTemplates();
 
     }, [props.active, props.currentPage,
-            props.pageSize, props.name, props.withFacility,
+        props.pageSize, props.name, props.withFacility,
         facilityContext.facility]);
 
 

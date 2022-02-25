@@ -121,7 +121,7 @@ const useMutateTemplate = (props: Props): State => {
             ReportError("useMutateTemplate.update", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 url: url,
-            });
+            }/*, alertPopup*/);
         }
 
         setExecuting(false);

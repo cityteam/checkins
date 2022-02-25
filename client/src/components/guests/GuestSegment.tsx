@@ -1,6 +1,6 @@
-// TemplateSegment -----------------------------------------------------------
+// GuestSegment -------------------------------------------------------------
 
-// Top-level view for managing Template objects.
+// Top-level view for managing Guest objects.
 
 // External Modules ----------------------------------------------------------
 
@@ -8,13 +8,13 @@ import React, {useContext, useEffect, useState} from "react";
 
 // Internal Modules ----------------------------------------------------------
 
-import TemplateDetails from "./TemplateDetails";
-import TemplateOptions from "./TemplateOptions";
+import GuestDetails from "./GuestDetails";
+import GuestOptions from "./GuestOptions";
 import FacilityContext from "../facilities/FacilityContext";
 import LoginContext from "../login/LoginContext";
-import {HandleAction, HandleTemplate, Scope} from "../../types";
-import useMutateTemplate from "../../hooks/useMutateTemplate";
-import Template from "../../models/Template";
+import {HandleAction, HandleGuest, Scope} from "../../types";
+import useMutateGuest from "../../hooks/useMutateGuest";
+import Guest from "../../models/Guest";
 import * as Abridgers from "../../util/Abridgers";
 import logger from "../../util/ClientLogger";
 
@@ -25,7 +25,7 @@ enum View {
     OPTIONS = "Options",
 }
 
-const TemplateSegment = () => {
+const GuestSegment = () => {
 
     const facilityContext = useContext(FacilityContext);
     const loginContext = useContext(LoginContext);
@@ -33,42 +33,40 @@ const TemplateSegment = () => {
     const [canInsert, setCanInsert] = useState<boolean>(false);
     const [canRemove, setCanRemove] = useState<boolean>(false);
     const [canUpdate, setCanUpdate] = useState<boolean>(false);
-    const [template, setTemplate] = useState<Template>(new Template());
+    const [guest, setGuest] = useState<Guest>(new Guest());
     const [title, setTitle] = useState<string>("");
     const [view, setView] = useState<View>(View.OPTIONS);
 
-    const mutateTemplate = useMutateTemplate({
+    const mutateGuest = useMutateGuest({
         // NOTE - alertPopup: false,
     });
 
     useEffect(() => {
 
         logger.debug({
-            context: "TemplateSegment.useEffect",
+            context: "GuestSegment.useEffect",
             facility: Abridgers.FACILITY(facilityContext.facility),
             view: view.toString(),
         });
 
         const isAdmin = loginContext.validateFacility(facilityContext.facility, Scope.ADMIN);
+        const isRegular = loginContext.validateFacility(facilityContext.facility, Scope.REGULAR);
         const isSuperuser = loginContext.validateScope(Scope.SUPERUSER);
-        setCanInsert(isAdmin || isSuperuser);
+        setCanInsert(isAdmin || isRegular || isSuperuser);
         setCanRemove(isSuperuser);
-        setCanUpdate(isAdmin || isSuperuser);
+        setCanUpdate(isAdmin || isRegular || isSuperuser);
 
     }, [facilityContext.facility, loginContext, loginContext.data.loggedIn,
-        template, view]);
+        guest, view]);
 
-    // Create an empty Template to be added
+    // Create an empty Guest to be added
     const handleAdd: HandleAction = () => {
-        setTemplate(new Template({
+        setGuest(new Guest({
             active: true,
-            allMats: null,
             comments: null,
             facilityId: facilityContext.facility.id,
-            handicapMats: null,
-            name: null,
-            socketMats: null,
-            workMats: null,
+            firstName: null,
+            lastName: null,
         }));
     }
 
@@ -77,48 +75,48 @@ const TemplateSegment = () => {
         setView(View.OPTIONS);
     }
 
-    // Handle selection of a Template to edit details
-    const handleEdit: HandleTemplate = (theTemplate) => {
+    // Handle selection of a Guest to edit details
+    const handleEdit: HandleGuest = (theGuest) => {
         logger.debug({
-            context: "TemplateSegment.handleEdit",
-            template: Abridgers.TEMPLATE(theTemplate),
+            context: "GuestSegment.handleEdit",
+            guest: Abridgers.GUEST(theGuest),
         });
-        setTemplate(theTemplate);
+        setGuest(theGuest);
         setView(View.DETAILS);
     }
 
-    // Handle insert of a new Template
-    const handleInsert: HandleTemplate = async (theTemplate) => {
-        setTitle(theTemplate.name);
-        const inserted = await mutateTemplate.insert(theTemplate);
+    // Handle insert of a new Guest
+    const handleInsert: HandleGuest = async (theGuest) => {
+        setTitle(`${theGuest.lastName}, ${theGuest.firstName}`);
+        const inserted = await mutateGuest.insert(theGuest);
         logger.debug({
-            context: "TemplateSegment.handleInsert",
+            context: "GuestSegment.handleInsert",
             title: title,
-            template: Abridgers.TEMPLATE(inserted),
+            guest: Abridgers.GUEST(inserted),
         });
         setView(View.OPTIONS);
     }
 
-    // Handle remove of an existing Template
-    const handleRemove: HandleTemplate = async (theTemplate) => {
-        setTitle(theTemplate.name);
-        const removed = await mutateTemplate.remove(theTemplate);
+    // Handle remove of an existing Guest
+    const handleRemove: HandleGuest = async (theGuest) => {
+        setTitle(`${theGuest.lastName}, ${theGuest.firstName}`);
+        const removed = await mutateGuest.remove(theGuest);
         logger.debug({
-            context: "TemplateSegment.handleRemove",
+            context: "GuestSegment.handleRemove",
             title: title,
-            template: Abridgers.TEMPLATE(removed),
+            guest: Abridgers.GUEST(removed),
         });
         setView(View.OPTIONS);
     }
 
-    // Handle update of an existing Template
-    const handleUpdate: HandleTemplate = async (theTemplate) => {
-        setTitle(theTemplate.name);
-        const updated = await mutateTemplate.update(theTemplate);
+    // Handle update of an existing Guest
+    const handleUpdate: HandleGuest = async (theGuest) => {
+        setTitle(`${theGuest.lastName}, ${theGuest.firstName}`);
+        const updated = await mutateGuest.update(theGuest);
         logger.debug({
-            context: "TemplateSegment.handleUpdate",
+            context: "GuestSegment.handleUpdate",
             title: title,
-            template: Abridgers.TEMPLATE(updated),
+            guest: Abridgers.GUEST(updated),
         });
         setView(View.OPTIONS);
     }
@@ -135,18 +133,18 @@ const TemplateSegment = () => {
             */}
 
             {(view === View.DETAILS) ? (
-                <TemplateDetails
+                <GuestDetails
                     autoFocus
+                    guest={guest}
                     handleBack={handleBack}
                     handleInsert={canInsert ? handleInsert : undefined}
                     handleRemove={canRemove ? handleRemove : undefined}
                     handleUpdate={canUpdate ? handleUpdate : undefined}
-                    template={template}
                 />
             ) : null }
 
             {(view === View.OPTIONS) ? (
-                <TemplateOptions
+                <GuestOptions
                     handleAdd={canInsert ? handleAdd : undefined}
                     handleEdit={canUpdate ? handleEdit : undefined}
                 />
@@ -158,4 +156,4 @@ const TemplateSegment = () => {
 
 }
 
-export default TemplateSegment;
+export default GuestSegment;

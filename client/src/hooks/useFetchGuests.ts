@@ -21,6 +21,7 @@ import * as ToModel from "../util/ToModel";
 
 export interface Props {
     active?: boolean;                   // Select only active Guests? [false]
+    alertPopup?: boolean;               // Pop up browser alert on error? [true]
     currentPage?: number;               // One-relative current page number [1]
     pageSize?: number;                  // Number of entries per page [25]
     name?: string;                      // Select Guests matching pattern [none]
@@ -40,6 +41,7 @@ const useFetchGuests = (props: Props): State => {
 
     const facilityContext = useContext(FacilityContext);
 
+// NOTE -    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
     const [guests, setGuests] = useState<Guest[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -62,26 +64,25 @@ const useFetchGuests = (props: Props): State => {
                 withCheckins: props.withCheckins ? "" : undefined,
                 withFacility: props.withFacility ? "" : undefined,
             }
+            const url = `${GUESTS_BASE}/${facilityContext.facility.id}${queryParameters(parameters)}`;
 
             try {
                 // Too many Guests for a useful non-filtered fetch
-                if ((facilityContext.facility.id > 0) && props.name) {
-                    theGuests = ToModel.GUESTS((await Api.get(GUESTS_BASE
-                        + `/${facilityContext.facility.id}${queryParameters(parameters)}`))
-                        .data);
+                const tryFetch = (facilityContext.facility.id > 0) && props.name;
+                if (tryFetch) {
+                    theGuests = ToModel.GUESTS((await Api.get(url)).data);
                     logger.debug({
                         context: "useFetchGuests.fetchGuests",
                         facility: Abridgers.FACILITY(facilityContext.facility),
-                        parameters: parameters,
                         guests: Abridgers.GUESTS(theGuests),
+                        url: url,
                     });
                 }
             } catch (anError) {
                 setError(anError as Error);
                 ReportError("useFetchGuests.fetchGuests", anError, {
-                    facility: Abridgers.FACILITY(facilityContext.facility),
-                    ...parameters,
-                });
+                    url: url,
+                }/*, alertPopup */);
             }
 
             setLoading(false);
@@ -91,8 +92,9 @@ const useFetchGuests = (props: Props): State => {
 
         fetchGuests();
 
-    }, [props.active, props.currentPage, facilityContext.facility,
-        props.pageSize, props.name, props.withCheckins, props.withFacility]);
+    }, [props.active, props.currentPage,
+        props.pageSize, props.name, props.withCheckins, props.withFacility,
+        facilityContext.facility]);
 
     return {
         error: error ? error : null,
