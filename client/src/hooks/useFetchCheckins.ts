@@ -67,25 +67,31 @@ const useFetchCheckins = (props: Props): State => {
                 withFacility: props.withFacility ? "" : undefined,
                 withGuest: props.withGuest ? "" : undefined,
             }
+            const url = `${CHECKINS_BASE}/${facilityContext.facility.id}${queryParameters(parameters)}`;
 
             try {
                 // Too many Checkins for a useful non-filtered fetch
-                if ((facilityContext.facility.id > 0) && (props.date || props.guestId)) {
-                    theCheckins = ToModel.CHECKINS((await Api.get(CHECKINS_BASE
-                        + `/${facilityContext.facility.id}${queryParameters(parameters)}`))
-                        .data);
+                const tryFetch = (facilityContext.facility.id > 0) && (props.date || props.guestId);
+                if (tryFetch) {
+                    theCheckins = ToModel.CHECKINS((await Api.get(url)).data);
                     logger.debug({
                         context: "useFetchCheckins.fetchCheckins",
                         facility: Abridgers.FACILITY(facilityContext.facility),
-                        parameters: parameters,
                         checkins: Abridgers.CHECKINS(theCheckins),
+                        url: url,
+                    });
+                } else {
+                    logger.debug({
+                        context: "useFetchCheckins.fetchCheckins",
+                        msg: "Skipped fetching Checkins",
+                        facility: Abridgers.FACILITY(facilityContext.facility),
                     });
                 }
             } catch (anError) {
                 setError(anError as Error);
                 ReportError("useFetchCheckins.fetchCheckins", anError, {
                     facility: Abridgers.FACILITY(facilityContext.facility),
-                    ...parameters,
+                    url: url,
                 });
             }
 

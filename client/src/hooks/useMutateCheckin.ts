@@ -59,15 +59,15 @@ const useMutateCheckin = (props: Props): State => {
         let assigned: Checkin = new Checkin();
         setError(null);
         setExecuting(true);
+        const url = `${CHECKINS_BASE}/${facilityContext.facility.id}/${props.checkin.id}/assignment`;
 
         try {
-            assigned = ToModel.CHECKIN((await Api.post(CHECKINS_BASE
-                + `/${facilityContext.facility.id}/${props.checkin.id}/assignment`, theAssign))
-                .data);
+            assigned = ToModel.CHECKIN((await Api.post(url, theAssign)).data);
             logger.debug({
                 context: "useMutateCheckin.assign",
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(assigned),
+                url: url,
             });
         } catch (anError) {
             setError(anError as Error);
@@ -75,6 +75,7 @@ const useMutateCheckin = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(props.checkin),
                 assign: theAssign,
+                url: url,
             });
         }
 
@@ -88,22 +89,23 @@ const useMutateCheckin = (props: Props): State => {
         let deassigned: Checkin = new Checkin();
         setError(null);
         setExecuting(true);
+        const url = `${CHECKINS_BASE}/${facilityContext.facility.id}/${props.checkin.id}/assignment`;
 
         try {
-            deassigned = ToModel.CHECKIN((await Api.delete(CHECKINS_BASE
-                + `/${facilityContext.facility.id}/${props.checkin.id}/assignment`))
-                .data);
+            deassigned = ToModel.CHECKIN((await Api.delete(url)).data);
             logger.debug({
                 context: "useMutateCheckin.deassign",
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(deassigned),
+                url: url,
             });
         } catch (anError) {
             setError(anError as Error);
             ReportError("useMutateCheckin.deassign", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(theCheckin),
-            })
+                url: url,
+            });
         }
 
         setExecuting(false);
@@ -115,17 +117,16 @@ const useMutateCheckin = (props: Props): State => {
 
         setError(null);
         setExecuting(true);
+        const url = `${CHECKINS_BASE}/${facilityContext.facility.id}/generate/${checkinDate}/${template.id}`;
 
         try {
-            /* checkins = */ToModel.CHECKINS((await Api.post(CHECKINS_BASE
-                + `/${facilityContext.facility.id}/generate/${checkinDate}/${template.id}`))
-                .data);
+            /* checkins = */ToModel.CHECKINS((await Api.post(url)).data);
             logger.debug({
                 context: "useMutateCheckin.generate",
                 checkinDate: checkinDate,
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 template: Abridgers.TEMPLATE(template),
-//                checkins: Abridgers.CHECKINS(checkins),
+                url: url,
             });
         } catch (anError) {
             setError(anError as Error);
@@ -133,6 +134,7 @@ const useMutateCheckin = (props: Props): State => {
                 checkinDate: checkinDate,
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 template: Abridgers.TEMPLATE(template),
+                url: url,
             });
         }
 
@@ -145,15 +147,15 @@ const useMutateCheckin = (props: Props): State => {
         let reassigned: Checkin = new Checkin();
         setError(null);
         setExecuting(true);
+        const url = `${CHECKINS_BASE}/${facilityContext.facility.id}/${props.checkin.id}/assignment`
 
         try {
-            reassigned = ToModel.CHECKIN((await Api.put(CHECKINS_BASE
-                + `/${facilityContext.facility.id}/${props.checkin.id}/assignment`, theAssign))
-                .data);
+            reassigned = ToModel.CHECKIN((await Api.put(url, theAssign)).data);
             logger.debug({
                 context: "useMutateCheckin.reassign",
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(reassigned),
+                url: url,
             });
         } catch (anError) {
             setError(anError as Error);
@@ -161,6 +163,7 @@ const useMutateCheckin = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(props.checkin),
                 assign: theAssign,
+                url: url,
             })
         }
 
@@ -174,26 +177,22 @@ const useMutateCheckin = (props: Props): State => {
         let updated: Checkin = new Checkin();
         setError(null);
         setExecuting(true);
+        const url = `${CHECKINS_BASE}/${facilityContext.facility.id}/${theCheckin.id}`;
 
         try {
-            updated = ToModel.CHECKIN((await Api.put(CHECKINS_BASE
-                + `/${facilityContext.facility.id}/${theCheckin.id}`, theCheckin))
-                .data);
+            updated = ToModel.CHECKIN((await Api.put(url, theCheckin)).data);
             logger.debug({
                 context: "useMutateCheckin.update",
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: updated,
+                url: url,
             });
         } catch (anError) {
-            logger.error({
-                context: "useMutateCheckin.update",
-                checkin: theCheckin,
-                error: anError,
-            });
             setError(anError as Error);
             ReportError("useMutateCheckin.update", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(theCheckin),
+                url: url,
             })
         }
 
