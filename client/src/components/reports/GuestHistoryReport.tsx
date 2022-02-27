@@ -14,7 +14,7 @@ import Row from "react-bootstrap/Row";
 
 import CheckinsTable from "../checkins/CheckinsTable";
 import FacilityContext from "../facilities/FacilityContext";
-import GuestsList from "../guests/GuestsList";
+import GuestOptions from "../guests/GuestOptions";
 import {HandleGuest} from "../../types";
 import useFetchCheckins from "../../hooks/useFetchCheckins";
 import Guest from "../../models/Guest";
@@ -65,11 +65,10 @@ const GuestHistoryReport = () => {
                     </Row>
 
                     <Row className="mb-3 ml-1 mr-1">
-                        <GuestsList
-                            canInsert={false}
-                            canRemove={false}
-                            canUpdate={false}
-                            handleSelect={handleGuest}
+                        <GuestOptions
+                            handleEdit={handleGuest}
+                            withActive={true}
+                            withCheckinDates={false}
                         />
                     </Row>
 

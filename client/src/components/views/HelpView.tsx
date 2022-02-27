@@ -32,16 +32,6 @@ const HelpView = () => {
     const [html, setHtml] = useState<string>("");
     const [markdown, setMarkdown] = useState<string>("");
 
-/*
-    const OPTIONS: ReactMarkdownOptions = {};
-
-    const RENDERERS: ReactMarkdown.Renderers = {
-        table: ({ children }) => (
-            <table style={{ backgroundColor: "red" }}>{children}</table>
-        )
-    }
-*/
-
     useEffect(() => {
 
         const theUrl = process.env.PUBLIC_URL + `/helptext/${params.resource}`;

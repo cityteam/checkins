@@ -15,9 +15,9 @@ import Row from "react-bootstrap/Row";
 
 // Internal Modules ----------------------------------------------------------
 
-import AssignForm from "../assigns/AssignForm";
-import GuestForm from "../guests/GuestForm";
-import GuestsList from "../guests/GuestsList";
+import AssignDetails from "../assigns/AssignDetails";
+import GuestDetails from "../guests/GuestDetails";
+import GuestOptions from "../guests/GuestOptions";
 import {HandleAssign, HandleCheckin, HandleGuest, OnAction} from "../../types";
 import useMutateCheckin from "../../hooks/useMutateCheckin";
 import useMutateGuest from "../../hooks/useMutateGuest";
@@ -72,6 +72,13 @@ const CheckinsUnassignedSubview = (props: Props) => {
             checkin: Abridgers.CHECKIN(assigned),
         });
         props.handleCompleted(assigned);
+    }
+
+    const handleBack: OnAction = () => {
+        logger.error({
+            context: "CheckinsUnassignedSubview.handleBack",
+            msg: "What do we do?"
+        });
     }
 
     const handleInsertedGuest: HandleGuest = async (theGuest) => {
@@ -157,11 +164,10 @@ const CheckinsUnassignedSubview = (props: Props) => {
                                 </Col>
                             </Row>
                             <Row className="ml-1 mr-1">
-                                <GuestForm
+                                <GuestDetails
                                     autoFocus
-                                    canRemove={false}
-                                    canSave={true}
                                     guest={new Guest({facilityId: -1, id: -1})}
+                                    handleBack={handleBack}
                                     handleInsert={handleInsertedGuest}
                                     handleRemove={handleRemovedGuest}
                                     handleUpdate={handleUpdatedGuest}
@@ -170,12 +176,9 @@ const CheckinsUnassignedSubview = (props: Props) => {
                         </>
                     ) : (
                         <>
-                            <GuestsList
-                                canInsert={true}
-                                canRemove={false}
-                                canUpdate={true}
+                            <GuestOptions
                                 handleAdd={handleNewGuest}
-                                handleSelect={handleSelectedGuest}
+                                handleEdit={handleSelectedGuest}
                                 withActive={false}
                                 withCheckinDates={true}
                             />
@@ -208,7 +211,7 @@ const CheckinsUnassignedSubview = (props: Props) => {
                         </h6>
                     ) : null }
                     {(assign) ? (
-                        <AssignForm
+                        <AssignDetails
                             assign={assign}
                             handleAssign={handleAssignedGuest}
                         />

@@ -7,7 +7,6 @@
 // External Modules ----------------------------------------------------------
 
 import React, {useContext, useEffect, useState} from "react";
-import Form from "react-bootstrap/Form";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -35,20 +34,17 @@ export const FacilitySelector = (props: Props) => {
     const facilityContext = useContext(FacilityContext);
 
     const [index, setIndex] = useState<number>(-1);
-    const [label] = useState<string>(props.label ? props.label : "Facility:");
-    const [name] = useState<string>(props.name ? props.name : "facilitySelector");
-    const [placeholder] = useState<string>(props.placeholder ? props.placeholder : "(Select Facility)");
 
     useEffect(() => {
         logger.debug({
             context: "FacilitySelector.useEffect",
-            facilities: facilityContext.facilities,
+            facilities: Abridgers.FACILITIES(facilityContext.facilities),
         });
-        // Special case for this selector
+        // Special case for this selector when a Facility was previously selected
         let newIndex = -1;
-        facilityContext.facilities.forEach((facility, theIndex) => {
+        facilityContext.facilities.forEach((facility, fi) => {
             if (facility.id === facilityContext.facility.id) {
-                newIndex = theIndex;
+                newIndex = fi;
             }
         });
         setIndex(newIndex);
@@ -70,27 +66,28 @@ export const FacilitySelector = (props: Props) => {
     }
 
     return (
-        <Form id="FacilitySelector" inline>
-            <Form.Label className="mr-2" htmlFor="facilitySelector">
-                {label}
-            </Form.Label>
-            <Form.Control
-                as="select"
-                autoFocus={props.autoFocus ? props.autoFocus : undefined}
-                disabled={props.disabled ? props.disabled : undefined}
-                id={name}
+        <div className="form-inline">
+            <label className="me-2" htmlFor={props.name ? props.name : "facilitySelector"}>
+                {props.label ? props.label : "Facility:"}
+            </label>
+            <select
+                autoFocus={(props.autoFocus !== undefined) ? props.autoFocus : undefined}
+                className="form-control-sm"
+                disabled={(props.disabled !== undefined) ? props.disabled : undefined}
+                id={props.name ? props.name : "facilitySelector"}
                 onChange={onChange}
-                size="sm"
                 value={index}
             >
-                <option key="-1" value="-1">{placeholder}</option>
+                <option key="-1" value="-1">
+                    {props.placeholder ? props.placeholder : "(Select Facility)"}
+                </option>
                 {facilityContext.facilities.map((facility, fi) => (
                     <option key={fi} value={fi}>
                         {facility.name}
                     </option>
                 ))}
-            </Form.Control>
-        </Form>
+            </select>
+        </div>
     )
 
 }

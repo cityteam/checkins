@@ -6,7 +6,6 @@
 // External Modules ----------------------------------------------------------
 
 import React, {useEffect, useState} from "react";
-import Form from "react-bootstrap/Form";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -31,10 +30,7 @@ export interface Props {
 
 const TemplateSelector = (props: Props) => {
 
-    const [index, setIndex] = useState<number>(-1); // Template index if >= 0
-    const [label] = useState<string>(props.label ? props.label : "Template:");
-    const [name] = useState<string>(props.name ? props.name : "templateSelector");
-    const [placeholder] = useState<string>(props.placeholder ? props.placeholder : "(Select Template)");
+    const [index, setIndex] = useState<number>(-1);
 
     useEffect(() => {
         logger.debug({
@@ -58,27 +54,28 @@ const TemplateSelector = (props: Props) => {
     }
 
     return (
-        <Form id="TemplateSelector" inline>
-            <Form.Label className="mr-2" htmlFor={name}>
-                {label}
-            </Form.Label>
-            <Form.Control
-                as="select"
-                autoFocus={props.autoFocus ? props.autoFocus : undefined}
-                disabled={props.disabled ? props.disabled : undefined}
-                id={name}
+        <div className="form-inline">
+            <label className="me-2" htmlFor={props.name ? props.name : "templateSelector"}>
+                {props.label ? props.label : "Template:"}
+            </label>
+            <select
+                autoFocus={(props.autoFocus !== undefined) ? props.autoFocus : undefined}
+                className="form-control-sm"
+                disabled={(props.disabled !== undefined) ? props.disabled : undefined}
+                id={props.name ? props.name : "templateSelector"}
                 onChange={onChange}
-                size="sm"
                 value={index}
             >
-                <option key="-1" value="-1">{placeholder}</option>
+                <option key="-1" value="-1">
+                    {props.placeholder ? props.placeholder : "(Select Template)"}
+                </option>
                 {props.templates.map((template, ti) => (
                     <option key={ti} value={ti}>
                         {template.name}
                     </option>
                 ))}
-            </Form.Control>
-        </Form>
+            </select>
+        </div>
     )
 
 }

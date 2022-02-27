@@ -1,8 +1,6 @@
-// FacilityDetails ------------------------------------------------------------------
+// FacilityDetails -----------------------------------------------------------
 
 // Detail editing form for Facility objects.
-
-// NOTE - style classes: text-left, text-right
 
 // External Modules ----------------------------------------------------------
 
@@ -154,7 +152,7 @@ const FacilityDetails = (props: Props) => {
             <Container id="FacilityDetails">
 
                 <Row className="mb-3">
-                    <Col className="text-left">
+                    <Col className="text-start">
                         <strong>
                             {(adding)? (
                                 <span>Add New</span>
@@ -164,7 +162,7 @@ const FacilityDetails = (props: Props) => {
                             &nbsp;Facility
                         </strong>
                     </Col>
-                    <Col className="text-right">
+                    <Col className="text-end">
                         <Button
                             onClick={() => props.handleBack()}
                             size="sm"
@@ -260,7 +258,7 @@ const FacilityDetails = (props: Props) => {
                     </Row>
 
                     <Row className="mb-3">
-                        <Col className="text-left">
+                        <Col className="text-start">
                             <Button
                                 disabled={!props.handleInsert && !props.handleUpdate}
                                 size="sm"
@@ -270,7 +268,7 @@ const FacilityDetails = (props: Props) => {
                                 Save
                             </Button>
                         </Col>
-                        <Col className="text-right">
+                        <Col className="text-end">
                             <Button
                                 disabled={adding || !props.handleRemove}
                                 onClick={onConfirm}

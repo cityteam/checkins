@@ -5,7 +5,9 @@
 // External Modules ----------------------------------------------------------
 
 import React, {useEffect, useState} from "react";
+import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -14,56 +16,62 @@ import {HandleValue, OnChangeInput, OnKeyDown} from "../../types";
 // Incoming Properties -------------------------------------------------------
 
 export interface Props {
-    autoFocus?: boolean;            // Should element receive autoFocus? [false]
-    disabled?: boolean;             // Should element be disabled? [false]
-    handleChange?: HandleValue;     // Handle (value) on each change [no handler]
-    handleValue?: HandleValue;      // Handle (value) on enter [no handler]
-    htmlSize?: number;              // Number of characters to show [50]
-    initialValue?: string;          // Initial value to display [""]
-    label?: string;                 // Element label [none]
-    placeholder?: string;           // Placeholder text [none]
+    autoFocus?: boolean;                // Should element receive autoFocus? [false]
+    disabled?: boolean;                 // Should element be disabled? [false]
+    handleChange?: HandleValue;         // Handle value on each change [no handler]
+    handleValue?: HandleValue;          // Handle value on enter [no handler]
+    htmlSize?: number;                  // Number of characters to show [no setting]
+    label?: string;                     // Element label [Search For:]
+    name?: string;                      // Input control name [searchBar]
+    placeholder?: string;               // Placeholder text [none]
+    value?: string;                     // Initial value to display [""]
 }
 
 // Component Details ---------------------------------------------------------
 
 const SearchBar = (props: Props) => {
 
-    const [currentValue, setCurrentValue]
-        = useState<string>(props.initialValue ? props.initialValue : "");
+    const [name] = useState<string>(props.name ? props.name : "searchBar");
+    const [value, setValue] = useState<string>(props.value ? props.value : "");
 
     useEffect(() => {
-        // Force rerender if initialValue changes
-    }, [currentValue, props.initialValue]);
+        // Force rerender if props.value changes
+    }, [value, props.value]);
 
-    const onChange: OnChangeInput = (event): void => {
+    const handleChange: OnChangeInput = (event): void => {
         const newValue: string = event.target.value;
-        setCurrentValue(newValue);
+        setValue(newValue);
         if (props.handleChange) {
             props.handleChange(newValue);
         }
     }
 
-    const onKeyDown: OnKeyDown = (event): void => {
+    const handleKeyDown: OnKeyDown = (event): void => {
         if (event.key === "Enter" && props.handleValue) {
-            props.handleValue(currentValue);
+            props.handleValue(value);
         }
     }
 
     return (
-        <Form inline>
-            <Form.Label className="mr-2" htmlFor="searchBar">
-                {props.label ? props.label : undefined}
-            </Form.Label>
-            <Form.Control
-                autoFocus={props.autoFocus ? props.autoFocus : undefined}
-                disabled={props.disabled ? props.disabled : undefined}
-                htmlSize={props.htmlSize ? props.htmlSize : 50}
-                id="searchBar"
-                onChange={onChange}
-                onKeyDown={onKeyDown}
-                placeholder={props.placeholder ? props.placeholder : undefined}
-                value={currentValue}
-            />
+        <Form className="align-items-center">
+            <Form.Group as={Row} id={`${name}Group`}>
+                <Form.Label column htmlFor={name} xs="auto">
+                    {props.label ? props.label : "Search For:"}
+                </Form.Label>
+                <Col xs="auto">
+                    <Form.Control
+                        autoFocus={props.autoFocus ? props.autoFocus : undefined}
+                        disabled={props.disabled ? props.disabled : undefined}
+                        htmlSize={props.htmlSize ? props.htmlSize : undefined}
+                        id={name}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
+                        placeholder={props.placeholder ? props.placeholder : undefined}
+                        size="sm"
+                        value={value}
+                    />
+                </Col>
+            </Form.Group>
         </Form>
     )
 

@@ -5,7 +5,6 @@
 // External Modules ----------------------------------------------------------
 
 import React, {useEffect, useState} from "react";
-import Form from "react-bootstrap/Form";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -20,7 +19,7 @@ export interface Props {
     autoFocus?: boolean;                // Should element receive autoFocus? [false]
     checkins: Checkin[];                // Checkins to be offered
     disabled?: boolean;                 // Should element be disabled? [false]
-    handleCheckin: HandleCheckin;       // Handle Checkin selection [no handler]
+    handleCheckin?: HandleCheckin;      // Handle Checkin selection [no handler]
     label?: string;                     // Element label [Checkin:]
     name?: string;                      // Input control name [checkinSelector]
     placeholder?: string;               // Placeholder option text [(Select Checkin)]
@@ -31,14 +30,11 @@ export interface Props {
 const CheckinSelector = (props: Props) => {
 
     const [index, setIndex] = useState<number>(-1);
-    const [label] = useState<string>(props.label ? props.label : "Checkin:");
-    const [name] = useState<string>(props.name ? props.name : "checkinSelector");
-    const [placeholder] = useState<string>(props.placeholder ? props.placeholder : "(Select Checkin)");
 
     useEffect(() => {
         logger.debug({
             context: "CheckinSelector.useEffect",
-            checkins: props.checkins,
+            checkins: Abridgers.CHECKINS(props.checkins),
         });
     }, [props.checkins]);
 
@@ -51,33 +47,34 @@ const CheckinSelector = (props: Props) => {
             checkin: Abridgers.CHECKIN(theCheckin),
         });
         setIndex(theIndex);
-        if (theIndex >= 0) {
+        if ((theIndex >= 0) && props.handleCheckin) {
             props.handleCheckin(theCheckin);
         }
     }
 
     return(
-        <Form id="CheckinSelector" inline>
-            <Form.Label className="mr-2" htmlFor={name}>
-                {label}
-            </Form.Label>
-            <Form.Control
-                as="select"
-                autoFocus={props.autoFocus ? props.autoFocus : undefined}
-                disabled={props.disabled ? props.disabled : undefined}
-                id={name}
+        <div className="form-inline">
+            <label className="me-2" htmlFor={props.name ? props.name : "checkinSelector"}>
+                {props.label ? props.label : "Checkin:"}
+            </label>
+            <select
+                autoFocus={(props.autoFocus !== undefined) ? props.autoFocus : undefined}
+                className="form-control-sm"
+                disabled={(props.disabled !== undefined) ? props.disabled : undefined}
+                id={props.name ? props.name : "checkinSelector"}
                 onChange={onChange}
-                size="sm"
                 value={index}
             >
-                <option key="-1" value="-1">{placeholder}</option>
+                <option key="-1" value="-1">
+                    {props.placeholder ? props.placeholder : "(Select Checkin)"}
+                </option>
                 {props.checkins.map((checkin, ci) => (
                     <option key={ci} value={ci}>
                         {checkin.matNumber}{checkin.features}
                     </option>
                 ))}
-            </Form.Control>
-        </Form>
+            </select>
+        </div>
     )
 
 }

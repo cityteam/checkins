@@ -9,7 +9,6 @@
 
 import React, {useEffect, useState} from "react";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -96,32 +95,30 @@ const MonthSelector = (props: Props) => {
     }
 
     return (
-        <Form inline id="MonthSelector">
-            <Form.Label className="mr-2" htmlFor={name}>
+        <div className="form-inline">
+            <label className="me-2" htmlFor={name}>
                 {label}
-            </Form.Label>
-            <Form.Control
+            </label>
+            <input
                 autoFocus={props.autoFocus ? props.autoFocus : undefined}
                 disabled={props.disabled ? props.disabled : undefined}
-                htmlSize={7}
                 id={name}
                 max={props.max ? props.max : undefined}
                 min={props.min ? props.min : undefined}
                 onChange={onChange}
                 onKeyDown={onKeyDown}
-                size="sm"
                 type={type}
                 value={value}
             />
             {(props.actionLabel) ? (
                 <Button
-                    className="ml-2"
+                    className="ms-2"
                     onClick={onClick}
                     size="sm"
                     variant={props.actionVariant ? props.actionVariant : "success"}
                 >{props.actionLabel}</Button>
             ) : null}
-        </Form>
+        </div>
     )
 
 }

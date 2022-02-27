@@ -25,9 +25,9 @@ import MonthlySummaryReport from "./components/reports/MonthlySummaryReport";
 import TemplateSegment from "./components/templates/TemplateSegment";
 import UserSegment from "./components/users/UserSegment";
 import DatabaseView from "./components/views/DatabaseView";
-import HelpView from "./components/views/HelpView";
+// NOTE - import HelpView from "./components/views/HelpView";
 import HomeView from "./components/views/HomeView";
-import OpenApiView from "./components/views/OpenApiView";
+// NOTE - import OpenApiView from "./components/views/OpenApiView";
 import {FacilityContextProvider} from "./components/facilities/FacilityContext";
 import {LoginContextProvider} from "./components/login/LoginContext";
 
@@ -96,7 +96,8 @@ function App() {
               <LinkContainer to="/openapi">
                 <NavItem className="nav-link">OpenAPI Docs</NavItem>
               </LinkContainer>
-*/}
+ */}
+{/*
               <NavDropdown id="help" title="Help">
                 <LinkContainer to="/help/regular-user.html">
                   <NavDropdown.Item>Regular User</NavDropdown.Item>
@@ -104,28 +105,23 @@ function App() {
                 <LinkContainer to="/help/CHEATSHEET.html">
                   <NavDropdown.Item>Configuration Settings Page</NavDropdown.Item>
                 </LinkContainer>
-{/*
-                <LinkContainer to="/help/regular-user.md">
-                  <NavDropdown.Item>Regular User (MD)</NavDropdown.Item>
-                </LinkContainer>
-                <LinkContainer to="/help/admin-user.md">
-                  <NavDropdown.Item>Administrative User</NavDropdown.Item>
-                </LinkContainer>
-*/}
               </NavDropdown>
+*/}
             </Nav>
           </Navbar.Collapse>
 
           <LoggedInUser/>
-          <span className="mr-4"/>
+          <span className="me-4"/>
           <FacilitySelector/>
 
         </Navbar>
 
         <Switch>
+{/*
           <Route exact path="/openapi">
             <OpenApiView/>
           </Route>
+*/}
           <Route exact path="/checkins">
             <CheckinsView/>
           </Route>
@@ -150,9 +146,11 @@ function App() {
           <Route exact path="/users">
             <UserSegment/>
           </Route>
+{/*
           <Route path="/help/:resource">
             <HelpView/>
           </Route>
+*/}
           <Route path="/">
             <HomeView/>
           </Route>

@@ -17,7 +17,7 @@ import Row from "react-bootstrap/Row";
 // Internal Modules ----------------------------------------------------------
 
 import CheckinSelector from "./CheckinSelector";
-import AssignForm from "../assigns/AssignForm";
+import AssignDetails from "../assigns/AssignDetails";
 import {HandleAction, HandleAssign, HandleCheckin, OnAction} from "../../types";
 import useFetchCheckins from "../../hooks/useFetchCheckins";
 import useMutateCheckin from "../../hooks/useMutateCheckin";
@@ -187,7 +187,7 @@ const CheckinsAssignedSubview = (props: Props) => {
                         </h6>
                         <hr className="mb-3"/>
                         <Row>
-                            <AssignForm
+                            <AssignDetails
                                 assign={configureAssign(props.checkin)}
                                 handleAssign={handleAssign}
                             />
