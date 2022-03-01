@@ -26,7 +26,7 @@ export interface Props {
 
 // Component Details ---------------------------------------------------------
 
-const CheckBoxComponent = (props: Props) => {
+const CheckBox = (props: Props) => {
 
     const [name] = useState<string>(props.name ? props.name : "checkBox");
     const [value, setValue] = useState<boolean>(props.value !== undefined ? props.value : false);
@@ -63,4 +63,4 @@ const CheckBoxComponent = (props: Props) => {
 
 }
 
-export default CheckBoxComponent;
+export default CheckBox;

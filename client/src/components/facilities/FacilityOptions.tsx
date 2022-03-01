@@ -14,9 +14,9 @@ import Table from "react-bootstrap/Table";
 
 // Internal Modules ----------------------------------------------------------
 
-import CheckBoxComponent from "../general/CheckBoxComponent";
+import CheckBox from "../general/CheckBox";
 // NOTE - import LoadingProgress from "../general/LoadingProgress";
-import PaginationComponent from "../general/PaginationComponent";
+import Pagination from "../general/Pagination";
 import SearchBar from "../general/SearchBar";
 import FacilityContext from "./FacilityContext";
 import LoginContext from "../login/LoginContext";
@@ -131,7 +131,7 @@ const FacilityOptions = (props: Props) => {
                     />
                 </Col>
                 <Col>
-                    <CheckBoxComponent
+                    <CheckBox
                         handleChange={handleActive}
                         label="Active Facilities Only?"
                         name="activeOnly"
@@ -139,7 +139,7 @@ const FacilityOptions = (props: Props) => {
                     />
                 </Col>
                 <Col className="text-end">
-                    <PaginationComponent
+                    <Pagination
                         currentPage={currentPage}
                         handleNext={handleNext}
                         handlePrevious={handlePrevious}

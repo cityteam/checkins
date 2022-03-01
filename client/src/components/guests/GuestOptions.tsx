@@ -17,9 +17,9 @@ import Table from "react-bootstrap/Table";
 // Internal Modules ----------------------------------------------------------
 
 import FacilityContext from "../facilities/FacilityContext";
-import CheckBoxComponent from "../general/CheckBoxComponent";
+import CheckBox from "../general/CheckBox";
 // NOTE - import LoadingProgress from "../general/LoadingProgress";
-import PaginationComponent from "../general/PaginationComponent";
+import Pagination from "../general/Pagination";
 import SearchBar from "../general/SearchBar";
 import {HandleAction, HandleBoolean, HandleGuest, HandleValue} from "../../types";
 import useFetchGuests from "../../hooks/useFetchGuests";
@@ -158,7 +158,7 @@ const GuestOptions = (props: Props) => {
                 </Col>
                 {withActive ? (
                     <Col>
-                        <CheckBoxComponent
+                        <CheckBox
                             handleChange={handleActive}
                             label="Active Guests Only?"
                             name="activeOnly"
@@ -168,7 +168,7 @@ const GuestOptions = (props: Props) => {
                 ) : null}
                 {withCheckinDates ? (
                     <Col>
-                        <CheckBoxComponent
+                        <CheckBox
                             handleChange={handleCheckinDates}
                             label="With Checkin Dates?"
                             name="checkinDates"
@@ -177,7 +177,7 @@ const GuestOptions = (props: Props) => {
                     </Col>
                 ) : null}
                 <Col className="text-end">
-                    <PaginationComponent
+                    <Pagination
                         currentPage={currentPage}
                         lastPage={(fetchGuests.guests.length === 0) ||
                             (fetchGuests.guests.length < pageSize)}

@@ -15,9 +15,9 @@ import Table from "react-bootstrap/Table";
 // Internal Modules ----------------------------------------------------------
 
 import FacilityContext from "../facilities/FacilityContext";
-import CheckBoxComponent from "../general/CheckBoxComponent";
+import CheckBox from "../general/CheckBox";
 // NOTE - import LoadingProgress from "../general/LoadingProgress";
-import PaginationComponent from "../general/PaginationComponent";
+import Pagination from "../general/Pagination";
 import SearchBar from "../general/SearchBar";
 import {HandleAction, HandleBoolean, HandleTemplate, HandleValue} from "../../types";
 import useFetchTemplates from "../../hooks/useFetchTemplates";
@@ -123,7 +123,7 @@ const TemplateOptions = (props: Props) => {
                     />
                 </Col>
                 <Col>
-                    <CheckBoxComponent
+                    <CheckBox
                         handleChange={handleActive}
                         label="Active Templates Only?"
                         name="activeOnly"
@@ -131,7 +131,7 @@ const TemplateOptions = (props: Props) => {
                     />
                 </Col>
                 <Col className="text-end">
-                    <PaginationComponent
+                    <Pagination
                         currentPage={currentPage}
                         handleNext={handleNext}
                         handlePrevious={handlePrevious}

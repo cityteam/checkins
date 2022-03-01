@@ -4,52 +4,50 @@
 
 // External Modules ----------------------------------------------------------
 
-import React from "react";
+import React, {useState} from "react";
 import Button from "react-bootstrap/Button";
 
 // Internal Modules ----------------------------------------------------------
 
+import {HandleAction} from "../../types";
+
 // Incoming Properties -------------------------------------------------------
 
 export interface Props {
-    currentPage: number;            // One-relative current page number [1]
-    lastPage: boolean;              // Is this the last page? [false]
-    onNext?: () => void;            // Handle () for next clicked [no handler]
-    onPrevious?: () => void;        // Handle () for previous clicked [no handler]
-    size?: "lg" | "sm";             // Button size [sm]
-    variant?: string;               // Button variant style [outline-secondary]
+    currentPage: number;                // One-relative current page number [1]
+    handleNext?: HandleAction;          // Handle "next" clicked [no handler]
+    handlePrevious?: HandleAction;      // Handle () for previous clicked [no handler]
+    lastPage: boolean;                  // Is this the last page? [false]
+    variant?: string;                   // Button variant style [outline-secondary]
 }
 
 // Component Details ---------------------------------------------------------
 
-const DEFAULT_VARIANT = "outline-secondary";
-
 const Pagination = (props: Props) => {
+
+    const [variant] = useState<string>(props.variant ? props.variant : "outline-secondary");
 
     return (
         <>
             <Button
-                className="mr-1"
+                className="me-1"
                 disabled={props.currentPage === 1}
-                onClick={props.onPrevious ? props.onPrevious : undefined}
-                size={props.size ? props.size : "sm"}
-                variant={props.variant ? props.variant : DEFAULT_VARIANT}
+                onClick={props.handlePrevious ? props.handlePrevious : undefined}
+                variant={variant}
             >
                 &lt;
             </Button>
             <Button
-                className="mr-1"
+                className="me-1"
                 disabled
-                size={props.size ? props.size : "sm"}
-                variant={props.variant ? props.variant : DEFAULT_VARIANT}
+                variant={variant}
             >
                 {props.currentPage}
             </Button>
             <Button
                 disabled={props.lastPage}
-                onClick={props.onNext ? props.onNext : undefined}
-                size={props.size ? props.size : "sm"}
-                variant={props.variant ? props.variant : DEFAULT_VARIANT}
+                onClick={props.handleNext ? props.handleNext : undefined}
+                variant={variant}
             >
                 &gt;
             </Button>
