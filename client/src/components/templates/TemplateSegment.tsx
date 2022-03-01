@@ -70,6 +70,7 @@ const TemplateSegment = () => {
             socketMats: null,
             workMats: null,
         }));
+        setView(View.DETAILS);
     }
 
     // Handle return from View.DETAILS to redisplay View.OPTIONS

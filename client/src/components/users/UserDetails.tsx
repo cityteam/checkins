@@ -2,8 +2,6 @@
 
 // Detail editing form for User objects.
 
-// NOTE - style classes: text-left, text-right
-
 // External Modules ----------------------------------------------------------
 
 import React, {useState} from "react";

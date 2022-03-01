@@ -8,7 +8,6 @@
 // External Modules ----------------------------------------------------------
 
 import React, {useContext, useEffect, useState} from "react";
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
@@ -24,7 +23,6 @@ import useFetchTemplates from "../../hooks/useFetchTemplates";
 import useMutateCheckin from "../../hooks/useMutateCheckin";
 import Checkin from "../../models/Checkin";
 import Summary from "../../models/Summary";
-import Template from "../../models/Template";
 import * as Abridgers from"../../util/Abridgers";
 import logger from "../../util/ClientLogger";
 
@@ -43,7 +41,6 @@ const CheckinsListSubview = (props: Props) => {
 
     const [checkin] = useState<Checkin>(new Checkin());
     const [summary, setSummary] = useState<Summary>(new Summary());
-    const [template, setTemplate] = useState<Template>(new Template());
 
     const fetchCheckins = useFetchCheckins({
         currentPage: 1,
@@ -77,22 +74,14 @@ const CheckinsListSubview = (props: Props) => {
 
     }, [facilityContext.facility.id, props.checkinDate, fetchCheckins.checkins]);
 
-    const handleGenerate = async () => {
-        logger.debug({
+    const handleGenerate: HandleTemplate = async (theTemplate) => {
+        logger.info({
             context: "CheckinsListSubview.handleGenerate",
             checkinDate: props.checkinDate,
-            template: Abridgers.TEMPLATE(template),
-        });
-        mutateCheckin.generate(props.checkinDate, template);
-        fetchCheckins.refresh();
-    }
-
-    const handleTemplate: HandleTemplate = (theTemplate) => {
-        logger.trace({
-            context: "CheckinsListSubview.handleTemplate",
             template: Abridgers.TEMPLATE(theTemplate),
         });
-        setTemplate(theTemplate);
+        mutateCheckin.generate(props.checkinDate, theTemplate);
+        fetchCheckins.refresh();
     }
 
     return (
@@ -102,21 +91,12 @@ const CheckinsListSubview = (props: Props) => {
             {(facilityContext.facility.id > 0) && (fetchCheckins.checkins.length === 0) ? (
                 <Row className="mb-3 text-center">
                     <TemplateSelector
-                        handleTemplate={handleTemplate}
+                        actionHelp="Select an active Template to generate mats for Checkins"
+                        actionLabel="Generate"
+                        handleAction={handleGenerate}
                         label="Select Template:"
                         templates={fetchTemplates.templates}
                     />
-                    <span className="ml-2 mr-2">
-                        <Button
-                            disabled={template.id < 0}
-                            onClick={handleGenerate}
-                            size="sm"
-                            variant="primary"
-                        >Generate</Button>
-                    </span>
-                    <span>
-                        (Select an active Template to generate mats for Checkins)
-                    </span>
                 </Row>
             ) : null}
 

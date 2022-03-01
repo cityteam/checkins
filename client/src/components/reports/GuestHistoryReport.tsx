@@ -57,18 +57,19 @@ const GuestHistoryReport = () => {
             {(!guest) ? (
                 <>
 
-                    <Row className="mb-3 ml-1 mr-1">
+                    <Row className="mb-3 ms-1 me-1">
                         <Col className="text-left">
                             <span><strong>Select Guest for Facility&nbsp;</strong></span>
                             <span className="text-info"><strong>{facilityContext.facility.name}</strong></span>
                         </Col>
                     </Row>
 
-                    <Row className="mb-3 ml-1 mr-1">
+                    <Row className="mb-3 ms-1 me-1">
                         <GuestOptions
                             handleEdit={handleGuest}
                             withActive={true}
                             withCheckinDates={false}
+                            withHeading={false}
                         />
                     </Row>
 
@@ -79,14 +80,14 @@ const GuestHistoryReport = () => {
             {(guest) ? (
                 <>
 
-                    <Row className="mb-3 ml-1 mr-1">
-                        <Col className="col-10 text-left">
+                    <Row className="mb-3 ms-1 me-1">
+                        <Col className="col-10 text-start">
                             <span><strong>History for Guest&nbsp;</strong></span>
                             <span className="text-info"><strong>{guest.firstName} {guest.lastName}&nbsp;</strong></span>
                             <span><strong>at Facility&nbsp;</strong></span>
                             <span className="text-info"><strong>{facilityContext.facility.name}</strong></span>
                         </Col>
-                        <Col className="col-2 text-right">
+                        <Col className="col-2 text-end">
                             <Button
                                 onClick={() => setGuest(null)}
                                 size="sm"
@@ -96,7 +97,7 @@ const GuestHistoryReport = () => {
                         </Col>
                     </Row>
 
-                    <Row className="mb-3 ml-1 mr-1">
+                    <Row className="mb-3 ms-1 me-1">
                         <CheckinsTable
                             checkins={fetchCheckins.checkins}
                             withCheckinDate={true}

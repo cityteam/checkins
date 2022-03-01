@@ -126,7 +126,7 @@ const CheckinsUnassignedSubview = (props: Props) => {
             {/* Overall Header and Back Link */}
             <Row className="mb-3">
                 <Col/>
-                <Col className="text-right">
+                <Col className="text-end">
                     <Button
                         onClick={() => props.handleCompleted(props.checkin)}
                         size="sm"
@@ -141,13 +141,13 @@ const CheckinsUnassignedSubview = (props: Props) => {
             <Row className="mb-3">
 
                 {/* Step 1 ----------------------------------------------- */}
-                <Col className="col-9 bg-light mb-1">
+                <Col className="col-8 bg-light mb-1">
 
                     <h6 className="text-center">
                         Step 1: Select or Add A Guest To Assign
                     </h6>
                     <hr/>
-                    <h6 className={"text-center"}>
+                    <h6 className={"mb-3 text-center"}>
                         Mat Number:&nbsp;
                         <span className="text-info">
                             {props.checkin.matNumber}{props.checkin.features}
@@ -156,14 +156,7 @@ const CheckinsUnassignedSubview = (props: Props) => {
 
                     {(adding) ? (
                         <>
-                            <Row className="ml-1 mr-1 mb-3">
-                                <Col className="text-left">
-                                    <strong>
-                                        Adding New Guest
-                                    </strong>
-                                </Col>
-                            </Row>
-                            <Row className="ml-1 mr-1">
+                            <Row className="ms-1 me-1">
                                 <GuestDetails
                                     autoFocus
                                     guest={new Guest({facilityId: -1, id: -1})}
@@ -181,23 +174,15 @@ const CheckinsUnassignedSubview = (props: Props) => {
                                 handleEdit={handleSelectedGuest}
                                 withActive={false}
                                 withCheckinDates={true}
+                                withHeading={false}
                             />
-                            <Row className="ml-4 mb-3">
-                                <Button
-                                    onClick={() => setAdding(true)}
-                                    size="sm"
-                                    variant="primary"
-                                >
-                                    Add
-                                </Button>
-                            </Row>
                         </>
                     )}
 
                 </Col>
 
                 {/* Step 2 ----------------------------------------------- */}
-                <Col className="col-3 mb-1">
+                <Col className="col mb-1">
                     <h6 className={"text-center"}>
                         Step 2: Complete Assignment Details
                     </h6>

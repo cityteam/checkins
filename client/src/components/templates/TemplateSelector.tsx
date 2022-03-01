@@ -3,13 +3,18 @@
 // Selector drop-down to choose from the active Templates for the current
 // Facility the user wishes to interact with.
 
+// Implementation Note:  If an actionLabel is specified, the corresponding
+// button must be clicked in order to trigger handleTemplate processing.
+// Otherwise, just changing the selection potion triggers this.
+
 // External Modules ----------------------------------------------------------
 
 import React, {useEffect, useState} from "react";
+import Button from "react-bootstrap/button";
 
 // Internal Modules ----------------------------------------------------------
 
-import {HandleTemplate, OnChangeSelect} from "../../types";
+import {HandleAction, HandleTemplate, OnChangeSelect} from "../../types";
 import Template from "../../models/Template";
 import * as Abridgers from "../../util/Abridgers";
 import logger from "../../util/ClientLogger";
@@ -17,9 +22,13 @@ import logger from "../../util/ClientLogger";
 // Incoming Properties -------------------------------------------------------
 
 export interface Props {
+    actionLabel?: string;               // Label for action button [no button]
+    actionHelp?: string;                // Text after action button if any [no text]
+    actionVariant?: string;             // Variant for action button [success]
     autoFocus?: boolean;                // Should element receive autoFocus? [false]
     disabled?: boolean;                 // Should element be disabled? [false]
-    handleTemplate?: HandleTemplate;    // Handle Template selection [No handler]
+    handleAction?: HandleTemplate;      // Handle action button click (or selection if no actionLabel) [no handler]
+    handleTemplate?: HandleTemplate;    // Handle Template selection [no handler]
     label?: string;                     // Element label [Template:]
     name?: string;                      // Input control name [templateSelector]
     placeholder?: string;               // Placeholder option text [(Select Template)]
@@ -39,17 +48,23 @@ const TemplateSelector = (props: Props) => {
         });
     }, [props.templates]);
 
+    const handleAction: HandleAction = async () => {
+        if ((index >= 0) && props.handleAction) {
+            props.handleAction(props.templates[index]);
+        }
+    }
+
     const onChange: OnChangeSelect = (event) => {
         const theIndex = parseInt(event.target.value, 10);
         const theTemplate = (theIndex >= 0) ? props.templates[theIndex] : new Template();
-        logger.trace({
-            context: "TemplateSelector.onChange",
-            index: theIndex,
-            template: Abridgers.TEMPLATE(theTemplate),
-        });
         setIndex(theIndex);
-        if ((theIndex >= 0) && props.handleTemplate) {
-            props.handleTemplate(theTemplate);
+        if (theIndex >= 0) {
+            if (props.handleTemplate) {
+                props.handleTemplate(theTemplate);
+            }
+            if (!props.actionLabel && props.handleAction) {
+                props.handleAction(theTemplate);
+            }
         }
     }
 
@@ -60,7 +75,7 @@ const TemplateSelector = (props: Props) => {
             </label>
             <select
                 autoFocus={(props.autoFocus !== undefined) ? props.autoFocus : undefined}
-                className="form-control-sm"
+                className="form-control-sm me-2"
                 disabled={(props.disabled !== undefined) ? props.disabled : undefined}
                 id={props.name ? props.name : "templateSelector"}
                 onChange={onChange}
@@ -75,6 +90,16 @@ const TemplateSelector = (props: Props) => {
                     </option>
                 ))}
             </select>
+            {(props.actionLabel) ? (
+                <Button
+                    className="me-2"
+                    disabled={index < 0}
+                    onClick={handleAction}
+                >{props.actionLabel}</Button>
+            ) : null }
+            {(props.actionHelp) ? (
+                <span>{props.actionHelp}</span>
+            ) : null }
         </div>
     )
 

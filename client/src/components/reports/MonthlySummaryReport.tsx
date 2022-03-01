@@ -72,12 +72,12 @@ const MonthlySummaryReport = () => {
     return (
         <Container fluid id="MonthlySummaryReport">
 
-            <Row className="mb-3 ml-1 mr-1">
-                <Col className="text-left">
+            <Row className="mb-3 ms-1 me-1">
+                <Col className="text-start">
                     <span><strong>Monthly Summary Report for Facility&nbsp;</strong></span>
                     <span className="text-info"><strong>{facilityContext.facility.name}</strong></span>
                 </Col>
-                <span className="text-right">
+                <span className="text-end">
                     <MonthSelector
                         autoFocus
                         handleMonth={handleReportMonth}
@@ -87,14 +87,14 @@ const MonthlySummaryReport = () => {
                 </span>
             </Row>
 
-            <Row className="ml-1 mr-1">
+            <Row className="ms-1 me-1">
                 <SummariesTable
                     summaries={fetchSummaries.summaries}
                     withCheckinDate
                 />
             </Row>
 
-            <Row className="ml-1 mr-1">
+            <Row className="ms-1 me-1">
                 <SummariesTable
                     summaries={[totals]}
                     title={title}

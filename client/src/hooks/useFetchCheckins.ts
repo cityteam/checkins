@@ -73,7 +73,14 @@ const useFetchCheckins = (props: Props): State => {
                 // Too many Checkins for a useful non-filtered fetch
                 const tryFetch = (facilityContext.facility.id > 0) && (props.date || props.guestId);
                 if (tryFetch) {
-                    theCheckins = ToModel.CHECKINS((await Api.get(url)).data);
+                    // Disable caching to always get the latest data
+                    theCheckins = ToModel.CHECKINS((await Api.get(url, {
+                        headers: {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache',
+                            'Expires': '0',
+                        },
+                    })).data);
                     logger.debug({
                         context: "useFetchCheckins.fetchCheckins",
                         facility: Abridgers.FACILITY(facilityContext.facility),

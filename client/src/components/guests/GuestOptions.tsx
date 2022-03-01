@@ -36,6 +36,7 @@ export interface Props {
     handleEdit?: HandleGuest;           // Handle request to select a Guest [not allowed]
     withActive?: boolean;               // Offer "Active Guests Only?" filter [true]
     withCheckinDates?: boolean;         // Offer "With Checkin Dates?" filter [true]
+    withHeading?: boolean;              // Include "Manage Guests for ..." heading? [true]
 }
 
 // Component Details ---------------------------------------------------------
@@ -53,6 +54,8 @@ const GuestOptions = (props: Props) => {
         useState<boolean>(props.withActive !== undefined ? props.withActive : true);
     const [withCheckinDates] =
         useState<boolean>(props.withCheckinDates !== undefined ? props.withCheckinDates : true);
+    const [withHeading] =
+        useState<boolean>(props.withHeading !== undefined ? props.withHeading : true);
 
     const fetchGuests = useFetchGuests({
         active: active,
@@ -133,16 +136,18 @@ const GuestOptions = (props: Props) => {
             />
             */}
 
-            <Row className="mb-3">
-                <Col className="text-center">
-                    <strong>
-                        <span>Manage Guests for Facility&nbsp;</span>
-                        <span className="text-info">{facilityContext.facility.name}</span>
-                    </strong>
-                </Col>
-            </Row>
+            {withHeading ? (
+                <Row className="mb-3">
+                    <Col className="text-center">
+                        <strong>
+                            <span>Manage Guests for Facility&nbsp;</span>
+                            <span className="text-info">{facilityContext.facility.name}</span>
+                        </strong>
+                    </Col>
+                </Row>
+            ) : null }
 
-            <Row className="mb-3 ml-1 mr-1">
+            <Row className="mb-3 ms-1 me-1">
                 <Col className="col-6">
                     <SearchBar
                         autoFocus
@@ -171,7 +176,7 @@ const GuestOptions = (props: Props) => {
                         />
                     </Col>
                 ) : null}
-                <Col className="text-right">
+                <Col className="text-end">
                     <PaginationComponent
                         currentPage={currentPage}
                         lastPage={(fetchGuests.guests.length === 0) ||
@@ -182,7 +187,7 @@ const GuestOptions = (props: Props) => {
                     />
                 </Col>
                 {props.handleAdd ? (
-                    <Col className="text-right">
+                    <Col className="text-end">
                         {props.handleAdd ? (
                             <Button
                                 disabled={!props.handleAdd}
@@ -195,7 +200,7 @@ const GuestOptions = (props: Props) => {
                 ) : null}
             </Row>
 
-            <Row className="ml-1 mr-1">
+            <Row className="ms-1 me-1">
                 <Table
                     bordered={true}
                     hover={true}
@@ -258,8 +263,8 @@ const GuestOptions = (props: Props) => {
                 </Table>
             </Row>
 
-            <Row className="mb-3 ml-1 mr-1">
-                <Col className="text-right">
+            <Row className="mb-3 ms-1 me-1">
+                <Col className="text-end">
                     <Button
                         disabled={!props.handleAdd}
                         onClick={handleAdd}

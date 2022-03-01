@@ -165,7 +165,7 @@ const CheckinsAssignedSubview = (props: Props) => {
                         </span>
                     </h6>
                 </Col>
-                <Col className="text-right">
+                <Col className="text-end">
                     <Button
                         onClick={() => props.handleCompleted(props.checkin)}
                         size="sm"
@@ -215,7 +215,7 @@ const CheckinsAssignedSubview = (props: Props) => {
                                     placeholder="(Select Mat)"
                                 />
                             </Col>
-                            <Col className="text-right">
+                            <Col className="text-end">
                                 <Button
                                     disabled={destination.id < 0}
                                     onClick={handleReassign}
@@ -234,19 +234,20 @@ const CheckinsAssignedSubview = (props: Props) => {
                             Option 3: Remove Assignment
                         </h6>
                         <hr className="mb-3"/>
-                        <Row className="text-center ml-3 mr-3 mb-3">
+                        <Row className="text-center ms-3 ms-3 mb-3">
                             Remove the current assignment, erasing any
                             of the details that were specified.
                         </Row>
-                        <Row className="text-right">
-                            <Col/>
-                            <Button
-                                onClick={onDeassignConfirm}
-                                size="sm"
-                                variant="danger"
-                            >
-                                Remove
-                            </Button>
+                        <Row>
+                            <Col className="text-end">
+                                <Button
+                                    onClick={onDeassignConfirm}
+                                    size="sm"
+                                    variant="danger"
+                                >
+                                    Remove
+                                </Button>
+                            </Col>
                         </Row>
                     </>
                 </Col>

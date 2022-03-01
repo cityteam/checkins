@@ -3,7 +3,6 @@
 // General purpose standalone checkbox input, with optional decorations.
 
 // NOTE - Change name back to CheckBox when old version is removed.
-// NOTE - style classes: ml-2
 
 // External Modules ----------------------------------------------------------
 
@@ -55,7 +54,7 @@ const CheckBoxComponent = (props: Props) => {
                     id={name}
                     onChange={handleChange}
                 />
-                <Form.Check.Label className="ml-2" htmlFor={name}>
+                <Form.Check.Label className="ms-2" htmlFor={name}>
                     {props.label ? props.label : "Check?"}
                 </Form.Check.Label>
             </Form.Group>

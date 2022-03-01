@@ -106,7 +106,7 @@ const GuestForm = (props: Props) => {
             <Container id="GuestDetails">
 
                 <Row className="mb-3">
-                    <Col className="text-left">
+                    <Col className="text-start">
                         <strong>
                             {(adding)? (
                                 <span>Add New</span>
@@ -119,7 +119,7 @@ const GuestForm = (props: Props) => {
                             </span>
                         </strong>
                     </Col>
-                    <Col className="text-right">
+                    <Col className="text-end">
                         <Button
                             onClick={() => props.handleBack()}
                             size="sm"
@@ -179,7 +179,7 @@ const GuestForm = (props: Props) => {
                     </Row>
 
                     <Row className="mb-3">
-                        <Col className="text-left">
+                        <Col className="text-start">
                             <Button
                                 disabled={!props.handleInsert && !props.handleUpdate}
                                 size="sm"
@@ -189,7 +189,7 @@ const GuestForm = (props: Props) => {
                                 Save
                             </Button>
                         </Col>
-                        <Col className="text-right">
+                        <Col className="text-end">
                             <Button
                                 disabled={adding || !props.handleRemove}
                                 onClick={onConfirm}

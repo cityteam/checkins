@@ -2,8 +2,6 @@
 
 // Detail editing form for Template objects.
 
-// NOTE - style classes: text-left, text-right
-
 // External Modules ----------------------------------------------------------
 
 import React, {useContext, useState} from "react";
@@ -153,7 +151,7 @@ const TemplateDetails = (props: Props) => {
             <Container id="TemplateDetails">
 
                 <Row className="mb-3">
-                    <Col className="text-left">
+                    <Col className="text-start">
                         <strong>
                             {(adding)? (
                                 <span>Add New</span>
@@ -166,7 +164,7 @@ const TemplateDetails = (props: Props) => {
                             </span>
                         </strong>
                     </Col>
-                    <Col className="text-right">
+                    <Col className="text-end">
                         <Button
                             onClick={() => props.handleBack()}
                             size="sm"
@@ -202,7 +200,7 @@ const TemplateDetails = (props: Props) => {
                         />
                     </Row>
 
-                    <Row id="allMatsHandicapMatsRow">
+                    <Row className="g-3 mb-3" id="allMatsHandicapMatsRow">
                         <TextField
                             errors={errors}
                             label="All Mats:"
@@ -219,7 +217,7 @@ const TemplateDetails = (props: Props) => {
                         />
                     </Row>
 
-                    <Row id="socketMatsWorkMatsRow">
+                    <Row className="g-3 mb-3" id="socketMatsWorkMatsRow">
                         <TextField
                             errors={errors}
                             label="Socket Mats:"
@@ -246,7 +244,7 @@ const TemplateDetails = (props: Props) => {
                     </Row>
 
                     <Row className="mb-3">
-                        <Col className="text-left">
+                        <Col className="text-start">
                             <Button
                                 disabled={!props.handleInsert && !props.handleUpdate}
                                 size="sm"
@@ -256,7 +254,7 @@ const TemplateDetails = (props: Props) => {
                                 Save
                             </Button>
                         </Col>
-                        <Col className="text-right">
+                        <Col className="text-end">
                             <Button
                                 disabled={adding || !props.handleRemove}
                                 onClick={onConfirm}

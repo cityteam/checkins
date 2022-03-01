@@ -3,8 +3,6 @@
 // List Templates that match search criteria, offering callbacks for adding,
 // editing, and removing Templates.
 
-// NOTE - style classes: ml-1, mr-1, text-right
-
 // External Modules ----------------------------------------------------------
 
 import React, {useContext, useEffect, useState} from "react";
@@ -115,7 +113,7 @@ const TemplateOptions = (props: Props) => {
                 </Col>
             </Row>
 
-            <Row className="mb-3 ml-1 mr-1">
+            <Row className="mb-3 ms-1 me-1">
                 <Col className="col-6">
                     <SearchBar
                         autoFocus
@@ -132,7 +130,7 @@ const TemplateOptions = (props: Props) => {
                         value={active}
                     />
                 </Col>
-                <Col className="text-right">
+                <Col className="text-end">
                     <PaginationComponent
                         currentPage={currentPage}
                         handleNext={handleNext}
@@ -142,7 +140,7 @@ const TemplateOptions = (props: Props) => {
                         variant="secondary"
                     />
                 </Col>
-                <Col className="text-right">
+                <Col className="text-end">
                     <Button
                         disabled={!props.handleAdd}
                         onClick={props.handleAdd}
@@ -152,7 +150,7 @@ const TemplateOptions = (props: Props) => {
                 </Col>
             </Row>
 
-            <Row className="ml-1 mr-1">
+            <Row className="ms-1 me-1">
                 <Table
                     bordered={true}
                     hover={true}
@@ -207,8 +205,8 @@ const TemplateOptions = (props: Props) => {
                 </Table>
             </Row>
 
-            <Row className="mb-3 ml-1 mr-1">
-                <Col className="text-right">
+            <Row className="mb-3 ms-1 me-1">
+                <Col className="text-end">
                     <Button
                         disabled={!props.handleAdd}
                         onClick={handleAdd}

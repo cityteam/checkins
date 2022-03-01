@@ -102,11 +102,12 @@ const AssignForm = (props: Props) => {
                         errors={errors}
                         label="Payment Amount:"
                         name="paymentAmount"
+                        type="number"
                         register={register}
                     />
                 </Row>
 
-                <Row id="showerWakeupRow">
+                <Row className="g-3 mb-3" id="showerWakeupRow">
                     <TextField
                         errors={errors}
                         label="Shower Time:"
@@ -121,7 +122,7 @@ const AssignForm = (props: Props) => {
                     />
                 </Row>
 
-                <Row id="commentsRow">
+                <Row className="g-3 mb-3" id="commentsRow">
                     <TextField
                         errors={errors}
                         label="Comments:"

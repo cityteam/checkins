@@ -68,6 +68,7 @@ const GuestSegment = () => {
             firstName: null,
             lastName: null,
         }));
+        setView(View.DETAILS);
     }
 
     // Handle return from View.DETAILS to redisplay View.OPTIONS
