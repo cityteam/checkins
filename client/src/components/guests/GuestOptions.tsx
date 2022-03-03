@@ -32,6 +32,7 @@ import {listValue} from "../../util/Transformations";
 // Incoming Properties -------------------------------------------------------
 
 export interface Props {
+    checkinDates?: boolean;             // Include checkin dates unconditionally? [false]
     handleAdd?: HandleAction;           // Handle request to add a Guest [not allowed]
     handleEdit?: HandleGuest;           // Handle request to select a Guest [not allowed]
     withActive?: boolean;               // Offer "Active Guests Only?" filter [true]
@@ -63,7 +64,7 @@ const GuestOptions = (props: Props) => {
         currentPage: currentPage,
         name: (searchText.length > 0) ? searchText : undefined,
         pageSize: pageSize,
-        withCheckins: checkinDates,
+        withCheckins: checkinDates || props.checkinDates,
     });
 
     useEffect(() => {
