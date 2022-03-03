@@ -31,6 +31,7 @@ import logger from "../../util/ClientLogger";
 
 export interface Props {
     checkin: Checkin;                   // The (unassigned) Checkin to process
+    checkinDate: string;                // Checkin date we are assigning for
     handleCompleted: HandleCheckin;     // Handle Checkin after completion
 }
 
@@ -108,6 +109,18 @@ const CheckinsUnassignedSubview = (props: Props) => {
             context: "CheckinsUnassignedSubview.handleSelectedGuest",
             guest: Abridgers.GUEST(theGuest),
         });
+        if (theGuest.checkins) {
+            let matNumber = -1;
+            theGuest.checkins.forEach(checkin => {
+                if (checkin.checkinDate === props.checkinDate) {
+                    matNumber = checkin.matNumber;
+                }
+            });
+            if (matNumber > 0) {
+                alert(`This Guest is already checked in for mat ${matNumber}`);
+                return;
+            }
+        }
         setAssign(configureAssign(theGuest));
         setGuest(theGuest);
     }
@@ -170,6 +183,7 @@ const CheckinsUnassignedSubview = (props: Props) => {
                     ) : (
                         <>
                             <GuestOptions
+                                checkinDates={true}
                                 handleAdd={handleNewGuest}
                                 handleEdit={handleSelectedGuest}
                                 withActive={false}

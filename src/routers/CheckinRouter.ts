@@ -8,6 +8,7 @@ import {Request, Response, Router} from "express";
 
 // Internal Modules ----------------------------------------------------------
 
+import {noCache} from "./RouterMiddleware";
 import {
     requireAdmin,
     requireRegular, requireSuperuser,
@@ -46,6 +47,7 @@ CheckinRouter.get("/:facilityId/summaries/:checkinDateFrom/:checkinDateTo",
 // Standard CRUD Routes ------------------------------------------------------
 
 CheckinRouter.get("/:facilityId",
+    noCache,
     requireRegular,
     async (req: Request, res: Response) => {
         res.send(await CheckinServices.all(

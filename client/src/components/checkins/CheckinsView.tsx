@@ -126,6 +126,7 @@ const CheckinsView = () => {
             {(stage === Stage.Unassigned) ? (
                 <CheckinsUnassignedSubview
                     checkin={checkin ? checkin : new Checkin()}
+                    checkinDate={checkinDate}
                     handleCompleted={handleCompleted}
                 />
             ) : null}
