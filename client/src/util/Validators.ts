@@ -40,6 +40,14 @@ export const validateMonth = (month: string): boolean => {
     }
 }
 
+export const validateNumber = (number: string | null | undefined): boolean => {
+    if (number) {
+        return !isNaN(Number(number));
+    } else {
+        return true;
+    }
+}
+
 export const validatePhone = (phone: string): boolean => {
     if (!phone || (phone.length === 0)) {
         return true;

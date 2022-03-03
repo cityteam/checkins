@@ -20,7 +20,7 @@ import SelectField, {SelectOption} from "../general/SelectField";
 import {HandleAssign, PaymentType} from "../../types";
 import Assign from "../../models/Assign";
 import * as ToModel from "../../util/ToModel";
-import {validateTime} from "../../util/Validators";
+import {validateNumber, validateTime} from "../../util/Validators";
 import TextField from "../general/TextField";
 
 // Incoming Properties -------------------------------------------------------
@@ -54,8 +54,13 @@ const AssignForm = (props: Props) => {
     const validationSchema = Yup.object().shape({
         comments: Yup.string()
             .nullable(),
-        paymentAmount: Yup.number()
-            .nullable(),
+        paymentAmount: Yup.string()
+            .nullable()
+            .test("valid-payment-amount",
+                "Payment amount must be a number",
+                function (value) {
+                    return validateNumber(value);
+                }),
         paymentType: Yup.string()
             .required("Payment Type is required"),
         showerTime: Yup.string()
@@ -102,7 +107,6 @@ const AssignForm = (props: Props) => {
                         errors={errors}
                         label="Payment Amount:"
                         name="paymentAmount"
-                        type="number"
                         register={register}
                     />
                 </Row>
