@@ -47,7 +47,7 @@ const CheckinSelector = (props: Props) => {
             checkin: Abridgers.CHECKIN(theCheckin),
         });
         setIndex(theIndex);
-        if ((theIndex >= 0) && props.handleCheckin) {
+        if (props.handleCheckin) {
             props.handleCheckin(theCheckin);
         }
     }
