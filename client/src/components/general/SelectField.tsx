@@ -46,7 +46,8 @@ const SelectField = (props: Props) => {
             id={props.name + "Group"}
         >
             <Form.Label>{props.label}</Form.Label>
-            <Form.Select
+            <Form.Control
+                as="select"
                 autoFocus={props.autoFocus ? props.autoFocus : undefined}
                 disabled={(props.disabled !== undefined) ? props.disabled : undefined}
                 isInvalid={!!props.errors[props.name]}
@@ -64,7 +65,7 @@ const SelectField = (props: Props) => {
                         {option.label}
                     </option>
                 ))}
-            </Form.Select>
+            </Form.Control>
             {(props.valid) ? (
                 <Form.Control.Feedback type="valid">
                     {props.valid}

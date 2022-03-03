@@ -43,8 +43,8 @@ const AssignForm = (props: Props) => {
         const results: SelectOption[] = [];
         Object.values(PaymentType).forEach(paymentType => {
             const result: SelectOption = {
-                label: paymentType.substr(0, 2),
-                value: paymentType,
+                label: paymentType,
+                value: paymentType.substr(0, 2),
             }
             results.push(result);
         });
