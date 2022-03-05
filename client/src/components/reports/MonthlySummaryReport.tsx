@@ -77,14 +77,14 @@ const MonthlySummaryReport = () => {
                     <span><strong>Monthly Summary Report for Facility&nbsp;</strong></span>
                     <span className="text-info"><strong>{facilityContext.facility.name}</strong></span>
                 </Col>
-                <span className="text-end">
+                <Col className="text-end">
                     <MonthSelector
                         autoFocus
                         handleMonth={handleReportMonth}
                         label="Report Month:"
                         value={reportMonth}
                     />
-                </span>
+                </Col>
             </Row>
 
             <Row className="ms-1 me-1">
