@@ -20,5 +20,6 @@ export default OpenApiRouter;
 
 OpenApiRouter.get("/", (req: Request, res: Response) => {
     res.header("Content-Type", "application/json")
+        .header("Access-Control-Allow-Origin", "*")
         .send(assembly());
 })
