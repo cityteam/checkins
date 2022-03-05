@@ -51,6 +51,7 @@ function Navigation() {
                         </NavDropdown>
                         <NavDropdown title="Admin">
                             <NavDropdown.Item>
+                                <NavLink className="nav-link" to="/database">Backup</NavLink>
                                 <NavLink className="nav-link" to="/facilities">Facilities</NavLink>
                                 <NavLink className="nav-link" to="/guests">Guests</NavLink>
                                 <NavLink className="nav-link" to="/templates">Templates</NavLink>

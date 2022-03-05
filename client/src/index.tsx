@@ -14,6 +14,7 @@ import GuestHistoryReport from "./components/reports/GuestHistoryReport";
 import MonthlySummaryReport from "./components/reports/MonthlySummaryReport";
 import TemplateSegment from "./components/templates/TemplateSegment";
 import UserSegment from "./components/users/UserSegment";
+import DatabaseView from "./components/views/DatabaseView";
 import HomeView from "./components/views/HomeView";
 
 ReactDOM.render(
@@ -23,6 +24,7 @@ ReactDOM.render(
                 <Routes>
                     <Route path="/" element={<Navigation/>}>
                         <Route path="checkins" element={<CheckinsView/>}/>
+                        <Route path="database" element={<DatabaseView/>}/>
                         <Route path="facilities" element={<FacilitySegment/>}/>
                         <Route path="guests" element={<GuestSegment/>}/>
                         <Route path="report-guests" element={<GuestHistoryReport/>}/>
