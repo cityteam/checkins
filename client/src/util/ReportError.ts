@@ -23,8 +23,9 @@ import logger from "./ClientLogger";
  * @param context       Context in which this error occurred
  * @param error         The object received by a "catch" block
  * @param details       Details to include in the logger message
+ * @param alertPopup    Pop up a browser alert? [true]
  */
-export const ReportError = (context: string, error: any, details: object = {}) => {
+export const ReportError = (context: string, error: any, details: object = {}, alertPopup: boolean = true) => {
     let outMessage: string = error.message;
     let outData: any | undefined = undefined;
     if (error.response) {
@@ -43,7 +44,9 @@ export const ReportError = (context: string, error: any, details: object = {}) =
         error: outData ? outData : null,
     });
     // Give the logger a chance to forward before alert() stops everything
-    setTimeout(function() { alert(`Error: '${outMessage}'`); }, 100);
+    if (alertPopup) {
+        setTimeout(function() { alert(`Error: '${outMessage}'`); }, 100);
+    }
 }
 
 export default ReportError;

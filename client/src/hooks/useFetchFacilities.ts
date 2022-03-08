@@ -43,7 +43,7 @@ const useFetchFacilities = (props: Props): State => {
 
     const loginContext = useContext(LoginContext);
 
-// NOTE -    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
+    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [facilities, setFacilities] = useState<Facility[]>([]);
@@ -98,7 +98,7 @@ const useFetchFacilities = (props: Props): State => {
                 setError(anError as Error);
                 ReportError("useFetchFacilities.fetchFacilities", anError, {
                     url: url,
-                }/*, alertPopup*/);
+                }, alertPopup);
             }
 
             setFacilities(theFacilities);

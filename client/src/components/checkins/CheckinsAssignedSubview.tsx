@@ -18,6 +18,7 @@ import Row from "react-bootstrap/Row";
 
 import CheckinSelector from "./CheckinSelector";
 import AssignDetails from "../assigns/AssignDetails";
+import FetchingProgress from "../general/FetchingProgress";
 import {HandleAction, HandleAssign, HandleCheckin, OnAction} from "../../types";
 import useFetchCheckins from "../../hooks/useFetchCheckins";
 import useMutateCheckin from "../../hooks/useMutateCheckin";
@@ -86,6 +87,7 @@ const CheckinsAssignedSubview = (props: Props) => {
     const [destination, setDestination] = useState<Checkin>(new Checkin());
 
     const fetchCheckins = useFetchCheckins({
+        alertPopup: false,
         available: true,
         currentPage: 1,
         date: props.checkin.checkinDate,
@@ -207,6 +209,11 @@ const CheckinsAssignedSubview = (props: Props) => {
                             assignment details) to a different mat.
                         </Row>
                         <Row className="text-center">
+                            <FetchingProgress
+                                error={fetchCheckins.error}
+                                loading={fetchCheckins.loading}
+                                message="Fetching unassigned mats"
+                            />
                             <Col>
                                 <CheckinSelector
                                     checkins={fetchCheckins.checkins}

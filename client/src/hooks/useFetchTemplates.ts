@@ -40,7 +40,7 @@ const useFetchTemplates = (props: Props): State => {
 
     const facilityContext = useContext(FacilityContext);
 
-// NOTE -    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
+    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [templates, setTemplates] = useState<Template[]>([]);
@@ -85,7 +85,7 @@ const useFetchTemplates = (props: Props): State => {
                 setError(anError as Error);
                 ReportError("useFetchTemplates.fetchTemplates", anError, {
                     url: url,
-                }/*, alertPopup */);
+                }, alertPopup);
             }
 
             setLoading(false);
@@ -97,7 +97,7 @@ const useFetchTemplates = (props: Props): State => {
 
     }, [props.active, props.currentPage,
         props.pageSize, props.name, props.withFacility,
-        facilityContext.facility]);
+        alertPopup, facilityContext.facility]);
 
 
     return {

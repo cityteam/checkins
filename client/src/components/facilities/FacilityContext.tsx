@@ -50,6 +50,7 @@ export const FacilityContextProvider = (props: any) => {
 
     const fetchFacilities = useFetchFacilities({
         active: active,
+        alertPopup: true,
         currentPage: 1,
         pageSize: 1000,
     })

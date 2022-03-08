@@ -15,7 +15,7 @@ import Table from "react-bootstrap/Table";
 // Internal Modules ----------------------------------------------------------
 
 import CheckBox from "../general/CheckBox";
-// NOTE - import LoadingProgress from "../general/LoadingProgress";
+import FetchingProgress from "../general/FetchingProgress";
 import Pagination from "../general/Pagination";
 import SearchBar from "../general/SearchBar";
 import FacilityContext from "./FacilityContext";
@@ -48,7 +48,7 @@ const FacilityOptions = (props: Props) => {
 
     const fetchFacilities = useFetchFacilities({
         active: active,
-        // NOTE - alertPopup: false,
+        alertPopup: false,
         currentPage: currentPage,
         name: (searchText.length > 0) ? searchText : undefined,
         pageSize: pageSize,
@@ -106,13 +106,11 @@ const FacilityOptions = (props: Props) => {
     return (
         <Container fluid id="FacilityOptions">
 
-            {/* NOTE - not yet implemented
-            <LoadingProgress
+            <FetchingProgress
                 error={fetchFacilities.error}
                 loading={fetchFacilities.loading}
-                title="Selected Facilities"
+                message="Fetching selected Facilities"
             />
-            */}
 
             <Row className="mb-3">
                 <Col className="text-center">

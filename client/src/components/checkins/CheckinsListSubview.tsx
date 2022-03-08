@@ -15,6 +15,7 @@ import Row from "react-bootstrap/Row";
 
 import CheckinsTable from "./CheckinsTable";
 import FacilityContext from "../facilities/FacilityContext";
+import FetchingProgress from "../general/FetchingProgress";
 import SummariesTable from "../summaries/SummariesTable";
 import TemplateSelector from "../templates/TemplateSelector";
 import {HandleCheckin, HandleTemplate} from "../../types";
@@ -43,6 +44,7 @@ const CheckinsListSubview = (props: Props) => {
     const [summary, setSummary] = useState<Summary>(new Summary());
 
     const fetchCheckins = useFetchCheckins({
+        alertPopup: false,
         currentPage: 1,
         date: props.checkinDate,
         pageSize: 100,
@@ -51,6 +53,7 @@ const CheckinsListSubview = (props: Props) => {
 
     const fetchTemplates = useFetchTemplates({
         active: true,
+        alertPopup: true,
         currentPage: 1,
         pageSize: 100,
     })
@@ -101,6 +104,10 @@ const CheckinsListSubview = (props: Props) => {
             ) : null}
 
             <Row className="mb-3">
+                <FetchingProgress
+                    error={fetchCheckins.error}
+                    loading={fetchCheckins.loading}
+                    message="Fetching selected Checkins"/>
                 <CheckinsTable
                     checkins={fetchCheckins.checkins}
                     handleCheckin={props.handleCheckin}

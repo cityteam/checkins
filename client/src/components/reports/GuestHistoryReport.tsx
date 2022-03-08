@@ -14,6 +14,7 @@ import Row from "react-bootstrap/Row";
 
 import CheckinsTable from "../checkins/CheckinsTable";
 import FacilityContext from "../facilities/FacilityContext";
+import FetchingProgress from "../general/FetchingProgress";
 import GuestOptions from "../guests/GuestOptions";
 import {HandleGuest} from "../../types";
 import useFetchCheckins from "../../hooks/useFetchCheckins";
@@ -30,6 +31,7 @@ const GuestHistoryReport = () => {
     const [guest, setGuest] = useState<Guest | null>(null);
 
     const fetchCheckins = useFetchCheckins({
+        alertPopup: false,
         guestId: guest ? guest.id : undefined,
         withGuest: true,
     });
@@ -79,6 +81,12 @@ const GuestHistoryReport = () => {
             {/* List Checkins View */}
             {(guest) ? (
                 <>
+
+                    <FetchingProgress
+                        error={fetchCheckins.error}
+                        loading={fetchCheckins.loading}
+                        message="Fetching selected Checkins"
+                    />
 
                     <Row className="mb-3 ms-1 me-1">
                         <Col className="col-10 text-start">

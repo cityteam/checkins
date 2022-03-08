@@ -18,7 +18,7 @@ import Table from "react-bootstrap/Table";
 
 import FacilityContext from "../facilities/FacilityContext";
 import CheckBox from "../general/CheckBox";
-// NOTE - import LoadingProgress from "../general/LoadingProgress";
+import FetchingProgress from "../general/FetchingProgress";
 import Pagination from "../general/Pagination";
 import SearchBar from "../general/SearchBar";
 import {HandleAction, HandleBoolean, HandleGuest, HandleValue} from "../../types";
@@ -60,7 +60,7 @@ const GuestOptions = (props: Props) => {
 
     const fetchGuests = useFetchGuests({
         active: active,
-        // NOTE - alertPopup: false
+        alertPopup: false,
         currentPage: currentPage,
         name: (searchText.length > 0) ? searchText : undefined,
         pageSize: pageSize,
@@ -129,13 +129,11 @@ const GuestOptions = (props: Props) => {
     return (
         <Container fluid id="GuestOptions">
 
-            {/* NOTE - not yet implemented
-            <LoadingProgress
+            <FetchingProgress
                 error={fetchGuests.error}
                 loading={fetchGuests.loading}
-                title="Selected Guests"
+                message="Fetching selected Guests"
             />
-            */}
 
             {withHeading ? (
                 <Row className="mb-3">

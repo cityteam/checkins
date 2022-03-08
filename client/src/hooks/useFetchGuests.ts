@@ -41,7 +41,7 @@ const useFetchGuests = (props: Props): State => {
 
     const facilityContext = useContext(FacilityContext);
 
-// NOTE -    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
+    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
     const [guests, setGuests] = useState<Guest[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -77,12 +77,18 @@ const useFetchGuests = (props: Props): State => {
                         guests: Abridgers.GUESTS(theGuests),
                         url: url,
                     });
+                } else {
+                    logger.debug({
+                        context: "useFetchGuests.fetchGuests",
+                        msg: "Skipped fetching Guests",
+                        url: url,
+                    });
                 }
             } catch (anError) {
                 setError(anError as Error);
                 ReportError("useFetchGuests.fetchGuests", anError, {
                     url: url,
-                }/*, alertPopup */);
+                }, alertPopup);
             }
 
             setLoading(false);
@@ -94,7 +100,7 @@ const useFetchGuests = (props: Props): State => {
 
     }, [props.active, props.currentPage,
         props.pageSize, props.name, props.withCheckins, props.withFacility,
-        facilityContext.facility]);
+        alertPopup, facilityContext.facility]);
 
     return {
         error: error ? error : null,

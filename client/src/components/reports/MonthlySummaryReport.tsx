@@ -11,8 +11,9 @@ import Row from "react-bootstrap/Row";
 
 // Internal Modules ----------------------------------------------------------
 
-import MonthSelector from "../general/MonthSelector";
 import FacilityContext from "../facilities/FacilityContext";
+import FetchingProgress from "../general/FetchingProgress";
+import MonthSelector from "../general/MonthSelector";
 import SummariesTable from "../summaries/SummariesTable";
 import {HandleMonth} from "../../types";
 import useFetchSummaries from "../../hooks/useFetchSummaries";
@@ -71,6 +72,12 @@ const MonthlySummaryReport = () => {
 
     return (
         <Container fluid id="MonthlySummaryReport">
+
+            <FetchingProgress
+                error={fetchSummaries.error}
+                loading={fetchSummaries.loading}
+                message="Fetching selected Summaries"
+            />
 
             <Row className="mb-3 ms-1 me-1">
                 <Col className="text-start">

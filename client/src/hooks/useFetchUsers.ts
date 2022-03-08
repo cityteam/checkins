@@ -87,7 +87,7 @@ const useFetchUsers = (props: Props): State => {
                 setError(anError as Error);
                 ReportError("useFetchUsers.fetchUsers", anError, {
                     url: url,
-                }/*, alertPopup*/);
+                }, alertPopup);
             }
 
             setUsers(theUsers);

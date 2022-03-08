@@ -20,6 +20,7 @@ import * as ToModel from "../util/ToModel";
 // Incoming Properties and Outgoing State ------------------------------------
 
 export interface Props {
+    alertPopup?: boolean;               // Pop up browser alert on error? [true]
     checkinDateFrom: string;            // Earliest checkinDate to summarize
     checkinDateTo: string;              // Latest checkinDate to summarize
 }
@@ -34,6 +35,7 @@ export interface State {
 
 const useFetchSummaries = (props: Props): State => {
 
+    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [summaries, setSummaries] = useState<Summary[]>([]);
@@ -52,25 +54,30 @@ const useFetchSummaries = (props: Props): State => {
                 checkinDateFrom: props.checkinDateFrom,
                 checkinDateTo: props.checkinDateTo,
             }
+            const url = `${CHECKINS_BASE}/${facilityContext.facility.id}/summaries/${props.checkinDateFrom}/${props.checkinDateTo}`;
 
             try {
-                if (facilityContext.facility.id > 0) {
-                    theSummaries = ToModel.SUMMARIES((await Api.get(CHECKINS_BASE
-                        + `/${facilityContext.facility.id}/summaries/${props.checkinDateFrom}/${props.checkinDateTo}`))
-                        .data);
+                const tryFetch = (facilityContext.facility.id > 0);
+                if (tryFetch) {
+                    theSummaries = ToModel.SUMMARIES((await Api.get(url)).data);
                     logger.debug({
                         context: "useFetchSummaries.fetchSummaries",
                         facility: Abridgers.FACILITY(facilityContext.facility),
-                        parameters: parameters,
                         count: theSummaries.length,
+                        url: url,
+                    });
+                } else {
+                    logger.debug({
+                        context: "useFetchSummaries.fetchSummaries",
+                        msg: "Skipped fetching Summaries",
+                        url: url,
                     });
                 }
             } catch (anError) {
                 setError(anError as Error);
                 ReportError("useFetchSummaries.fetchSummaries", anError, {
-                    facility: Abridgers.FACILITY(facilityContext.facility),
-                    ...parameters,
-                });
+                    url: url,
+                }, alertPopup);
             }
 
             setLoading(false);

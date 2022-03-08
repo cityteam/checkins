@@ -21,6 +21,7 @@ import * as ToModel from "../util/ToModel";
 // Incoming Properties and Outgoing State ------------------------------------
 
 export interface Props {
+    alertPopup?: boolean;               // Pop up browser alert on error? [true]
     available?: boolean;                // Select only non-assigned Checkins? [false]
     currentPage?: number;               // One-relative current page number [1]
     date?: string;                      // Select for this Checkin date [no filter]
@@ -41,6 +42,7 @@ export interface State {
 
 const useFetchCheckins = (props: Props): State => {
 
+    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [checkins, setCheckins] = useState<Checkin[]>([]);
     const [error, setError] = useState<Error | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -99,7 +101,7 @@ const useFetchCheckins = (props: Props): State => {
                 ReportError("useFetchCheckins.fetchCheckins", anError, {
                     facility: Abridgers.FACILITY(facilityContext.facility),
                     url: url,
-                });
+                }, alertPopup);
             }
 
             setLoading(false);
