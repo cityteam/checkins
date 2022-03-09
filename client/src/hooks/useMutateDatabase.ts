@@ -16,6 +16,7 @@ import ReportError from "../util/ReportError";
 // Incoming Properties and Outgoing State ------------------------------------
 
 export interface Props {
+    alertPopup?: false,                 // Pop up browser alert on error? [true]
 }
 
 export interface State {
@@ -28,6 +29,7 @@ export interface State {
 
 const useMutateDatabase = (props: Props): State => {
 
+    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
     const [executing, setExecuting] = useState<boolean>(false);
 
@@ -52,7 +54,7 @@ const useMutateDatabase = (props: Props): State => {
             });
         } catch (anError) {
             setError(anError as Error);
-            ReportError("useMutateDtabase.backup", anError);
+            ReportError("useMutateDtabase.backup", anError, {}, alertPopup);
         }
 
         setExecuting(false);

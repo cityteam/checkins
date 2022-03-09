@@ -25,6 +25,7 @@ import * as ToModel from "../util/ToModel";
 type HandleGenerate = (checkinDate: string, template: Template) => void;
 
 export interface Props {
+    alertPopup?: false,                 // Pop up browser alert on error? [true]
     checkin: Checkin;                   // The Checkin being managed
 }
 
@@ -44,6 +45,7 @@ const useMutateCheckin = (props: Props): State => {
 
     const facilityContext = useContext(FacilityContext);
 
+    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
     const [executing, setExecuting] = useState<boolean>(false);
 
@@ -76,7 +78,7 @@ const useMutateCheckin = (props: Props): State => {
                 checkin: Abridgers.CHECKIN(props.checkin),
                 assign: theAssign,
                 url: url,
-            });
+            }, alertPopup);
         }
 
         setExecuting(false);
@@ -105,7 +107,7 @@ const useMutateCheckin = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(theCheckin),
                 url: url,
-            });
+            }, alertPopup);
         }
 
         setExecuting(false);
@@ -135,7 +137,7 @@ const useMutateCheckin = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 template: Abridgers.TEMPLATE(template),
                 url: url,
-            });
+            }, alertPopup);
         }
 
         setExecuting(false);
@@ -164,7 +166,7 @@ const useMutateCheckin = (props: Props): State => {
                 checkin: Abridgers.CHECKIN(props.checkin),
                 assign: theAssign,
                 url: url,
-            })
+            }, alertPopup)
         }
 
         setExecuting(false);
@@ -193,7 +195,7 @@ const useMutateCheckin = (props: Props): State => {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 checkin: Abridgers.CHECKIN(theCheckin),
                 url: url,
-            })
+            }, alertPopup)
         }
 
         setExecuting(false);

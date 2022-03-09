@@ -34,7 +34,7 @@ export interface State {
 
 const useMutateUser = (props: Props = {}): State => {
 
-// NOTE -    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
+    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
     const [executing, setExecuting] = useState<boolean>(false);
 
@@ -63,7 +63,7 @@ const useMutateUser = (props: Props = {}): State => {
             ReportError("useMutateUser.insert", anError, {
                 user: Abridgers.USER(theUser),
                 url: url,
-            }/*, alertPopup*/);
+            }, alertPopup);
         }
 
         setExecuting(false);
@@ -90,7 +90,7 @@ const useMutateUser = (props: Props = {}): State => {
             ReportError("useMutateFcility.remove", anError, {
                 user: ToModel.USER(theUser),
                 url: url,
-            }/*, alertPopup*/);
+            }, alertPopup);
         }
 
         setExecuting(false);
@@ -117,7 +117,7 @@ const useMutateUser = (props: Props = {}): State => {
             ReportError("useMutateUser.update", anError, {
                 user: Abridgers.USER(theUser),
                 url: url,
-            }/*, alertPopup*/);
+            }, alertPopup);
         }
 
         setExecuting(false);

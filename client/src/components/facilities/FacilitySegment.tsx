@@ -11,7 +11,7 @@ import React, {useContext, useEffect, useState} from "react";
 import FacilityContext from "./FacilityContext";
 import FacilityDetails from "./FacilityDetails";
 import FacilityOptions from "./FacilityOptions";
-// NOTE - import SavingProgress from "../general/SavingProgress";
+import MutatingProgress from "../general/MutatingProgress";
 import LoginContext from "../login/LoginContext";
 import {HandleAction, HandleFacility, Scope} from "../../types";
 import useMutateFacility from "../../hooks/useMutateFacility";
@@ -35,11 +35,11 @@ const FacilitySegment = () => {
     const [canRemove, setCanRemove] = useState<boolean>(false);
     const [canUpdate, setCanUpdate] = useState<boolean>(false);
     const [facility, setFacility] = useState<Facility>(new Facility());
-    const [title, setTitle] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
     const [view, setView] = useState<View>(View.OPTIONS);
 
     const mutateFacility = useMutateFacility({
-        // NOTE - alertPopup: false,
+        alertPopup: false,
     });
 
     useEffect(() => {
@@ -96,11 +96,11 @@ const FacilitySegment = () => {
 
     // Handle insert of a new Facility
     const handleInsert: HandleFacility = async (theFacility) => {
-        setTitle(theFacility.name);
+        setMessage(`Inserting Facility '${theFacility.name}'`);
         const inserted = await mutateFacility.insert(theFacility);
         logger.debug({
             context: "FacilitySegment.handleInsert",
-            title: title,
+            message: message,
             facility: Abridgers.FACILITY(inserted),
         });
         facilityContext.handleRefresh();
@@ -109,11 +109,11 @@ const FacilitySegment = () => {
 
     // Handle remove of an existing Facility
     const handleRemove: HandleFacility = async (theFacility) => {
-        setTitle(theFacility.name);
+        setMessage(`Removing Facility '${theFacility.name}'`);
         const removed = await mutateFacility.remove(theFacility);
         logger.debug({
             context: "FacilitySegment.handleRemove",
-            title: title,
+            message: message,
             facility: Abridgers.FACILITY(removed),
         });
         facilityContext.handleRefresh();
@@ -122,11 +122,11 @@ const FacilitySegment = () => {
 
     // Handle update of an existing Facility
     const handleUpdate: HandleFacility = async (theFacility) => {
-        setTitle(theFacility.name);
+        setMessage(`Updating Facility '${theFacility.name}'`);
         const updated = await mutateFacility.update(theFacility);
         logger.debug({
             context: "FacilitySegment.handleUpdate",
-            title: title,
+            message: message,
             facility: Abridgers.FACILITY(updated),
         });
         facilityContext.handleRefresh();
@@ -136,13 +136,11 @@ const FacilitySegment = () => {
     return (
         <>
 
-            {/* NOTE - not yet implemented
-            <SavingProgress
+            <MutatingProgress
                 error={mutateFacility.error}
                 executing={mutateFacility.executing}
-                title={title}
+                message={message}
             />
-            */}
 
             {(view === View.DETAILS) ? (
                 <FacilityDetails

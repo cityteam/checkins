@@ -12,6 +12,7 @@ import Row from "react-bootstrap/Row";
 
 // Internal Modules ----------------------------------------------------------
 
+import MutatingProgress from "../general/MutatingProgress";
 import useMutateDatabase from "../../hooks/useMutateDatabase";
 
 // Component Details ---------------------------------------------------------
@@ -29,6 +30,11 @@ const DatabaseView = () => {
 
     return (
         <Container fluid id="DatabaseView">
+
+            <MutatingProgress
+                error={mutateDatabase.error}
+                executing={mutateDatabase.executing}
+                message="Backing up database"/>
 
             <Row className="mb-3 ml-1 mr-1">
                 <Col className="text-left">

@@ -19,6 +19,7 @@ import * as ToModel from "../util/ToModel";
 // Incoming Properties and Outgoing State ------------------------------------
 
 export interface Props {
+    alertPopup?: false,                 // Pop up browser alert on error? [true]
 }
 
 export interface State {
@@ -33,7 +34,7 @@ export interface State {
 
 const useMutateFacility = (props: Props): State => {
 
-// NOTE -    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
+    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
     const [executing, setExecuting] = useState<boolean>(false);
 
@@ -62,7 +63,7 @@ const useMutateFacility = (props: Props): State => {
             ReportError("useMutateFacility.insert", anError, {
                 facility: theFacility,
                 url: url,
-            }/*, alertPopup*/);
+            }, alertPopup);
         }
 
         setExecuting(false);
@@ -89,7 +90,7 @@ const useMutateFacility = (props: Props): State => {
             ReportError("useMutateFcility.remove", anError, {
                 facility: theFacility,
                 url: url,
-            }/*, alertPopup */);
+            }, alertPopup);
         }
 
         setExecuting(false);
@@ -116,7 +117,7 @@ const useMutateFacility = (props: Props): State => {
             ReportError("useMutateFacility.update", anError, {
                 facility: theFacility,
                 url: url,
-            }/*, alertPopup*/);
+            }, alertPopup);
         }
 
         setExecuting(false);

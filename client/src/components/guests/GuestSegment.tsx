@@ -11,6 +11,7 @@ import React, {useContext, useEffect, useState} from "react";
 import GuestDetails from "./GuestDetails";
 import GuestOptions from "./GuestOptions";
 import FacilityContext from "../facilities/FacilityContext";
+import MutatingProgress from "../general/MutatingProgress";
 import LoginContext from "../login/LoginContext";
 import {HandleAction, HandleGuest, Scope} from "../../types";
 import useMutateGuest from "../../hooks/useMutateGuest";
@@ -34,11 +35,11 @@ const GuestSegment = () => {
     const [canRemove, setCanRemove] = useState<boolean>(false);
     const [canUpdate, setCanUpdate] = useState<boolean>(false);
     const [guest, setGuest] = useState<Guest>(new Guest());
-    const [title, setTitle] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
     const [view, setView] = useState<View>(View.OPTIONS);
 
     const mutateGuest = useMutateGuest({
-        // NOTE - alertPopup: false,
+        alertPopup: false,
     });
 
     useEffect(() => {
@@ -88,11 +89,11 @@ const GuestSegment = () => {
 
     // Handle insert of a new Guest
     const handleInsert: HandleGuest = async (theGuest) => {
-        setTitle(`${theGuest.lastName}, ${theGuest.firstName}`);
+        setMessage(`Inserting Guest '${theGuest.lastName}, ${theGuest.firstName}'`);
         const inserted = await mutateGuest.insert(theGuest);
         logger.debug({
             context: "GuestSegment.handleInsert",
-            title: title,
+            message: message,
             guest: Abridgers.GUEST(inserted),
         });
         setView(View.OPTIONS);
@@ -100,11 +101,11 @@ const GuestSegment = () => {
 
     // Handle remove of an existing Guest
     const handleRemove: HandleGuest = async (theGuest) => {
-        setTitle(`${theGuest.lastName}, ${theGuest.firstName}`);
+        setMessage(`Removing Guest '${theGuest.lastName}, ${theGuest.firstName}'`);
         const removed = await mutateGuest.remove(theGuest);
         logger.debug({
             context: "GuestSegment.handleRemove",
-            title: title,
+            message: message,
             guest: Abridgers.GUEST(removed),
         });
         setView(View.OPTIONS);
@@ -112,11 +113,11 @@ const GuestSegment = () => {
 
     // Handle update of an existing Guest
     const handleUpdate: HandleGuest = async (theGuest) => {
-        setTitle(`${theGuest.lastName}, ${theGuest.firstName}`);
+        setMessage(`Updating Guest '${theGuest.lastName}, ${theGuest.firstName}'`);
         const updated = await mutateGuest.update(theGuest);
         logger.debug({
             context: "GuestSegment.handleUpdate",
-            title: title,
+            message: message,
             guest: Abridgers.GUEST(updated),
         });
         setView(View.OPTIONS);
@@ -125,13 +126,11 @@ const GuestSegment = () => {
     return (
         <>
 
-            {/* NOTE - not yet implemented
-            <SavingProgress
-                error={mutateFacility.error}
-                executing={mutateFacility.executing}
-                title={title}
+            <MutatingProgress
+                error={mutateGuest.error}
+                executing={mutateGuest.executing}
+                message={message}
             />
-            */}
 
             {(view === View.DETAILS) ? (
                 <GuestDetails

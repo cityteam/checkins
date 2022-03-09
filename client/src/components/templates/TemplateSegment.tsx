@@ -11,6 +11,7 @@ import React, {useContext, useEffect, useState} from "react";
 import TemplateDetails from "./TemplateDetails";
 import TemplateOptions from "./TemplateOptions";
 import FacilityContext from "../facilities/FacilityContext";
+import MutatingProgress from "../general/MutatingProgress";
 import LoginContext from "../login/LoginContext";
 import {HandleAction, HandleTemplate, Scope} from "../../types";
 import useMutateTemplate from "../../hooks/useMutateTemplate";
@@ -34,7 +35,7 @@ const TemplateSegment = () => {
     const [canRemove, setCanRemove] = useState<boolean>(false);
     const [canUpdate, setCanUpdate] = useState<boolean>(false);
     const [template, setTemplate] = useState<Template>(new Template());
-    const [title, setTitle] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
     const [view, setView] = useState<View>(View.OPTIONS);
 
     const mutateTemplate = useMutateTemplate({
@@ -90,11 +91,11 @@ const TemplateSegment = () => {
 
     // Handle insert of a new Template
     const handleInsert: HandleTemplate = async (theTemplate) => {
-        setTitle(theTemplate.name);
+        setMessage(`Inserting Template '${theTemplate.name}'`);
         const inserted = await mutateTemplate.insert(theTemplate);
         logger.debug({
             context: "TemplateSegment.handleInsert",
-            title: title,
+            message: message,
             template: Abridgers.TEMPLATE(inserted),
         });
         setView(View.OPTIONS);
@@ -102,11 +103,11 @@ const TemplateSegment = () => {
 
     // Handle remove of an existing Template
     const handleRemove: HandleTemplate = async (theTemplate) => {
-        setTitle(theTemplate.name);
+        setMessage(`Removing Template '${theTemplate.name}'`);
         const removed = await mutateTemplate.remove(theTemplate);
         logger.debug({
             context: "TemplateSegment.handleRemove",
-            title: title,
+            message: message,
             template: Abridgers.TEMPLATE(removed),
         });
         setView(View.OPTIONS);
@@ -114,11 +115,11 @@ const TemplateSegment = () => {
 
     // Handle update of an existing Template
     const handleUpdate: HandleTemplate = async (theTemplate) => {
-        setTitle(theTemplate.name);
+        setMessage(`Updating Template '${theTemplate.name}'`);
         const updated = await mutateTemplate.update(theTemplate);
         logger.debug({
             context: "TemplateSegment.handleUpdate",
-            title: title,
+            message: message,
             template: Abridgers.TEMPLATE(updated),
         });
         setView(View.OPTIONS);
@@ -127,13 +128,11 @@ const TemplateSegment = () => {
     return (
         <>
 
-            {/* NOTE - not yet implemented
-            <SavingProgress
-                error={mutateFacility.error}
-                executing={mutateFacility.executing}
-                title={title}
+            <MutatingProgress
+                error={mutateTemplate.error}
+                executing={mutateTemplate.executing}
+                message={message}
             />
-            */}
 
             {(view === View.DETAILS) ? (
                 <TemplateDetails

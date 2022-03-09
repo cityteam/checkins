@@ -26,6 +26,7 @@ import Checkin from "../../models/Checkin";
 import Summary from "../../models/Summary";
 import * as Abridgers from"../../util/Abridgers";
 import logger from "../../util/ClientLogger";
+import MutatingProgress from "../general/MutatingProgress";
 
 // Incoming Properties ------------------------------------------------------
 
@@ -41,6 +42,7 @@ const CheckinsListSubview = (props: Props) => {
     const facilityContext = useContext(FacilityContext);
 
     const [checkin] = useState<Checkin>(new Checkin());
+    const [message, setMessage] = useState<string>("");
     const [summary, setSummary] = useState<Summary>(new Summary());
 
     const fetchCheckins = useFetchCheckins({
@@ -59,6 +61,7 @@ const CheckinsListSubview = (props: Props) => {
     })
 
     const mutateCheckin = useMutateCheckin({
+        alertPopup: false,
         checkin: checkin,
     });
 
@@ -83,6 +86,7 @@ const CheckinsListSubview = (props: Props) => {
             checkinDate: props.checkinDate,
             template: Abridgers.TEMPLATE(theTemplate),
         });
+        setMessage(`Generating mats from Template '${theTemplate.name}'`);
         mutateCheckin.generate(props.checkinDate, theTemplate);
         fetchCheckins.refresh();
     }
@@ -92,6 +96,12 @@ const CheckinsListSubview = (props: Props) => {
 
             {/* Generate from Template if needed */}
             {(facilityContext.facility.id > 0) && (fetchCheckins.checkins.length === 0) ? (
+                <>
+                <MutatingProgress
+                    error={mutateCheckin.error}
+                    executing={mutateCheckin.executing}
+                    message={message}
+                />
                 <Row className="mb-3 text-center">
                     <TemplateSelector
                         actionHelp="Select an active Template to generate mats for Checkins"
@@ -101,7 +111,8 @@ const CheckinsListSubview = (props: Props) => {
                         templates={fetchTemplates.templates}
                     />
                 </Row>
-            ) : null}
+                </>
+            ) : null }
 
             <Row className="mb-3">
                 <FetchingProgress

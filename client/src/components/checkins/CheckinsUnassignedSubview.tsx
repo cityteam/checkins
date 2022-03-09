@@ -26,6 +26,7 @@ import Checkin from "../../models/Checkin";
 import Guest from "../../models/Guest";
 import * as Abridgers from "../../util/Abridgers";
 import logger from "../../util/ClientLogger";
+import MutatingProgress from "../general/MutatingProgress";
 
 // Incoming Properties -------------------------------------------------------
 
@@ -42,12 +43,15 @@ const CheckinsUnassignedSubview = (props: Props) => {
     const [adding, setAdding] = useState<boolean>(false);
     const [assign, setAssign] = useState<Assign | null>(null);
     const [guest, setGuest] = useState<Guest | null>(null);
+    const [message, setMessage] = useState<string>("");
 
     const mutateCheckin = useMutateCheckin({
+        alertPopup: false,
         checkin: props.checkin,
     });
 
     const mutateGuest = useMutateGuest({
+        alertPopup: false,
     });
 
     useEffect(() => {
@@ -67,6 +71,7 @@ const CheckinsUnassignedSubview = (props: Props) => {
     }
 
     const handleAssignedGuest: HandleAssign = async (theAssign) => {
+        setMessage(`Handling assignment to mat ${props.checkin.matNumber}`);
         const assigned: Checkin = await mutateCheckin.assign(theAssign);
         logger.debug({
             context: "CheckinsUnassignedSubview.handleAssignedGuest",
@@ -83,6 +88,7 @@ const CheckinsUnassignedSubview = (props: Props) => {
     }
 
     const handleInsertedGuest: HandleGuest = async (theGuest) => {
+        setMessage(`Handling insert of Guest '${theGuest.lastName}, ${theGuest.firstName}'`);
         const inserted: Guest = await mutateGuest.insert(theGuest);
         logger.debug({
             context: "CheckinsUnassignedSubview.handleInsertedGuest",
@@ -135,6 +141,18 @@ const CheckinsUnassignedSubview = (props: Props) => {
 
     return (
         <Container fluid id="CheckinsUnassignedSubview">
+
+            <MutatingProgress
+                error={mutateCheckin.error}
+                executing={mutateCheckin.executing}
+                message={message}
+            />
+
+            <MutatingProgress
+                error={mutateGuest.error}
+                executing={mutateGuest.executing}
+                message={message}
+            />
 
             {/* Overall Header and Back Link */}
             <Row className="mb-3">

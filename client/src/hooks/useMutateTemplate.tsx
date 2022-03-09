@@ -20,6 +20,7 @@ import * as ToModel from "../util/ToModel";
 // Incoming Properties and Outgoing State ------------------------------------
 
 export interface Props {
+    alertPopup?: false,                 // Pop up browser alert on error? [true]
 }
 
 export interface State {
@@ -36,6 +37,7 @@ const useMutateTemplate = (props: Props): State => {
 
     const facilityContext = useContext(FacilityContext);
 
+    const [alertPopup] = useState<boolean>((props.alertPopup !== undefined) ? props.alertPopup : true);
     const [error, setError] = useState<Error | null>(null);
     const [executing, setExecuting] = useState<boolean>(false);
 
@@ -65,7 +67,7 @@ const useMutateTemplate = (props: Props): State => {
             ReportError("useMutateTemplate.insert", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 url: url,
-            }/*, alertPopup*/);
+            }, alertPopup);
         }
 
         setExecuting(false);
@@ -93,7 +95,7 @@ const useMutateTemplate = (props: Props): State => {
             ReportError("useMutateTemplate.remove", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 url: url,
-            }/*, alertPopup*/);
+            }, alertPopup);
         }
 
         setExecuting(false);
@@ -121,7 +123,7 @@ const useMutateTemplate = (props: Props): State => {
             ReportError("useMutateTemplate.update", anError, {
                 facility: Abridgers.FACILITY(facilityContext.facility),
                 url: url,
-            }/*, alertPopup*/);
+            }, alertPopup);
         }
 
         setExecuting(false);
