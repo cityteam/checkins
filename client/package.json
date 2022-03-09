@@ -13,7 +13,7 @@
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.13",
     "@types/react-router-bootstrap": "^0.24.5",
-    "@types/swagger-ui-react": "^3.35.3",
+    "@types/swagger-ui-react": "^4.1.1",
     "assert": "^2.0.0",
     "axios": "^0.24.0",
     "bootstrap": "^5.1.3",
