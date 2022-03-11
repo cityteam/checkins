@@ -36,6 +36,7 @@ function Navigation() {
                         src="/CityTeamDarkBlue.png"
                         width={160}
                     />
+                    <span>&nbsp;&nbsp;Guests Checkin</span>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
 
