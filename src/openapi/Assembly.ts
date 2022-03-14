@@ -18,13 +18,13 @@ import * as Template from "./Template";
 import * as User from "./User";
 import {
     ASSIGN, BAD_REQUEST, CHECKIN, CHECKIN_DATE, CHECKIN_ID,
-    ERROR, FACILITY, FACILITY_ID, FORBIDDEN,
+    ERROR, FACILITY, FACILITY_ID, FORBIDDEN, FROM_GUEST_ID,
     GUEST, GUEST_ID, LIMIT,
     MATCH_ACTIVE, MATCH_NAME, MATCH_SCOPE,
     MODELS, NOT_FOUND, NOT_UNIQUE,
     OFFSET, REQUIRE_ADMIN, REQUIRE_ANY, REQUIRE_REGULAR,
     REQUIRE_SUPERUSER, SERVER_ERROR, STRING,
-    TEMPLATE, TEMPLATE_ID, USER,
+    TEMPLATE, TEMPLATE_ID, TO_GUEST_ID, USER,
     USER_ID, WITH_CHECKINS, WITH_FACILITY,
     WITH_GUEST, WITH_GUESTS, WITH_TEMPLATES
 } from "./Constants";
@@ -114,10 +114,14 @@ function parameters(): ob.ParametersObject {
         = pathParameter(CHECKIN_ID, "ID of the specified Checkin");
     theParameters[FACILITY_ID]
         = pathParameter(FACILITY_ID, "ID of the specified Facility");
+    theParameters[FROM_GUEST_ID]
+        = pathParameter(FROM_GUEST_ID, "ID of the Guest whose checkins are being merged FROM");
     theParameters[GUEST_ID]
         = pathParameter(GUEST_ID, "ID of the specified Guest");
     theParameters[TEMPLATE_ID]
         = pathParameter(TEMPLATE_ID, "ID of the specified Template");
+    theParameters[TO_GUEST_ID]
+        = pathParameter(TO_GUEST_ID, "ID of the Guest whose checkins are being merged TO");
     theParameters[USER_ID]
         = pathParameter(USER_ID, "ID of the specified User");
 
