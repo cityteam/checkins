@@ -79,6 +79,11 @@ export const MATCH_GUEST_ID = "guestId";
 export const MATCH_NAME = "name";
 export const MATCH_SCOPE = "scope";
 
+// ***** Parameter Names (Other) *****
+
+export const FROM_GUEST_ID = "fromGuestId";
+export const TO_GUEST_ID = "toGuestId";
+
 // ***** Parameter Names (Pagination) *****
 
 export const LIMIT = "limit";

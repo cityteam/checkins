@@ -11,8 +11,8 @@ const pluralize = require("pluralize");
 
 import {
     APPLICATION_JSON, BAD_REQUEST, CREATED,
-    ERROR, FORBIDDEN, LIMIT,
-    NOT_FOUND, OFFSET, OK, STRING
+    ERROR, FORBIDDEN, FROM_GUEST_ID, LIMIT,
+    NOT_FOUND, OFFSET, OK, STRING, TO_GUEST_ID
 } from "./Constants";
 import {PathItemObjectBuilder, ReferenceObjectBuilder} from "@craigmcc/openapi-builders";
 
@@ -297,6 +297,13 @@ export function pathParam(modelId: string): string {
 }
 
 // ***** Query Parameters *****
+
+export function others(): ob.ParametersObject {
+    const parameters: ob.ParametersObject = {};
+    parameters[FROM_GUEST_ID] = parameterRef(FROM_GUEST_ID);
+    parameters[TO_GUEST_ID] = parameterRef(TO_GUEST_ID);
+    return parameters;
+}
 
 export function paginations(): ob.ParametersObject {
     const parameters: ob.ParametersObject = {};

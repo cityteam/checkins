@@ -12,16 +12,16 @@ const pluralize = require("pluralize");
 import {
     activeSchema, allOperation, commentsSchema,
     facilityIdSchema, findOperation, idSchema,
-    insertOperation, parameterRef, pathItemChildCollection,
+    insertOperation, others, parameterRef, pathItemChildCollection,
     pathItemChildDetail, pathParam,
-    removeOperation, schemaRef, updateOperation
+    removeOperation, responseRef, schemaRef, updateOperation
 } from "./Common";
 import {
-    ACTIVE, API_PREFIX, CHECKIN, COMMENTS,
+    ACTIVE, API_PREFIX, BAD_REQUEST, CHECKIN, COMMENTS,
     FACILITY, FACILITY_ID, FAVORITE,
-    FIRST_NAME, GUEST, GUEST_ID,
-    ID, LAST_NAME, MATCH_ACTIVE,
-    MATCH_NAME, REQUIRE_REGULAR, REQUIRE_SUPERUSER, WITH_FACILITY
+    FIRST_NAME, FROM_GUEST_ID, GUEST, GUEST_ID,
+    ID, LAST_NAME, MATCH_ACTIVE, MATCH_NAME, NOT_FOUND, NOT_UNIQUE, OK,
+    REQUIRE_ADMIN, REQUIRE_REGULAR, REQUIRE_SUPERUSER, TO_GUEST_ID, WITH_FACILITY
 } from "./Constants";
 
 // Public Objects ------------------------------------------------------------
@@ -38,6 +38,20 @@ export function find(): ob.OperationObject {
 
 export function insert(): ob.OperationObject {
     return insertOperation(GUEST, REQUIRE_REGULAR);
+}
+
+export function merge(): ob.OperationObject {
+    const builder = new ob.OperationObjectBuilder()
+        .description("Merge Checkins for fromGuestId into toGuestId, then remove fromGuest")
+        .parameters(others())
+        .response(BAD_REQUEST, responseRef(BAD_REQUEST))
+        .response(OK, responseRef(GUEST))
+        .response(NOT_FOUND, responseRef(NOT_FOUND))
+        .response(NOT_UNIQUE, responseRef(NOT_UNIQUE))
+        .summary("The updated destination Guest")
+        .tag(REQUIRE_ADMIN)
+    ;
+    return builder.build();
 }
 
 export function remove(): ob.OperationObject {
@@ -73,6 +87,11 @@ export function paths(): ob.PathsObject {
     thePaths[API_PREFIX + "/" + pluralize(GUEST.toLowerCase())
     + "/" + pathParam(FACILITY_ID) + "/" + pathParam(GUEST_ID)]
         = pathItemChildDetail(GUEST, GUEST_ID, FACILITY_ID, find, remove, update);
+    thePaths[API_PREFIX + "/" + pluralize(GUEST.toLowerCase())
+    + "/" + pathParam(FACILITY_ID)
+    + "/" + pathParam(TO_GUEST_ID) + "/merge"
+    + "/" + pathParam(FROM_GUEST_ID)]
+        = mergePath();
     return thePaths;
 }
 
@@ -106,6 +125,17 @@ export function schemas(): ob.SchemaObject {
         .description("Guests associated with this Facility")
         .items(schemaRef(GUEST))
         .type("array")
+        .build();
+}
+
+// Private Objects -----------------------------------------------------------
+
+function mergePath(): ob.PathItemObject {
+    return new ob.PathItemObjectBuilder()
+        .parameter(parameterRef(FACILITY_ID))
+        .parameter(parameterRef(FROM_GUEST_ID))
+        .parameter(parameterRef(TO_GUEST_ID))
+        .post(merge())
         .build();
 }
 
