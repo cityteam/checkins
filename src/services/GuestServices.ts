@@ -4,18 +4,20 @@
 
 // External Modules ----------------------------------------------------------
 
-import {FindOptions, Op, ValidationError} from "sequelize";
+import {FindOptions, Op, Transaction, ValidationError} from "sequelize";
 
 // Internal Modules ----------------------------------------------------------
 
 import AbstractChildServices from "./AbstractChildServices";
 import Checkin from "../models/Checkin";
+import Database from "../models/Database";
 import Facility from "../models/Facility";
 import Guest from "../models/Guest";
-import {BadRequest, NotFound, ServerError} from "../util/HttpErrors";
+import {BadRequest, NotUnique, NotFound, ServerError} from "../util/HttpErrors";
 import {appendPaginationOptions} from "../util/QueryParameters";
 import * as SortOrder from "../util/SortOrders";
 import CheckinServices from "./CheckinServices";
+import checkin from "../models/Checkin";
 
 // Public Objects ------------------------------------------------------------
 
@@ -197,6 +199,118 @@ class GuestServices extends AbstractChildServices<Guest> {
             );
         }
         return results[0];
+    }
+
+    /**
+     * Use the following algorithm to merge any Checkins for the fromGuestId
+     * Guest into those for the toGuestId Guest, then remove the fromGuestId
+     * Guest, in a single database transaction:
+     * * Verify that both referenced Guests exist and belong to the
+     *   specified Facility.
+     * * Verify that there are no overlaps on Checkin dates between the
+     *   two Guests.
+     * * Update any Checkins for the fromGuestId Guest to reference the
+     *   toGuestId Guest instead.
+     * * Remove the fromGuestId Guest from the database.
+     *
+     * @param facilityId                Facility owning the two Guests
+     * @param toGuestId                 Guest into which Checkins should be merged
+     * @param fromGuestId               Guest from which Checkins should be merged
+     *
+     * @throws BadRequest               One or both of the Guests does not belong
+     *                                  to the specified Facility
+     * @throws NotFound                 The Facility or one of the Guests cannot
+     *                                  be found
+     * @throws NotUnique                There is an overlap between Checkin dates
+     *                                  between the fromGuestId and toGuestId
+     *                                  Guests (implying that the toGuestId was
+     *                                  already checked in on such a date)
+     */
+    public async merge(facilityId: number, toGuestId: number, fromGuestId: number): Promise<Guest> {
+
+        // Validate the incoming identifiers
+        const facility = await Facility.findByPk(facilityId);
+        if (!facility) {
+            throw new NotFound(
+                `facilityId: Missing Facility ${facilityId}`,
+                "GuestServices.merge"
+            );
+        }
+        if (toGuestId === fromGuestId) {
+            throw new BadRequest(
+                `fromGuestId/toGuestId: Cannot merge Guest ${toGuestId} into itself`,
+                "GuestServices.merge"
+            );
+        }
+        const fromGuest = await Guest.findByPk(fromGuestId, {
+            include: [ Checkin ],
+        });
+        if (!fromGuest || (fromGuest.facilityId !== facilityId)) {
+            throw new NotFound(
+                `fromGuestId: Missing From Guest ${fromGuestId}`,
+                "GuestServices.merge"
+            );
+        }
+        let toGuest = await Guest.findByPk(toGuestId, {
+            include: [ Checkin ],
+        });
+        if (!toGuest || (toGuest.facilityId !== facilityId)) {
+            throw new NotFound(
+                `toGuestId: Missing To Guest ${toGuestId}`,
+                "GuestServices.merge"
+            );
+        }
+
+        // Validate no overlaps in Checkin dates
+        const toCheckins = new Map<Date, Checkin>(); // checkinDate -> Checkin
+        if (toGuest.checkins) {
+            toGuest.checkins.forEach(checkin => {
+                toCheckins.set(checkin.checkinDate, checkin);
+            });
+        }
+        if (fromGuest.checkins) {
+            fromGuest.checkins.forEach(checkin => {
+                if (toCheckins.get(checkin.checkinDate)) {
+                    throw new NotUnique(
+                        `checkinDate: Guest ${toGuestId} was already checked in on ${checkin.checkinDate}`,
+                        "GuestServices.merge"
+                    );
+                }
+            });
+        }
+
+        // Update fromGuest Checkins to be toGuest Checkins instead,
+        // and then delete the fromGuestId Guest (all in a single transaction)
+        let transaction: Transaction | null = null;
+        try {
+            transaction = await Database.transaction();
+            if (fromGuest.checkins) {
+                for (const checkin of fromGuest.checkins) {
+                    await Checkin.update({
+                        facilityId: facility.id,
+                        guestId: toGuestId
+                    }, {
+                        transaction: transaction,
+                        where: { id: checkin.id },
+                    });
+                }
+            }
+            await Guest.destroy({
+                transaction: transaction,
+                where: { id: fromGuestId }
+            });
+            await transaction.commit();
+        } catch (error) {
+            if (transaction) {
+                await transaction.rollback();
+            }
+            throw error;
+        }
+
+        // Return the toGuestId Guest (with no nested Checkins)
+        toGuest.checkins = [];
+        return toGuest;
+
     }
 
     // Public Helpers --------------------------------------------------------

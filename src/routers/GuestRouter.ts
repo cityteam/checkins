@@ -9,6 +9,7 @@ import {Request, Response, Router} from "express";
 // Internal Modules ----------------------------------------------------------
 
 import {
+    requireAdmin,
     requireRegular,
     requireSuperuser,
 } from "../oauth/OAuthMiddleware";
@@ -92,6 +93,16 @@ GuestRouter.get("/:facilityId/:guestId/checkins",
             parseInt(req.params.facilityId, 10),
             parseInt(req.params.guestId, 10),
             req.query
+        ));
+    });
+
+GuestRouter.get("/:facilityId/:toGuestId/merge/:fromGuestId",
+    requireAdmin,
+    async (req: Request, res: Response) => {
+        res.send(await GuestServices.merge(
+            parseInt(req.params.facilityId, 10),
+            parseInt(req.params.toGuestId, 10),
+            parseInt(req.params.fromGuestId, 10)
         ));
     });
 

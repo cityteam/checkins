@@ -4,6 +4,8 @@
 
 // External Modules ----------------------------------------------------------
 
+import FacilityServices from "./FacilityServices";
+
 const chai = require("chai");
 const expect = chai.expect;
 
@@ -11,9 +13,10 @@ const expect = chai.expect;
 
 import GuestServices from "./GuestServices";
 import Guest from "../models/Guest";
-import {BadRequest, NotFound} from "../util/HttpErrors";
+import {BadRequest, NotFound, NotUnique} from "../util/HttpErrors";
 import * as SeedData from "../util/SeedData";
 import {loadTestData, lookupFacility, lookupGuest} from "../util/TestUtils";
+import Checkin from "../models/Checkin";
 
 // Test Specifications -------------------------------------------------------
 
@@ -280,6 +283,145 @@ describe("GuestServices Functional Tests", () => {
 
             const OUTPUT = await GuestServices.insert(facility.id, INPUT);
             compareGuestNew(OUTPUT, INPUT);
+
+        })
+
+    })
+
+    describe("GuestServices.merge()", () => {
+
+        it("should fail on duplicate guestIds", async () => {
+
+            const facility = await lookupFacility(SeedData.FACILITY_NAME_FIRST);
+            const guests = await FacilityServices.guests(facility.id);
+            expect(guests.length).to.be.greaterThan(0);
+
+            try {
+                await GuestServices.merge(facility.id, guests[0].id, guests[0].id);
+                expect.fail("Should have thrown BadRequest");
+            } catch (error) {
+                if (error instanceof BadRequest) {
+                    expect(error.message).to.include(`Cannot merge Guest ${guests[0].id} into itself`);
+                } else {
+                    expect.fail(`Should not have thrown ${error}`);
+                }
+            }
+
+        })
+
+        it("should fail on invalid facilityId", async () => {
+
+            const facility = await lookupFacility(SeedData.FACILITY_NAME_SECOND);
+            const guests = await FacilityServices.guests(facility.id);
+            expect(guests.length).to.be.greaterThan(1);
+            const INVALID_FACILITY_ID = -1;
+
+            try {
+                await GuestServices.merge(INVALID_FACILITY_ID, guests[0].id, guests[1].id);
+                expect.fail("Should have thrown NotFound");
+            } catch (error) {
+                if (error instanceof NotFound) {
+                    expect(error.message).to.include(`Missing Facility ${INVALID_FACILITY_ID}`);
+                } else {
+                    expect.fail(`Should not have thrown ${error}`);
+                }
+            }
+
+        })
+
+        it("should fail on invalid fromGuestId", async () => {
+
+            const facility = await lookupFacility(SeedData.FACILITY_NAME_THIRD);
+            const guests = await FacilityServices.guests(facility.id);
+            expect(guests.length).to.be.greaterThan(1);
+            const INVALID_GUEST_ID = -2;
+
+            try {
+                await GuestServices.merge(facility.id, guests[0].id, INVALID_GUEST_ID);
+                expect.fail("Should have thrown NotFound");
+            } catch (error) {
+                if (error instanceof NotFound) {
+                    expect(error.message).to.include(`Missing From Guest ${INVALID_GUEST_ID}`);
+                } else {
+                    expect.fail(`Should not have thrown ${error}`);
+                }
+            }
+
+        })
+
+        it("should fail on invalid toGuestId", async () => {
+
+            const facility = await lookupFacility(SeedData.FACILITY_NAME_THIRD);
+            const guests = await FacilityServices.guests(facility.id);
+            expect(guests.length).to.be.greaterThan(1);
+            const INVALID_GUEST_ID = -3;
+
+            try {
+                await GuestServices.merge(facility.id, INVALID_GUEST_ID, guests[1].id);
+                expect.fail("Should have thrown NotFound");
+            } catch (error) {
+                if (error instanceof NotFound) {
+                    expect(error.message).to.include(`Missing To Guest ${INVALID_GUEST_ID}`);
+                } else {
+                    expect.fail(`Should not have thrown ${error}`);
+                }
+            }
+
+        })
+
+        it("should fail on overlapping checkin dates", async () => {
+
+            const facility = await lookupFacility(SeedData.FACILITY_NAME_FIRST);
+            const guests = await FacilityServices.guests(facility.id);
+            expect(guests.length).to.be.greaterThan(3);
+
+            try {
+                await GuestServices.merge(facility.id, guests[0].id, guests[3].id);
+                expect.fail("Should have thrown NotUnique");
+            } catch (error) {
+                if (error instanceof NotUnique) {
+                    expect(error.message).to.include(`Guest ${guests[0].id} was already checked in on ${SeedData.CHECKIN_DATE_ONE}`);
+                } else {
+                    expect.fail(`Should not have thrown ${error}`);
+                }
+            }
+
+        })
+
+        it("should pass on valid merge", async () => {
+
+            const facility = await lookupFacility(SeedData.FACILITY_NAME_SECOND);
+            const guests = await FacilityServices.guests(facility.id);
+            expect(guests.length).to.be.greaterThan(3);
+            const extraGuest = await Guest.create({
+                active: true,
+                facilityId: facility.id,
+                firstName: "Extra",
+                lastName: "Guest",
+            });
+            const extraCheckin = await Checkin.create({
+                checkinDate: SeedData.CHECKIN_DATE_ZERO,
+                facilityId: facility.id,
+                guestId: extraGuest.id,
+                matNumber: 5,
+                paymentAmount: 5.00,
+                paymentType: "$$",
+            });
+
+            try {
+                const updatedGuest = await GuestServices.merge(facility.id, guests[0].id, extraGuest.id);
+                expect(updatedGuest.id).to.equal(guests[0].id);
+                const updatedCheckin = await Checkin.findByPk(extraCheckin.id);
+                if (updatedCheckin) {
+                    expect(updatedCheckin.guestId).to.equal(guests[0].id);
+                } else {
+                    expect.fail(`Should have found updatedCheckin ${extraCheckin.id}`);
+                }
+                const removedGuest = await Guest.findByPk(extraGuest.id);
+                expect(removedGuest).to.be.null;
+            } catch (error) {
+                expect.fail(`Should not have thrown ${error}`);
+            }
 
         })
 
