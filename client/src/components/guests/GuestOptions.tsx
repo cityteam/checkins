@@ -35,6 +35,9 @@ export interface Props {
     checkinDates?: boolean;             // Include checkin dates unconditionally? [false]
     handleAdd?: HandleAction;           // Handle request to add a Guest [not allowed]
     handleEdit?: HandleGuest;           // Handle request to select a Guest [not allowed]
+    prefix?: string;                    // Prefix for element IDs and keys [none]
+    selectCheckinDates?: boolean;       // Preselect "With Checkin Dates" filter [false]
+    updateSearch?: boolean;             // Update search text on edit? [false]
     withActive?: boolean;               // Offer "Active Guests Only?" filter [true]
     withCheckinDates?: boolean;         // Offer "With Checkin Dates?" filter [true]
     withHeading?: boolean;              // Include "Manage Guests for ..." heading? [true]
@@ -47,10 +50,12 @@ const GuestOptions = (props: Props) => {
     const facilityContext = useContext(FacilityContext);
 
     const [active, setActive] = useState<boolean>(false);
-    const [checkinDates, setCheckinDates] = useState<boolean>(false);
+    const [checkinDates, setCheckinDates] = useState<boolean>((props.selectCheckinDates !== undefined) ? props.selectCheckinDates : false);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageSize] = useState<number>(15);
+    const [prefix] = useState<string>(props.prefix ? props.prefix : "");
     const [searchText, setSearchText] = useState<string>("");
+    const [updateSearch] = useState<boolean>((props.updateSearch !== undefined) ? props.updateSearch : false);
     const [withActive] =
         useState<boolean>(props.withActive !== undefined ? props.withActive : true);
     const [withCheckinDates] =
@@ -113,6 +118,9 @@ const GuestOptions = (props: Props) => {
     }
 
     const handleEdit: HandleGuest = (theGuest) => {
+        if (updateSearch) {
+            setSearchText(`${theGuest.firstName} ${theGuest.lastName}`);
+        }
         if (props.handleEdit) {
             props.handleEdit(theGuest);
         }
@@ -127,7 +135,7 @@ const GuestOptions = (props: Props) => {
     }
 
     return (
-        <Container fluid id="GuestOptions">
+        <Container fluid id={`${prefix}GuestOptions`}>
 
             <FetchingProgress
                 error={fetchGuests.error}
@@ -160,7 +168,7 @@ const GuestOptions = (props: Props) => {
                         <CheckBox
                             handleChange={handleActive}
                             label="Active Guests Only?"
-                            name="activeOnly"
+                            name={`${prefix}activeOnly`}
                             value={active}
                         />
                     </Col>
@@ -170,7 +178,7 @@ const GuestOptions = (props: Props) => {
                         <CheckBox
                             handleChange={handleCheckinDates}
                             label="With Checkin Dates?"
-                            name="checkinDates"
+                            name={`${prefix}checkinDates`}
                             value={checkinDates}
                         />
                     </Col>
@@ -199,7 +207,7 @@ const GuestOptions = (props: Props) => {
                 ) : null}
             </Row>
 
-            <Row className="ms-1 me-1">
+            <Row className="mb-3 ms-1 me-1">
                 <Table
                     bordered={true}
                     hover={true}
@@ -227,28 +235,28 @@ const GuestOptions = (props: Props) => {
                     {fetchGuests.guests.map((guest, ri) => (
                         <tr
                             className="table-default"
-                            key={`GO-${ri}-TR`}
+                            key={`${prefix}GO-${ri}-TR`}
                             onClick={props.handleEdit ? (() => handleEdit(guest)) : undefined}
                         >
-                            <td key={`GO-${ri}-firstName`}>
+                            <td key={`${prefix}GO-${ri}-firstName`}>
                                 {guest.firstName}
                             </td>
-                            <td key={`GO-${ri}-lastName`}>
+                            <td key={`${prefix}GO-${ri}-lastName`}>
                                 {guest.lastName}
                             </td>
                             {(checkinDates) ? (
-                                <td key={`GO-${ri}-checkins`}>
+                                <td key={`${prefix}GO-${ri}-checkins`}>
                                     {checkins(guest)}
                                 </td>
                             ) : (
                                 <>
-                                    <td key={`GO-${ri}-active`}>
+                                    <td key={`${prefix}GO-${ri}-active`}>
                                         {listValue(guest.active)}
                                     </td>
-                                    <td key={`GO-${ri}-comments`}>
+                                    <td key={`${prefix}GO-${ri}-comments`}>
                                         {guest.comments}
                                     </td>
-                                    <td key={`GO-${ri}-favorite`}>
+                                    <td key={`${prefix}GO-${ri}-favorite`}>
                                         {guest.favorite}
                                     </td>
                                 </>
@@ -262,16 +270,18 @@ const GuestOptions = (props: Props) => {
                 </Table>
             </Row>
 
-            <Row className="mb-3 ms-1 me-1">
-                <Col className="text-end">
-                    <Button
-                        disabled={!props.handleAdd}
-                        onClick={handleAdd}
-                        size="sm"
-                        variant="primary"
-                    >Add</Button>
-                </Col>
-            </Row>
+            {props.handleAdd ? (
+                <Row className="mb-3 ms-1 me-1">
+                    <Col className="text-end">
+                        <Button
+                            disabled={!props.handleAdd}
+                            onClick={handleAdd}
+                            size="sm"
+                            variant="primary"
+                        >Add</Button>
+                    </Col>
+                </Row>
+            ) : null }
 
         </Container>
     )

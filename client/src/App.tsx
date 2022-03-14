@@ -17,6 +17,7 @@ import CheckinsView from "./components/checkins/CheckinsView";
 import FacilitySegment from "./components/facilities/FacilitySegment";
 import Navigation from "./components/general/Navigation";
 import GuestSegment from "./components/guests/GuestSegment";
+import MergeSegment from "./components/guests/MergeSegment";
 import {LoginContextProvider} from "./components/login/LoginContext";
 import GuestHistoryReport from "./components/reports/GuestHistoryReport";
 import MonthlySummaryReport from "./components/reports/MonthlySummaryReport";
@@ -48,6 +49,7 @@ function App() {
                                 <Route path="database" element={<DatabaseView/>}/>
                                 <Route path="facilities" element={<FacilitySegment/>}/>
                                 <Route path="guests" element={<GuestSegment/>}/>
+                                <Route path="merge" element={<MergeSegment/>}/>
                                 <Route path="report-guests" element={<GuestHistoryReport/>}/>
                                 <Route path="report-month" element={<MonthlySummaryReport/>}/>
                                 <Route path="templates" element={<TemplateSegment/>}/>

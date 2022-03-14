@@ -96,7 +96,7 @@ GuestRouter.get("/:facilityId/:guestId/checkins",
         ));
     });
 
-GuestRouter.get("/:facilityId/:toGuestId/merge/:fromGuestId",
+GuestRouter.post("/:facilityId/:toGuestId/merge/:fromGuestId",
     requireAdmin,
     async (req: Request, res: Response) => {
         res.send(await GuestServices.merge(

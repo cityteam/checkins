@@ -8,7 +8,7 @@ import {useContext, useEffect, useState} from "react";
 
 // Internal Modules ----------------------------------------------------------
 
-import {ProcessGuest} from "../types";
+import {ProcessGuest, ProcessGuests} from "../types";
 import Api from "../clients/Api";
 import FacilityContext from "../components/facilities/FacilityContext";
 import Guest, {GUESTS_BASE} from "../models/Guest";
@@ -20,13 +20,14 @@ import * as ToModel from "../util/ToModel";
 // Incoming Properties and Outgoing State ------------------------------------
 
 export interface Props {
-    alertPopup?: false,                 // Pop up browser alert on error? [true]
+    alertPopup?: boolean,               // Pop up browser alert on error? [true]
 }
 
 export interface State {
     error: Error | null;                // I/O error (if any)
     executing: boolean;                 // Are we currently executing?
     insert: ProcessGuest;               // Function to insert a new Guest
+    merge: ProcessGuests;               // Function to merge Checkins
     remove: ProcessGuest;               // Function to remove an existing Guest
     update: ProcessGuest;               // Function to update an existing Guest
 }
@@ -73,6 +74,34 @@ const useMutateGuest = (props: Props): State => {
         setExecuting(false);
         return inserted;
 
+    }
+
+    const merge: ProcessGuests = async (toGuest, fromGuest) => {
+
+        const url = `${GUESTS_BASE}/${facilityContext.facility.id}/${toGuest.id}/merge/${fromGuest.id}`;
+        let merged: Guest = new Guest();
+        setError(null);
+        setExecuting(true);
+
+        try {
+            merged = ToModel.GUEST((await Api.post(url)).data);
+            logger.debug({
+                context: "useMutateGuest.merge",
+                facility: Abridgers.FACILITY(facilityContext.facility),
+                fromGuest: Abridgers.GUEST(fromGuest),
+                toGuest: Abridgers.GUEST(toGuest),
+                url: url,
+            });
+        } catch (anError) {
+            setError(anError as Error);
+            ReportError("useMutateGuest.merge", anError, {
+                facility: Abridgers.FACILITY(facilityContext.facility),
+                url: url,
+            }, alertPopup);
+        }
+
+        setExecuting(false);
+        return merged;
     }
 
     const remove: ProcessGuest = async (theGuest) => {
@@ -135,6 +164,7 @@ const useMutateGuest = (props: Props): State => {
         error: error,
         executing: executing,
         insert: insert,
+        merge: merge,
         remove: remove,
         update: update,
     };

@@ -57,6 +57,7 @@ function Navigation() {
                                 <NavLink className="nav-link" to="/guests">Guests</NavLink>
                                 <NavLink className="nav-link" to="/templates">Templates</NavLink>
                                 <NavLink className="nav-link" to="/users">Users</NavLink>
+                                <NavLink className="nav-link" to="/merge">MERGE Guests</NavLink>
                             </NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
