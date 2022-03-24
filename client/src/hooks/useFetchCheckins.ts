@@ -112,8 +112,10 @@ const useFetchCheckins = (props: Props): State => {
 
         fetchCheckins();
 
-    }, [refetch, props.available, props.currentPage, props.date, facilityContext.facility,
-        props.guestId, props.pageSize, props.withFacility, props.withGuest]);
+    }, [props.available, props.currentPage, props.date,
+        facilityContext.facility, props.guestId, props.pageSize,
+        props.withFacility, props.withGuest,
+        alertPopup, refetch]);
 
     const refresh = () => {
         setRefetch(true);

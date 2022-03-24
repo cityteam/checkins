@@ -110,6 +110,7 @@ const useFetchFacilities = (props: Props): State => {
 
     }, [props.active, props.currentPage, props.pageSize, props.name,
         props.withCheckins, props.withGuests, props.withTemplates,
+        alertPopup,
         loginContext.data.loggedIn]);
 
     return {

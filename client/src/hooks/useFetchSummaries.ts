@@ -50,10 +50,6 @@ const useFetchSummaries = (props: Props): State => {
             setLoading(true);
             let theSummaries: Summary[] = [];
 
-            const parameters = {
-                checkinDateFrom: props.checkinDateFrom,
-                checkinDateTo: props.checkinDateTo,
-            }
             const url = `${CHECKINS_BASE}/${facilityContext.facility.id}/summaries/${props.checkinDateFrom}/${props.checkinDateTo}`;
 
             try {
