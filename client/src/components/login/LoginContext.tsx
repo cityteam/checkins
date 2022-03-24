@@ -13,7 +13,7 @@ import React, {createContext, useState} from "react";
 import {Scope} from "../../types";
 import TokenResponse from "../../models/TokenResponse";
 import Facility from "../../models/Facility";
-import logger, {setLevel} from "../../util/ClientLogger";
+import logger from "../../util/ClientLogger";
 
 // Context Properties -------------------------------------------------------
 
@@ -100,7 +100,7 @@ export const LoginContextProvider = (props: any) => {
             setAlloweds(theAlloweds);
             theAlloweds.forEach(allowed => {
                 if (allowed.startsWith(LOG_PREFIX)) {
-                    setLevel(allowed.substr(LOG_PREFIX.length));
+                    logger.setLevel(allowed.substr(LOG_PREFIX.length));
                     found = true;
                 }
             })
@@ -108,7 +108,7 @@ export const LoginContextProvider = (props: any) => {
             setAlloweds([]);
         }
         if (!found) {
-            setLevel(LOG_DEFAULT);
+            logger.setLevel(LOG_DEFAULT);
         }
 
         // Prepare the data that will be visible to components and statically
@@ -157,7 +157,7 @@ export const LoginContextProvider = (props: any) => {
         });
         setData(theData);
 
-        setLevel(LOG_DEFAULT);
+        logger.setLevel(LOG_DEFAULT);
 
     }
 

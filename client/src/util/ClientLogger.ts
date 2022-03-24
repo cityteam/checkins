@@ -1,11 +1,14 @@
-// client-logger -------------------------------------------------------------
+// ClientLogger --------------------------------------------------------------
 
-// Configure and return a Pino logger for this browser-based application.
+// Configure and return a logger for this browser-based application.
 
 // The goal here is to allow developers to use the same "logger.<level>()"
 // semantics on the client side that they get to use on the server side,
 // with additional capabilities to dynamically change the client side level
 // at which logging messages should be forwarded to the server.
+
+// There is also special treatment when a logger is used (indirectly) in
+// unit tests.
 
 // External Modules ----------------------------------------------------------
 
@@ -16,6 +19,8 @@ import {Level} from "../types";
 
 // Private Objects -----------------------------------------------------------
 
+const TEST_ENV = "test" === process.env.NODE_ENV;
+
 // Map log level names to log level values
 const LOG_LEVEL_MAP = new Map<string, number>();
 LOG_LEVEL_MAP.set(Level.DEBUG, 20);
@@ -25,48 +30,57 @@ LOG_LEVEL_MAP.set(Level.INFO, 30);
 LOG_LEVEL_MAP.set(Level.TRACE, 10);
 LOG_LEVEL_MAP.set(Level.WARN, 40);
 
-// Transmit the specified object so that it can be logged (if level is loggable)
-const write = async (object: any, level: number): Promise<void> => {
-    if (level >= LOG_LEVEL) {
-        object.level = level;
-        try {
-            await ClientClient.log(object);
-        } catch (error) {
-            console.error(`Error '${(error as Error).message}' logging client message`, object);
-        }
-    }
-}
 // Public Objects ------------------------------------------------------------
 
-export let LOG_LEVEL: number = 30;
+class logger {
 
-export const logger = require("pino")({
-    base: null, // Remove "name", "pid", and "hostname" since we do not need them
-    browser: {
-        asObject: true,
-        write: {
-            debug:      (object: any) => { write(object, 20) },
-            error:      (object: any) => { write(object, 50) },
-            fatal:      (object: any) => { write(object, 60) },
-            info:       (object: any) => { write(object, 30) },
-            trace:      (object: any) => { write(object, 10) },
-            warn:       (object: any) => { write(object, 40) },
-        },
-    },
-    level: "trace",     // write() will ignore things based on dynamic level set
-    timestamp: false,   // Server will timestamp for us
-});
-
-export const setLevel = (newName: string): void => {
-    let newLevel: number | undefined = LOG_LEVEL_MAP.get(newName);
-    if (newLevel) {
-        LOG_LEVEL = newLevel;
-    } else {
-        newLevel = LOG_LEVEL_MAP.get(Level.INFO);
-        LOG_LEVEL = newLevel ? newLevel : 30;
+    constructor() {
+        this.currentLevel = 30; // Default log level
     }
+
+    // Public Methods --------------------------------------------------------
+
+    public debug(object: any) { this.write(object, 20); }
+    public error(object: any) { this.write(object, 50); }
+    public fatal(object: any) { this.write(object, 60); }
+    public info(object: any) { this.write(object, 30); }
+    public trace(object: any) { this.write(object, 10); }
+    public warn(object: any) { this.write(object, 40); }
+
+    public setLevel(newName: string) {
+        let newLevel: number | undefined = LOG_LEVEL_MAP.get(newName);
+        if (newLevel) {
+            this.currentLevel = newLevel;
+        } else {
+            this.currentLevel = 30;
+        }
+    }
+
+    // Private Methods -------------------------------------------------------
+
+    private async write(object: any, level: number) {
+        if (level >= this.currentLevel) {
+            const output = {
+                level: level,
+                ...object,
+            }
+            if (!TEST_ENV) {
+                try {
+                    await ClientClient.log(output);
+                } catch (error) {
+                    console.error(`Error '${(error as Error).message}' logging client message`, object);
+                }
+            } else {
+                console.log(output);
+            }
+        }
+
+    }
+
+    // Private Properties ----------------------------------------------------
+
+    private currentLevel: number;
+
 }
-setLevel("info"); // Set the default log level
 
-export default logger;
-
+export default new logger();
