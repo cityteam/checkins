@@ -10,7 +10,7 @@
 // External Modules ----------------------------------------------------------
 
 import React, {useEffect, useState} from "react";
-import Button from "react-bootstrap/button";
+import Button from "react-bootstrap/Button";
 
 // Internal Modules ----------------------------------------------------------
 
