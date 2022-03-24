@@ -83,7 +83,9 @@ const useFetchSummaries = (props: Props): State => {
 
         fetchSummaries();
 
-    }, [facilityContext.facility, props.checkinDateFrom, props.checkinDateTo]);
+    }, [props.checkinDateFrom, props.checkinDateTo,
+        alertPopup,
+        facilityContext.facility]);
 
     return {
         error: error ? error : null,
