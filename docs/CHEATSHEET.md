@@ -8,7 +8,7 @@ log files, and so on.  We suggest that you print out this sheet, record the
 values as they are created, and **keep the printed copy in a secure place**
 so that you can refer to it later.
 
-DEVELOPER NOTE:  These values contain sensitive information, and should
+`DEVELOPER NOTE`:  These values contain sensitive information, and should
 **never** be recorded in a source control system like Git.
 
 ## Database Environment Variables
