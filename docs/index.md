@@ -9,6 +9,7 @@ in several US cities.  See their website for more information.
 
 The information covered is targeted for different user types, with
 separate pages customized to your needs:
+
 * [I need to check in Guests](./USER.md).  This is the primary function
   of this application, where you register each individual and assign
   them a mat (or other sleeping arrangement).
