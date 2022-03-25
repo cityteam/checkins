@@ -1,7 +1,7 @@
 # CityTeam Checkins Application
 
 Welcome to the CityTeam Checkins Application, designed to assist CityTeam
-Facilities in checking overnight Guests unti a CityTeam Facility.
+Facilities in checking overnight Guests into a CityTeam Facility.
 
 [CityTeam](https://cityteam.org) offers programs for outreach to, and
 support of homeless communities, as well as recovery from addition,
