@@ -31,7 +31,3 @@ welcomed to the application on it's "Home" page:
 ![Logged In Screen](./loggedin.png)
 
 See [Starting the Day](./USER-starting.md) for the next step.
-
-<hr/>
-
-[Home](./index.md) | Introduction | [Starting the Day](./USER-starting.md) | [Checking In Guests](./USER-checkin.md) | [Adjusting Existing Checkins](./USER-adjust.md)

@@ -37,7 +37,3 @@ guests to the various mats).
 ![Generated Mats](./starting-third.png)
 
 See [Checking In Guests](./USER-checkin.md) for the next steps.
-
-<hr/>
-
-[Home](./index.md) | [Introduction](./USER-introduction.md) | Starting the Day | [Checking In Guests](./USER-checkin.md) | [Adjusting Existing Checkins](./USER-adjust.md)
