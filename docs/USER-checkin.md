@@ -115,5 +115,5 @@ for the correct mat), and the totals at the bottom of the page have been
 updated.Now, you can proceed to assign a mat to the next Guest.
 
 However, there will be times you need to change what has been recorded
-on a previous assignment.  See ![Adjusting Existing Checkins](./USER-adjust.md)
+on a previous assignment.  See [Adjusting Existing Checkins](./USER-adjust.md)
 for information on how to do that.
