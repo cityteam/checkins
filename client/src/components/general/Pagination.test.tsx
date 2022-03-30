@@ -1,45 +1,10 @@
 import React from "react";
-import {/*prettyDOM, */render, screen} from "@testing-library/react";
+import {act, /*prettyDOM, */render, screen} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import Pagination from "./Pagination";
+import Pagination, {Props} from "./Pagination";
 
-test("renders correctly with handler functions", () => {
-
-    const CURRENT_PAGE = 2;
-    const LAST_PAGE = false;
-    const handleNext = jest.fn();
-    const handlePrevious = jest.fn();
-    render(<Pagination
-        currentPage={2}
-        handleNext={handleNext}
-        handlePrevious={handlePrevious}
-        lastPage={LAST_PAGE}
-    />);
-
-    const buttonElements = screen.getAllByRole("button");  // Relies on HTML default
-    checkButtonElements(buttonElements, CURRENT_PAGE);
-
-    userEvent.click(buttonElements[0]);
-    userEvent.click(buttonElements[2]);
-    expect(handleNext.mock.calls.length).toBe(1);
-    expect(handlePrevious.mock.calls.length).toBe(1);
-
-});
-
-test("renders correctly with minimal properties", () => {
-
-    const CURRENT_PAGE = 2;
-    const LAST_PAGE = false;
-    render(<Pagination
-        currentPage={CURRENT_PAGE}
-        lastPage={LAST_PAGE}
-    />);
-
-    const buttonElements = screen.getAllByRole("button");  // Relies on HTML default
-    checkButtonElements(buttonElements, CURRENT_PAGE);
-
-});
+// Test Infrastructure -------------------------------------------------------
 
 const checkButtonElements = (buttonElements: HTMLElement[], currentPage: number): void => {
     expect(buttonElements.length).toBe(3);
@@ -51,3 +16,55 @@ const checkButtonElements = (buttonElements: HTMLElement[], currentPage: number)
         }
     });
 }
+
+const elements = (): {
+    buttonElements: HTMLElement[],
+} => {
+    const buttonElements = screen.getAllByRole("button");  // Relies on HTML default
+    return {
+        buttonElements
+    };
+}
+
+// Test Methods --------------------------------------------------------------
+
+test("renders correctly with handler functions", async () => {
+
+    const PROPS: Props = {
+        currentPage: 2,
+        handleNext: jest.fn(),
+        handlePrevious: jest.fn(),
+        lastPage: false,
+    }
+    await act(async () => {
+        render(<Pagination {...PROPS}/>);
+    });
+
+    const {buttonElements} = elements();
+    checkButtonElements(buttonElements, PROPS.currentPage);
+
+    const client = userEvent.setup();
+    await client.click(buttonElements[0]);
+    await client.click(buttonElements[2]);
+
+    expect(PROPS.handleNext).toBeCalledTimes(1);
+    expect(PROPS.handlePrevious).toBeCalledTimes(1);
+
+});
+
+test("renders correctly with minimal properties", async () => {
+
+    const PROPS: Props = {
+        currentPage: 2,
+        lastPage: false,
+    }
+    await act(async () => {
+        render(<Pagination {...PROPS}/>);
+    })
+
+    const {buttonElements} = elements();
+    checkButtonElements(buttonElements, PROPS.currentPage);
+
+
+});
+

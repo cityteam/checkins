@@ -1,18 +1,8 @@
-// LoginForm.test ------------------------------------------------------------
-
-// Unit tests for LoginForm.
-
-// External Modules ----------------------------------------------------------
-
 import React from "react";
 import {act, render, screen, waitFor} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-// Internal Modules ----------------------------------------------------------
-
 import LoginForm from "./LoginForm";
-
-// Test Infrastructure -------------------------------------------------------
 
 const elements = (): {
     // Fields
@@ -38,69 +28,63 @@ const elements = (): {
 
 }
 
-// Test Methods --------------------------------------------------------------
+test("invalid data does not submit", async () => {
 
-describe("LoginForm tests", () => {
+    const handleCredentials = jest.fn();
+    await act(async () => {
+        render(<LoginForm handleLogin={handleCredentials}/>);
+    });
+    const {login} = elements();
 
-    it("should not submit invalid data", async () => {
+    const client = userEvent.setup();
+    await client.click(login);
 
-        const handleCredentials = jest.fn();
-        await act(async () => {
-            render(<LoginForm handleLogin={handleCredentials}/>);
-        });
-        const {login} = elements();
-
-        userEvent.click(login);
-
-        await waitFor(() => {
-            expect(handleCredentials).not.toBeCalled();
-        })
-
+    await waitFor(() => {
+        expect(handleCredentials).not.toBeCalled();
     })
 
-    it("should submit valid data with enter after the last field", async () => {
+});
 
-        const VALID_USERNAME = "myusername";
-        const VALID_PASSWORD = "mypassword";
-        const handleCredentials = jest.fn();
-        await act(async () => {
-            render(<LoginForm handleLogin={handleCredentials}/>);
-        });
-        const {username, password} = elements();
+test("valid data with enter after last field", async () => {
 
-        userEvent.type(username, VALID_USERNAME);
-        userEvent.type(password, VALID_PASSWORD + "{enter}");
+    const VALID_USERNAME = "myusername";
+    const VALID_PASSWORD = "mypassword";
+    const handleCredentials = jest.fn();
+    render(<LoginForm handleLogin={handleCredentials}/>);
+    const {username, password} = elements();
 
-        await waitFor(() => {
-            expect(handleCredentials).toHaveBeenCalledWith({
-                username: VALID_USERNAME,
-                password: VALID_PASSWORD,
-            });
+    const client = userEvent.setup();
+    await client.type(username, VALID_USERNAME);
+    await client.type(password, VALID_PASSWORD + "{enter}");
+
+    await waitFor(() => {
+        expect(handleCredentials).toHaveBeenCalledWith({
+            username: VALID_USERNAME,
+            password: VALID_PASSWORD,
         })
-
     })
 
-    it("should submit valid data with submit button", async () => {
+});
 
-        const VALID_USERNAME = "myusername";
-        const VALID_PASSWORD = "mypassword";
-        const handleCredentials = jest.fn();
-        await act(async () => {
-            render(<LoginForm handleLogin={handleCredentials}/>);
+test("valid data with submit button", async () => {
+
+    const VALID_USERNAME = "myusername";
+    const VALID_PASSWORD = "mypassword";
+    const handleCredentials = jest.fn();
+    render(<LoginForm handleLogin={handleCredentials}/>);
+    const {username, password, login} = elements();
+
+    const client = userEvent.setup();
+    await client.type(username, VALID_USERNAME);
+    await client.type(password, VALID_PASSWORD);
+    await client.click(login);
+
+    await waitFor(() => {
+        expect(handleCredentials).toHaveBeenCalledWith({
+            username: VALID_USERNAME,
+            password: VALID_PASSWORD,
         });
-        const {username, password, login} = elements();
+    });
 
-        userEvent.type(username, VALID_USERNAME);
-        userEvent.type(password, VALID_PASSWORD);
-        userEvent.click(login);
+});
 
-        await waitFor(() => {
-            expect(handleCredentials).toHaveBeenCalledWith({
-                username: VALID_USERNAME,
-                password: VALID_PASSWORD,
-            });
-        })
-
-    })
-
-})
