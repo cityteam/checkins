@@ -13,7 +13,7 @@ separate pages customized to your needs:
 * [I need to check in Guests](./USER-introduction.md).  This is the primary
   function of this application, where you register each individual and
   assign them a mat (or other sleeping arrangement).
-* [I need to administer the Facility and its related information](./ADMIN.md). 
+* [I need to administer the Facility and its related information](./ADMIN-introduction.md). 
   Your username and password will provide access to additional features that
   let you set up the required information for your CityTeam Facility, 
   as well as edit information about each Guest that has ever checked in.
