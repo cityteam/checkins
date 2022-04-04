@@ -69,4 +69,6 @@ item.  In general, marking an existing item as not being active is better.
 ### Item Type Details
 
 The links at the top of this page will take you to detailed information about
-each information type that is included in the system.
+each information type that is included in the system.  On that page, you
+can return to the list view by clicking on the `Back` button.
+
