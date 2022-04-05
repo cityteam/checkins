@@ -86,6 +86,16 @@ GuestRouter.put("/:facilityId/:guestId",
 
 // Model-Specific Routes (with guestId) --------------------------------------
 
+GuestRouter.get("/:facilityId/:guestId/bans",
+    requireRegular,
+    async (req: Request, res: Response) => {
+        res.send(await GuestServices.bans(
+            parseInt(req.params.facilityId, 10),
+            parseInt(req.params.guestId, 10),
+            req.query
+        ));
+    });
+
 GuestRouter.get("/:facilityId/:guestId/checkins",
     requireRegular,
     async (req: Request, res: Response) => {

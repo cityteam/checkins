@@ -10,19 +10,22 @@ const pluralize = require("pluralize");
 // Internal Modules ----------------------------------------------------------
 
 import {
-    activeSchema, allOperation, commentsSchema,
+    activeSchema, allOperation, childrenOperation, commentsSchema,
     facilityIdSchema, findOperation, idSchema,
     insertOperation, others, parameterRef, pathItemChildCollection,
     pathItemChildDetail, pathParam,
     removeOperation, responseRef, schemaRef, updateOperation
 } from "./Common";
 import {
-    ACTIVE, API_PREFIX, BAD_REQUEST, CHECKIN, COMMENTS,
+    ACTIVE, API_PREFIX, BAD_REQUEST, BAN, CHECKIN, COMMENTS,
     FACILITY, FACILITY_ID, FAVORITE,
     FIRST_NAME, FROM_GUEST_ID, GUEST, GUEST_ID,
     ID, LAST_NAME, MATCH_ACTIVE, MATCH_NAME, NOT_FOUND, NOT_UNIQUE, OK,
-    REQUIRE_ADMIN, REQUIRE_REGULAR, REQUIRE_SUPERUSER, TO_GUEST_ID, WITH_FACILITY
+    REQUIRE_ADMIN, REQUIRE_REGULAR, REQUIRE_SUPERUSER, TO_GUEST_ID,
+    WITH_BANS, WITH_FACILITY
 } from "./Constants";
+import * as Ban from "./Ban";
+import * as Checkin from "./Checkin";
 
 // Public Objects ------------------------------------------------------------
 
@@ -30,6 +33,14 @@ import {
 
 export function all(): ob.OperationObject {
     return allOperation(GUEST, REQUIRE_REGULAR, includes, matches);
+}
+
+export function bans(): ob.OperationObject {
+    return childrenOperation(GUEST, BAN, REQUIRE_REGULAR, Ban.includes, Ban.matches);
+}
+
+export function checkins(): ob.OperationObject {
+    return childrenOperation(GUEST, CHECKIN, REQUIRE_REGULAR, Checkin.includes, Checkin.matches);
 }
 
 export function find(): ob.OperationObject {
@@ -66,6 +77,7 @@ export function update(): ob.OperationObject {
 
 export function includes(): ob.ParametersObject {
     const parameters: ob.ParametersObject = {};
+    parameters[WITH_BANS] = parameterRef(WITH_BANS);
     parameters[WITH_FACILITY] = parameterRef(WITH_FACILITY);
     return parameters;
 }
@@ -87,6 +99,12 @@ export function paths(): ob.PathsObject {
     thePaths[API_PREFIX + "/" + pluralize(GUEST.toLowerCase())
     + "/" + pathParam(FACILITY_ID) + "/" + pathParam(GUEST_ID)]
         = pathItemChildDetail(GUEST, GUEST_ID, FACILITY_ID, find, remove, update);
+    thePaths[`${API_PREFIX}/${pluralize(GUEST.toLowerCase())}`
+    + `/${pathParam(FACILITY_ID)}/${pathParam(GUEST_ID)}/${pluralize(BAN.toLowerCase())}`]
+        = pathItemChildDetail(GUEST, GUEST_ID, FACILITY_ID, bans);
+    thePaths[`${API_PREFIX}/${pluralize(GUEST.toLowerCase())}`
+    + `/${pathParam(FACILITY_ID)}/${pathParam(GUEST_ID)}/${pluralize(CHECKIN.toLowerCase())}`]
+        = pathItemChildDetail(GUEST, GUEST_ID, FACILITY_ID, checkins);
     thePaths[API_PREFIX + "/" + pluralize(GUEST.toLowerCase())
     + "/" + pathParam(FACILITY_ID)
     + "/" + pathParam(TO_GUEST_ID) + "/merge"

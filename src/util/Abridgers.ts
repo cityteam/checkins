@@ -5,6 +5,7 @@
 // Internal Modules ----------------------------------------------------------
 
 import AccessToken from "../models/AccessToken";
+import Ban from "../models/Ban";
 import Checkin from "../models/Checkin";
 import Facility from "../models/Facility";
 import Guest from "../models/Guest";
@@ -41,6 +42,16 @@ export const ANY = (model: AccessToken | RefreshToken | User): object => {
         return {
             model: typeof model,
         }
+    }
+}
+
+export const BAN = (ban: Ban): object => {
+    return {
+        id: ban.id,
+        facilityId: ban.facilityId,
+        guestId: ban.guestId,
+        fromDate: ban.fromDate,
+        toDate: ban.toDate,
     }
 }
 

@@ -9,6 +9,9 @@ import {FindOptions, Op, Transaction, ValidationError} from "sequelize";
 // Internal Modules ----------------------------------------------------------
 
 import AbstractChildServices from "./AbstractChildServices";
+import BanServices from "./BanServices";
+import CheckinServices from "./CheckinServices";
+import Ban from "../models/Ban";
 import Checkin from "../models/Checkin";
 import Database from "../models/Database";
 import Facility from "../models/Facility";
@@ -16,8 +19,6 @@ import Guest from "../models/Guest";
 import {BadRequest, NotUnique, NotFound, ServerError} from "../util/HttpErrors";
 import {appendPaginationOptions} from "../util/QueryParameters";
 import * as SortOrder from "../util/SortOrders";
-import CheckinServices from "./CheckinServices";
-import checkin from "../models/Checkin";
 
 // Public Objects ------------------------------------------------------------
 
@@ -155,6 +156,27 @@ class GuestServices extends AbstractChildServices<Guest> {
     }
 
     // Model-Specific Methods ------------------------------------------------
+
+    public async bans(facilityId: number, guestId: number, query?: any): Promise<Ban[]> {
+        const facility = await Facility.findByPk(facilityId);
+        if (!facility) {
+            throw new NotFound(
+                `facilityId: Missing Facility ${facilityId}`,
+                "GuestServices.bans",
+            );
+        }
+        const guest = await Guest.findByPk(guestId);
+        if (!guest || (guest.facilityId !== facility.id)) {
+            throw new NotFound(
+                `guestId: Missing Guest ${guestId}`,
+                "GuestServices.bans",
+            );
+        }
+        const options = BanServices.appendMatchOptions({
+            order: SortOrder.BANS,
+        }, query);
+        return guest.$get("bans", options);
+    }
 
     public async checkins(facilityId: number, guestId: number, query?: any): Promise<Checkin[]> {
         const facility = await Facility.findByPk(facilityId);
@@ -317,6 +339,7 @@ class GuestServices extends AbstractChildServices<Guest> {
 
     /**
      * Supported include query parameters:
+     * * withBans                       Include child Bans
      * * withCheckins                   Include child Checkins
      * * withFacility                   Include parent Facility
      */
@@ -326,6 +349,9 @@ class GuestServices extends AbstractChildServices<Guest> {
         }
         options = appendPaginationOptions(options, query);
         const include: any = options.include ? options.include : [];
+        if ("" === query.withBans) {
+            include.push(Ban);
+        }
         if ("" === query.withCheckins) {
             include.push(Checkin);
         }

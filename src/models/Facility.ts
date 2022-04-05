@@ -10,6 +10,7 @@ import {Column, DataType, HasMany, Table}
 // Internal Modules ----------------------------------------------------------
 
 import AbstractModel from "./AbstractModel";
+import Ban from "./Ban";
 import Checkin from "./Checkin";
 import Guest from "./Guest";
 import Template from "./Template";
@@ -62,6 +63,9 @@ class Facility extends AbstractModel<Facility> {
         type: DataType.TEXT,
     })
     address2?: string;
+
+    @HasMany(() => Ban)
+    bans!: Ban[];
 
     @HasMany(() => Checkin)
     checkins!: Checkin[];

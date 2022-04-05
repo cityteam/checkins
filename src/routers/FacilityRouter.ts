@@ -82,6 +82,15 @@ FacilityRouter.put("/:facilityId",
 
 // Model-Specific Routes (with facilityId) -----------------------------------
 
+FacilityRouter.get("/:facilityId/bans",
+    requireRegular,
+    async (req: Request, res: Response) => {
+        res.send(await FacilityServices.bans(
+            parseInt(req.params.facilityId, 10),
+            req.query
+        ));
+    });
+
 FacilityRouter.get("/:facilityId/guests",
     requireRegular,
     async (req: Request, res: Response) => {

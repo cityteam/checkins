@@ -10,6 +10,7 @@ const pluralize = require("pluralize");
 // Internal Modules ----------------------------------------------------------
 
 import * as Assign from "./Assign";
+import * as Ban from "./Ban";
 import * as Checkin from "./Checkin";
 import * as ErrorSchema from "./ErrorSchema";
 import * as Facility from "./Facility";
@@ -17,15 +18,15 @@ import * as Guest from "./Guest";
 import * as Template from "./Template";
 import * as User from "./User";
 import {
-    ASSIGN, BAD_REQUEST, CHECKIN, CHECKIN_DATE, CHECKIN_ID,
+    ASSIGN, BAD_REQUEST, BAN, BAN_ID, CHECKIN, CHECKIN_DATE, CHECKIN_ID,
     ERROR, FACILITY, FACILITY_ID, FORBIDDEN, FROM_GUEST_ID,
     GUEST, GUEST_ID, LIMIT,
-    MATCH_ACTIVE, MATCH_NAME, MATCH_SCOPE,
+    MATCH_ACTIVE, MATCH_FROM_DATE, MATCH_NAME, MATCH_SCOPE, MATCH_TO_DATE,
     MODELS, NOT_FOUND, NOT_UNIQUE,
     OFFSET, REQUIRE_ADMIN, REQUIRE_ANY, REQUIRE_REGULAR,
     REQUIRE_SUPERUSER, SERVER_ERROR, STRING,
     TEMPLATE, TEMPLATE_ID, TO_GUEST_ID, USER,
-    USER_ID, WITH_CHECKINS, WITH_FACILITY,
+    USER_ID, WITH_BANS, WITH_CHECKINS, WITH_FACILITY,
     WITH_GUEST, WITH_GUESTS, WITH_TEMPLATES
 } from "./Constants";
 import {OpenApiObjectBuilder, TagObjectBuilder} from "@craigmcc/openapi-builders";
@@ -42,6 +43,7 @@ export function assembly(): string {
     if (ASSEMBLY === "") {
         const builder = new ob.OpenApiObjectBuilder(info())
             .components(components())
+            .pathItems(Ban.paths())
             .pathItems(Checkin.paths())
             .pathItems(Facility.paths())
             .pathItems(Guest.paths())
@@ -108,6 +110,8 @@ function parameters(): ob.ParametersObject {
     const theParameters: ob.ParametersObject = {};
 
     // Path Parameters
+    theParameters[BAN_ID]
+        = pathParameter(BAN_ID, "ID of the specified Ban");
     theParameters[CHECKIN_DATE]
         = pathParameter(CHECKIN_DATE, "Checkin Date for Checkins of interest");
     theParameters[CHECKIN_ID]
@@ -126,6 +130,8 @@ function parameters(): ob.ParametersObject {
         = pathParameter(USER_ID, "ID of the specified User");
 
     // Query Parameters (Includes)
+    theParameters[WITH_BANS]
+        = queryParameter(WITH_BANS, "Include the related Bans", true);
     theParameters[WITH_CHECKINS]
         = queryParameter(WITH_CHECKINS, "Include the related Checkins", true);
     theParameters[WITH_FACILITY]
@@ -140,10 +146,14 @@ function parameters(): ob.ParametersObject {
     // Query Parameters (Matches)
     theParameters[MATCH_ACTIVE]
         = queryParameter(MATCH_ACTIVE, "Return only active objects", true);
+    theParameters[MATCH_FROM_DATE]
+        = queryParameter(MATCH_FROM_DATE, "Return objects with from date greater than or equal to this", false);
     theParameters[MATCH_NAME]
         = queryParameter(MATCH_NAME, "Return objects matching name wildcard", false);
     theParameters[MATCH_SCOPE]
         = queryParameter(MATCH_SCOPE, "Return objects matching specified scope", false);
+    theParameters[MATCH_TO_DATE]
+        = queryParameter(MATCH_TO_DATE, "Return objects with to date less than or equal to this", false);
 
     // Query Parameters (Pagination)
     theParameters[LIMIT]
@@ -190,6 +200,8 @@ function schemas(): ob.SchemasObject {
     // Application Models
     theSchemas[ASSIGN] = Assign.schema();
     theSchemas[pluralize(ASSIGN)] = Assign.schemas();
+    theSchemas[BAN] = Ban.schema();
+    theSchemas[pluralize(BAN)] = Ban.schemas();
     theSchemas[CHECKIN] = Checkin.schema();
     theSchemas[pluralize(CHECKIN)] = Checkin.schemas();
     theSchemas[FACILITY] = Facility.schema();

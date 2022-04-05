@@ -18,13 +18,14 @@ import {
     schemaRef, updateOperation,
 } from "./Common";
 import {
-    ACTIVE, API_PREFIX, CHECKIN,
+    ACTIVE, API_PREFIX, BAN, CHECKIN,
     FACILITY, FACILITY_ID, GUEST,
     ID, MATCH_ACTIVE, MATCH_NAME, MATCH_SCOPE,
     NAME, REQUIRE_ADMIN, REQUIRE_ANY, REQUIRE_REGULAR,
-    REQUIRE_SUPERUSER, TEMPLATE,
+    REQUIRE_SUPERUSER, TEMPLATE, WITH_BANS,
     WITH_CHECKINS, WITH_GUESTS, WITH_TEMPLATES,
 } from "./Constants";
+import * as Ban from "./Ban";
 import * as Checkin from "./Checkin";
 import * as Guest from "./Guest";
 import * as Template from "./Template";
@@ -35,6 +36,10 @@ import * as Template from "./Template";
 
 export function all(): ob.OperationObject {
     return allOperation(FACILITY, REQUIRE_ANY, includes, matches)
+}
+
+export function bans(): ob.OperationObject {
+    return childrenOperation(FACILITY, BAN, REQUIRE_REGULAR, Ban.includes, Ban.matches);
 }
 
 export function checkins(): ob.OperationObject {
@@ -69,6 +74,7 @@ export function update(): ob.OperationObject {
 
 export function includes(): ob.ParametersObject {
     const parameters: ob.ParametersObject = {};
+    parameters[WITH_BANS] = parameterRef(WITH_BANS);
     parameters[WITH_CHECKINS] = parameterRef(WITH_CHECKINS);
     parameters[WITH_GUESTS] = parameterRef(WITH_GUESTS);
     parameters[WITH_TEMPLATES] = parameterRef(WITH_TEMPLATES);
@@ -92,6 +98,9 @@ export function paths(): ob.PathsObject {
     thePaths[API_PREFIX + "/" + pluralize(FACILITY.toLowerCase())
             + "/" + pathParam(FACILITY_ID)]
         = pathItemParentDetail(FACILITY,  FACILITY_ID, find, remove, update);
+    thePaths[API_PREFIX + "/" + pluralize(FACILITY.toLowerCase())
+    + "/" + pathParam(FACILITY_ID) + "/" + pluralize(BAN.toLowerCase())]
+        = pathItemParentChildren(FACILITY_ID, bans);
     thePaths[API_PREFIX + "/" + pluralize(FACILITY.toLowerCase())
             + "/" + pathParam(FACILITY_ID) + "/" + pluralize(CHECKIN.toLowerCase())]
         = pathItemParentChildren(FACILITY_ID, checkins);

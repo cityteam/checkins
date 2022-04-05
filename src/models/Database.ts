@@ -10,6 +10,7 @@ import {Sequelize} from "sequelize-typescript";
 // Internal Modules ----------------------------------------------------------
 
 import AccessToken from "./AccessToken";
+import Ban from "./Ban";
 import Checkin from "./Checkin";
 import Facility from "./Facility";
 import Guest from "./Guest";
@@ -36,6 +37,7 @@ export const Database = new Sequelize(DATABASE_URL, {
 
 Database.addModels([
     AccessToken,
+    Ban,
     Checkin,
     Facility,
     Guest,

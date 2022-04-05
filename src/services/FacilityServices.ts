@@ -9,9 +9,11 @@ import {FindOptions, Op, ValidationError} from "sequelize";
 // Internal Modules ----------------------------------------------------------
 
 import AbstractParentServices from "./AbstractParentServices";
+import BanServices from "./BanServices";
 import CheckinServices from "./CheckinServices";
 import GuestServices from "./GuestServices";
 import TemplateServices from "./TemplateServices";
+import Ban from "../models/Ban";
 import Checkin from "../models/Checkin";
 import Facility from "../models/Facility";
 import Guest from "../models/Guest";
@@ -115,6 +117,20 @@ class FacilityServices extends AbstractParentServices<Facility> {
     }
 
     // Model-Specific Methods ------------------------------------------------
+
+    public async bans(facilityId: number, query?: any): Promise<Ban[]> {
+        const facility = await Facility.findByPk(facilityId);
+        if (!facility) {
+            throw new NotFound(
+                `facilityId: Missing Facility ${facilityId}`,
+                "FacilityServices.bans"
+            );
+        }
+        const options = CheckinServices.appendMatchOptions({
+            order: SortOrder.BANS,
+        }, query);
+        return facility.$get("bans", options);
+    }
 
     public async checkins(facilityId: number, query?: any): Promise<Checkin[]> {
         const facility = await Facility.findByPk(facilityId);

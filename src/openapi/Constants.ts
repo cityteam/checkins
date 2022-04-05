@@ -17,6 +17,7 @@ export const APPLICATION_JSON = "application/json";
 
 export const ACCESS_TOKEN = "AccessToken";
 export const ASSIGN = "Assign";
+export const BAN = "Ban";
 export const CHECKIN = "Checkin";
 export const ERROR = "Error";
 export const FACILITY = "Facility";
@@ -29,6 +30,7 @@ export const USER = "User";
 export const MODELS = [
 //    ACCESS_TOKEN,
     ASSIGN,
+    BAN,
     CHECKIN,
     FACILITY,
     GUEST,
@@ -40,6 +42,7 @@ export const MODELS = [
 // ***** Model Properties *****
 
 export const ACTIVE = "active";
+export const BAN_ID = "banId";
 export const CHECKIN_DATE = "checkinDate";
 export const CHECKIN_ID = "checkinId";
 export const COMMENTS = "comments";
@@ -48,6 +51,7 @@ export const FACILITY_ID = "facilityId";
 export const FAVORITE = "favorite";
 export const FEATURES = "features";
 export const FIRST_NAME = "firstName";
+export const FROM_DATE = "fromDate";
 export const GUEST_ID = "guestId";
 export const ID = "id";
 export const LAST_NAME = "lastName";
@@ -57,13 +61,16 @@ export const PAYMENT_AMOUNT = "paymentAmount";
 export const PAYMENT_TYPE = "paymentType";
 export const SCOPE = "scope";
 export const SHOWER_TIME = "showerTime";
+export const STAFF = "staff";
 export const TEMPLATE_ID = "templateId";
+export const TO_DATE = "toDate";
 export const TOKEN = "token";
 export const USER_ID = "userId";
 export const WAKEUP_TIME = "wakeupTime";
 
 // ***** Parameter Names (Includes) *****
 
+export const WITH_BANS = "withBans";
 export const WITH_CHECKINS = "withCheckins";
 export const WITH_FACILITY = "withFacility";
 export const WITH_GUEST = "withGuest";
@@ -75,9 +82,11 @@ export const WITH_TEMPLATES = "withTemplates";
 export const MATCH_ACTIVE = "active";
 export const MATCH_AVAILABLE = "available";
 export const MATCH_DATE = "date";
+export const MATCH_FROM_DATE = "fromDate";
 export const MATCH_GUEST_ID = "guestId";
 export const MATCH_NAME = "name";
 export const MATCH_SCOPE = "scope";
+export const MATCH_TO_DATE = "toDate";
 
 // ***** Parameter Names (Other) *****
 

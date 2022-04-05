@@ -54,6 +54,42 @@ ALTER SEQUENCE public.access_tokens_id_seq OWNED BY public.access_tokens.id;
 
 
 --
+-- Name: bans; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.bans (
+    id integer NOT NULL,
+    active boolean DEFAULT true NOT NULL,
+    comments text,
+    facility_id integer NOT NULL,
+    from_date date NOT NULL,
+    guest_id integer NOT NULL,
+    staff text,
+    to_date date NOT NULL
+);
+
+
+--
+-- Name: bans_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.bans_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: bans_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.bans_id_seq OWNED BY public.bans.id;
+
+
+--
 -- Name: checkins; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -278,6 +314,13 @@ ALTER TABLE ONLY public.access_tokens ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: bans id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bans ALTER COLUMN id SET DEFAULT nextval('public.bans_id_seq'::regclass);
+
+
+--
 -- Name: checkins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -325,6 +368,14 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 ALTER TABLE ONLY public.access_tokens
     ADD CONSTRAINT access_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bans bans_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bans
+    ADD CONSTRAINT bans_pkey PRIMARY KEY (id);
 
 
 --
@@ -437,6 +488,22 @@ CREATE UNIQUE INDEX users_username_key ON public.users USING btree (username);
 
 ALTER TABLE ONLY public.access_tokens
     ADD CONSTRAINT access_tokens_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: bans bans_facility_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bans
+    ADD CONSTRAINT bans_facility_id_fkey FOREIGN KEY (facility_id) REFERENCES public.facilities(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: bans bans_guest_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bans
+    ADD CONSTRAINT bans_guest_id_fkey FOREIGN KEY (guest_id) REFERENCES public.guests(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

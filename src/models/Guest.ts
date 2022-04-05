@@ -16,6 +16,7 @@ const {
 // Internal Modules ----------------------------------------------------------
 
 import AbstractModel from "./AbstractModel";
+import Ban from "./Ban";
 import Checkin from "./Checkin";
 import Facility from "./Facility";
 import {
@@ -56,6 +57,9 @@ class Guest extends AbstractModel<Guest> {
         }
     })
     active!: boolean;
+
+    @HasMany(() => Ban)
+    bans!: Ban[];
 
     @HasMany(() => Checkin)
     checkins!: Checkin[];

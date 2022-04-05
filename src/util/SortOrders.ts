@@ -13,6 +13,12 @@ export const ACCESS_TOKENS: Order = [
     [ "token", "ASC" ],
 ];
 
+export const BANS: Order = [
+    [ "facilityId", "ASC" ],
+    [ "guestId", "ASC" ],
+    [ "fromDate", "ASC" ],
+]
+
 export const CHECKINS: Order = [
     [ "facilityId", "ASC" ],
     [ "checkinDate", "ASC" ],
