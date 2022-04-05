@@ -60,8 +60,8 @@ describe('When logged in', function () {
                 </LoginContext.Provider>
             );
         });
-        const {loggedInUsername, logIn, logOut} = elements();
 
+        const {loggedInUsername, logIn, logOut} = elements();
         await waitFor(() => {
             expect(loggedInUsername).toHaveValue(user.username);
             expect(logIn).not.toBeInTheDocument();
@@ -86,8 +86,8 @@ describe('When logged out', function () {
                 </LoginContext.Provider>
             );
         });
-        const {loggedInUsername, logIn, logOut} = elements();
 
+        const {loggedInUsername, logIn, logOut} = elements();
         await waitFor(() => {
             expect(loggedInUsername).toHaveValue("-----");
             expect(logIn).toBeInTheDocument();
