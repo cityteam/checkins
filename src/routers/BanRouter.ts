@@ -33,7 +33,7 @@ BanRouter.get("/:facilityId",
     });
 
 BanRouter.post("/:facilityId",
-    requireRegular,
+    requireAdmin,
     async (req: Request, res: Response) => {
         res.status(CREATED).send(await BanServices.insert(
             parseInt(req.params.facilityId, 10),

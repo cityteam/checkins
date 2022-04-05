@@ -11,6 +11,7 @@ import {PasswordTokenRequest} from "@craigmcc/oauth-orchestrator";
 import {NotFound} from "./HttpErrors";
 import * as SeedData from "./SeedData";
 import AccessToken from "../models/AccessToken";
+import Ban from "../models/Ban";
 import Checkin from "../models/Checkin";
 import Database from "../models/Database";
 import Guest from "../models/Guest";
@@ -47,6 +48,7 @@ export const authorization = async (username: string): Promise<string> => {
 
 export type OPTIONS = {
     withAccessTokens: boolean,
+    withBans: boolean,
     withCheckins: boolean,
     withFacilities: boolean,
     withGuests: boolean,
@@ -84,6 +86,11 @@ export const loadTestData = async (options: Partial<OPTIONS> = {}): Promise<void
             const guestsFirst = await loadGuests(facilityFirst, SeedData.GUESTS);
             const guestsSecond = await loadGuests(facilitySecond, SeedData.GUESTS);
             const guestsThird = await loadGuests(facilityThird, SeedData.GUESTS);
+            if (options.withBans) {
+                await loadBans(facilityFirst, guestsFirst);
+                await loadBans(facilitySecond, guestsSecond);
+                await loadBans(facilityThird, guestsThird);
+            }
             if (options.withCheckins) {
                 await loadCheckins(facilityFirst, guestsFirst);
                 await loadCheckins(facilitySecond, guestsSecond);
@@ -165,6 +172,74 @@ const loadAccessTokens
         console.info(`  Reloading AccessTokens for User '${user.username}' ERROR`, error);
         throw error;
     }
+}
+
+const loadBans = async (facility: Facility, guests: Guest[]): Promise<Ban[]> => {
+    const zeros = await Ban.bulkCreate([
+        {
+            active: true,
+            comments: `Guest ${guests[0].id} Active Ban`,
+            facilityId: facility.id,
+            fromDate: "2020-05-01",
+            guestId:  guests[0].id,
+            staff: "Boss",
+            toDate: "2020-05-31",
+        },
+        {
+            active: false,
+            comments: `Guest ${guests[0].id} Inactive Ban`,
+            facilityId: facility.id,
+            fromDate: "2020-06-01",
+            guestId: guests[0].id,
+            staff: "Boss",
+            toDate: "2020-06-30",
+        }
+    ]);
+    const ones = await Ban.bulkCreate([
+        {
+            active: true,
+            comments: `Guest ${guests[1].id} Active Ban`,
+            facilityId: facility.id,
+            fromDate: "2020-05-01",
+            guestId:  guests[1].id,
+            staff: "Boss",
+            toDate: "2020-05-31",
+        },
+        {
+            active: false,
+            comments: `Guest ${guests[1].id} Inactive Ban`,
+            facilityId: facility.id,
+            fromDate: "2020-06-01",
+            guestId: guests[1].id,
+            staff: "Boss",
+            toDate: "2020-06-30",
+        }
+    ]);
+    const twos = await Ban.bulkCreate([
+        {
+            active: true,
+            comments: `Guest ${guests[2].id} Active Ban`,
+            facilityId: facility.id,
+            fromDate: "2020-05-01",
+            guestId:  guests[2].id,
+            staff: "Boss",
+            toDate: "2020-05-31",
+        },
+        {
+            active: false,
+            comments: `Guest ${guests[2].id} Inactive Ban`,
+            facilityId: facility.id,
+            fromDate: "2020-06-01",
+            guestId: guests[2].id,
+            staff: "Boss",
+            toDate: "2020-06-30",
+        }
+    ]);
+    return [
+        ...zeros,
+        ...ones,
+        ...twos,
+    ]
 }
 
 const loadCheckins = async (facility: Facility, guests: Guest[]): Promise<Checkin[]> => {

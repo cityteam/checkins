@@ -75,7 +75,6 @@ class Ban extends AbstractModel<Ban> {
         allowNull: false,
         field: "facility_id",
         type: DataType.INTEGER,
-        unique: "uniqueCheckinKeyWithinFacility",
         validate: {
             notNull: { msg: "facilityId: Is required" }
         },
@@ -101,7 +100,7 @@ class Ban extends AbstractModel<Ban> {
 
     @ForeignKey(() => Guest)
     @Column({
-        allowNull: true,
+        allowNull: false,
         field: "guest_id",
         type: DataType.INTEGER,
     })

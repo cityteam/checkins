@@ -8,10 +8,10 @@
 
 import AccessToken from "../models/AccessToken";
 import RefreshToken from "../models/RefreshToken";
-import User from "../models/User";
 import Facility from "../models/Facility";
-import Template from "../models/Template";
 import Guest from "../models/Guest";
+import Template from "../models/Template";
+import User from "../models/User";
 
 // Seed Data -----------------------------------------------------------------
 

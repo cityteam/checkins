@@ -22,7 +22,7 @@ class BanServices extends AbstractChildServices<Ban> {
 
     // Standard CRUD Methods -------------------------------------------------
 
-    public async all(facilityId: number, query: any): Promise<Ban[]> {
+    public async all(facilityId: number, query?: any): Promise<Ban[]> {
         const facility = await Facility.findByPk(facilityId);
         if (!facility) {
             throw new NotFound(
@@ -36,7 +36,7 @@ class BanServices extends AbstractChildServices<Ban> {
         return facility.$get("bans", options);
     }
 
-    public async find(facilityId: number, banId: number, query: any): Promise<Ban> {
+    public async find(facilityId: number, banId: number, query?: any): Promise<Ban> {
         const facility = await Facility.findByPk(facilityId);
         if (!facility) {
             throw new NotFound(
@@ -218,10 +218,10 @@ class BanServices extends AbstractChildServices<Ban> {
             where.active = true;
         }
         if (query.fromDate) {
-            where.fromDate = { [Op.gte]: query.fromDate };
+            where.fromDate = { [Op.lte]: query.fromDate };
         }
         if (query.toDate) {
-            where.toDate = { [Op.lte]: query.toDate };
+            where.toDate = { [Op.gte]: query.toDate };
         }
         const count = Object.getOwnPropertyNames(where).length
             + Object.getOwnPropertySymbols(where).length;
