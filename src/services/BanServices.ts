@@ -205,8 +205,9 @@ class BanServices extends AbstractChildServices<Ban> {
     /**
      * Supported match query parameters:
      * * active                         Select active Bans only
-     * * fromDate={fromDate}            Select Bans greater than or equal to this date
-     * * toDate={toDate}                Select Bans less than or equal to this date
+     * * fromDate={fromDate}            Select Bans less than or equal to this date
+     * * guestId={guestId}              Select Bans for this Guest
+     * * toDate={toDate}                Select Bans greater than or equal to this date
      */
     public appendMatchOptions(options: FindOptions, query?: any): FindOptions {
         options = this.appendIncludeOptions(options, query);
@@ -219,6 +220,9 @@ class BanServices extends AbstractChildServices<Ban> {
         }
         if (query.fromDate) {
             where.fromDate = { [Op.lte]: query.fromDate };
+        }
+        if (query.guestId) {
+            where.guestId = query.guestId;
         }
         if (query.toDate) {
             where.toDate = { [Op.gte]: query.toDate };

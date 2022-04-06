@@ -6,6 +6,7 @@
 
 import AccessToken from "../models/AccessToken";
 import Assign from "../models/Assign";
+import Ban from "../models/Ban";
 import Checkin from "../models/Checkin";
 import Facility from "../models/Facility";
 import Guest from "../models/Guest";
@@ -36,6 +37,18 @@ export const ASSIGNS = (values: object[]): Assign[] => {
     const results: Assign[] = [];
     values.forEach(value => {
         results.push(new Assign(value));
+    });
+    return results;
+}
+
+export const BAN = (value: object): Ban => {
+    return new Ban(value);
+}
+
+export const BANS = (values: object[]): Ban[] => {
+    const results: Ban[] = [];
+    values.forEach(value => {
+        results.push(new Ban(value));
     });
     return results;
 }

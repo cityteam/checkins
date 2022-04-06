@@ -9,6 +9,7 @@ import React from "react";
 // Internal Modules ----------------------------------------------------------
 
 import Assign from "./models/Assign";
+import Ban from "./models/Ban";
 import Checkin from"./models/Checkin";
 import Credentials from "./models/Credentials";
 import Facility from "./models/Facility";
@@ -69,6 +70,7 @@ export type HandleValue = (newValue: string) => void;
 
 export type HandleAssign = (assign: Assign) => void;
 export type HandleAssignPromise = (assign: Assign) => Promise<Checkin>;
+export type HandleBan = (ban: Ban) => void;
 export type HandleCheckin = (checkin: Checkin) => void;
 export type HandleCheckinPromise = (checkin: Checkin) => Promise<Checkin>;
 export type HandleCredentials = (credentials: Credentials) => void;
@@ -81,6 +83,7 @@ export type HandleSummary = (summary: Summary) => void;
 export type HandleTemplate = (template: Template) => void;
 export type HandleUser = (user: User) => void;
 
+export type ProcessBan = (ban: Ban) => Promise<Ban>;
 export type ProcessCheckin = (checkin: Checkin) => Promise<Checkin>;
 export type ProcessFacility = (facility: Facility) => Promise<Facility>;
 export type ProcessGuest = (guest: Guest) => Promise<Guest>;

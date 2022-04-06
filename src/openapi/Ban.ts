@@ -11,14 +11,14 @@ import {
     activeSchema, allOperation, commentsSchema,
     facilityIdSchema, findOperation, guestIdSchema, idSchema,
     insertOperation, parameterRef, pathItemChildCollection,
-    pathItemChildDetail, pathParam,
+    pathItemChildDetail, pathParam, queryParameter,
     removeOperation, schemaRef, updateOperation
 } from "./Common";
 import {
     ACTIVE, API_PREFIX, BAN, BAN_ID, COMMENTS,
     FACILITY, FACILITY_ID,
     FROM_DATE, GUEST, GUEST_ID,
-    ID, MATCH_ACTIVE, MATCH_FROM_DATE, MATCH_TO_DATE,
+    ID, MATCH_ACTIVE, MATCH_FROM_DATE, MATCH_GUEST_ID, MATCH_TO_DATE,
     REQUIRE_ADMIN, REQUIRE_REGULAR, STAFF, TO_DATE, WITH_FACILITY, WITH_GUEST
 } from "./Constants";
 
@@ -59,6 +59,8 @@ export function matches(): ob.ParametersObject {
     const parameters: ob.ParametersObject = {};
     parameters[MATCH_ACTIVE] = parameterRef(MATCH_ACTIVE);
     parameters[MATCH_FROM_DATE] = parameterRef(MATCH_FROM_DATE);
+    parameters[MATCH_GUEST_ID]
+        = queryParameter(MATCH_GUEST_ID, "Match bans for the specified guest ID, false");
     parameters[MATCH_TO_DATE] = parameterRef(MATCH_TO_DATE);
     return parameters;
 }
