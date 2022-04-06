@@ -4,6 +4,7 @@
 
 // Internal Modules ----------------------------------------------------------
 
+import Ban from "../models/Ban";
 import Checkin from "../models/Checkin";
 import Facility from "../models/Facility";
 import Guest from "../models/Guest";
@@ -14,7 +15,9 @@ import User from "../models/User";
 // Public Objects ------------------------------------------------------------
 
 export const ANY = (model: Model): object => {
-    if (model instanceof Checkin) {
+    if (model instanceof Ban) {
+        return BAN(model);
+    } else if (model instanceof Checkin) {
         return CHECKIN(model);
     } else if (model instanceof Facility) {
         return FACILITY(model);
@@ -27,6 +30,25 @@ export const ANY = (model: Model): object => {
     } else {
         return model;
     }
+}
+
+export const BAN = (ban: Ban): object => {
+    return {
+        id: ban.id,
+        facilityId: ban.facilityId,
+        guestId: ban.guestId,
+        active: ban.active,
+        fromDate: ban.fromDate,
+        toDate: ban.toDate,
+    };
+}
+
+export const BANS = (bans: Ban[]): object[] => {
+    const results: object[] = [];
+    bans.forEach(ban => {
+        results.push(BAN(ban));
+    })
+    return results;
 }
 
 export const CHECKIN = (checkin: Checkin): object => {

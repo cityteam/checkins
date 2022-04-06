@@ -5,6 +5,7 @@
 // Internal Modules ----------------------------------------------------------
 
 import AccessToken from "../models/AccessToken";
+import Ban from "../models/Ban";
 import Checkin from "../models/Checkin";
 import Facility from "../models/Facility";
 import Guest from "../models/Guest";
@@ -24,6 +25,30 @@ export const ACCESS_TOKENS = (accessTokens: AccessToken[]): AccessToken[] => {
             return 0;
         }
     })
+}
+
+export const BANS = (bans: Ban[]): Ban[] => {
+    return bans.sort(function (a, b) {
+        if (a.facilityId > b.facilityId) {
+            return 1;
+        } else if (a.facilityId < b.facilityId) {
+            return -1;
+        } else {
+            if (a.guestId > b.guestId) {
+                return 1;
+            } else if (a.guestId < b.guestId) {
+                return -1;
+            } else {
+                if (a.fromDate > b.fromDate) {
+                    return 1;
+                } else if (a.fromDate < b.fromDate) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        }
+    });
 }
 
 export const CHECKINS = (checkins: Checkin[]): Checkin[] => {
