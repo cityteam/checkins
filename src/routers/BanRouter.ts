@@ -55,7 +55,7 @@ BanRouter.get("/:facilityId/:banId",
     async (req: Request, res: Response) => {
         res.send(await BanServices.find(
             parseInt(req.params.facilityId, 10),
-            parseInt(req.params.guestId, 10),
+            parseInt(req.params.banId, 10),
             req.query
         ));
     });
@@ -65,7 +65,7 @@ BanRouter.put("/:facilityId/:banId",
     async (req: Request, res: Response) => {
         res.send(await BanServices.update(
             parseInt(req.params.facilityId, 10),
-            parseInt(req.params.guestId, 10),
+            parseInt(req.params.banId, 10),
             req.body
         ));
     });

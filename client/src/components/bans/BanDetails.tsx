@@ -146,7 +146,7 @@ const BanDetails = (props: Props) => {
 
                     <Row id="formDateToDateRow">
                         <TextField
-                            autoFocus={(props.autoFocus != undefined) ? props.autoFocus : undefined}
+                            autoFocus={(props.autoFocus !== undefined) ? props.autoFocus : undefined}
                             errors={errors}
                             label="From Date:"
                             name="fromDate"
@@ -162,9 +162,9 @@ const BanDetails = (props: Props) => {
                         />
                     </Row>
 
-                    <Row id="staffCommentsRow">
+                    <Row className="g-3 mb-3" id="staffCommentsRow">
                         <TextField
-                            className="col-4"
+                            className="col-2"
                             errors={errors}
                             label="Staffer:"
                             name="staff"

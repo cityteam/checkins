@@ -14,6 +14,7 @@ import Facility from "../models/Facility";
 import Guest from "../models/Guest";
 import {BadRequest, NotUnique, NotFound, ServerError} from "../util/HttpErrors";
 import {appendPaginationOptions} from "../util/QueryParameters";
+import logger from "../util/ServerLogger";
 import * as SortOrder from "../util/SortOrders";
 
 // Public Object -------------------------------------------------------------
@@ -121,6 +122,12 @@ class BanServices extends AbstractChildServices<Ban> {
     }
 
     public async update(facilityId: number, banId: number, ban: any): Promise<Ban> {
+        logger.info({
+            context: "BanServices.update",
+            facilityId: facilityId,
+            banId: banId,
+            ban: ban,
+        });
         const facility = await Facility.findByPk(facilityId);
         if (!facility) {
             throw new NotFound(

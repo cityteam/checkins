@@ -41,6 +41,7 @@ export interface Props {
     withActive?: boolean;               // Offer "Active Guests Only?" filter [true]
     withCheckinDates?: boolean;         // Offer "With Checkin Dates?" filter [true]
     withHeading?: boolean;              // Include "Manage Guests for ..." heading? [true]
+    withHeadingBan?: boolean;           // Include "Manage Bans for ..." heading? [false]
 }
 
 // Component Details ---------------------------------------------------------
@@ -62,6 +63,8 @@ const GuestOptions = (props: Props) => {
         useState<boolean>(props.withCheckinDates !== undefined ? props.withCheckinDates : true);
     const [withHeading] =
         useState<boolean>(props.withHeading !== undefined ? props.withHeading : true);
+    const [withHeadingBan] =
+        useState<boolean>(props.withHeadingBan !== undefined ? props.withHeadingBan : false);
 
     const fetchGuests = useFetchGuests({
         active: active,
@@ -148,6 +151,17 @@ const GuestOptions = (props: Props) => {
                     <Col className="text-center">
                         <strong>
                             <span>Manage Guests for Facility&nbsp;</span>
+                            <span className="text-info">{facilityContext.facility.name}</span>
+                        </strong>
+                    </Col>
+                </Row>
+            ) : null }
+
+            {withHeadingBan ? (
+                <Row className="mb-3">
+                    <Col className="text-center">
+                        <strong>
+                            <span>Manage Bans for Facility&nbsp;</span>
                             <span className="text-info">{facilityContext.facility.name}</span>
                         </strong>
                     </Col>

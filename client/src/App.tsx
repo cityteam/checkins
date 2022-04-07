@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 // Internal Modules ----------------------------------------------------------
 
+import BansSegment from "./components/bans/BanSegment";
 import {FacilityContextProvider} from "./components/facilities/FacilityContext";
 import CheckinsView from "./components/checkins/CheckinsView";
 import FacilitySegment from "./components/facilities/FacilitySegment";
@@ -45,6 +46,7 @@ function App() {
                     <Router>
                         <Routes>
                             <Route path="/" element={<Navigation/>}>
+                                <Route path="bans" element={<BansSegment/>}/>
                                 <Route path="checkins" element={<CheckinsView/>}/>
                                 <Route path="database" element={<DatabaseView/>}/>
                                 <Route path="facilities" element={<FacilitySegment/>}/>

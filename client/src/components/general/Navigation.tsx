@@ -53,10 +53,13 @@ function Navigation() {
                         <NavDropdown title="Admin">
                             <NavDropdown.Item>
                                 <NavLink className="nav-link" to="/database">Backup</NavLink>
+                                <NavDropdown.Divider/>
+                                <NavLink className="nav-link" to="/bans">Bans</NavLink>
                                 <NavLink className="nav-link" to="/facilities">Facilities</NavLink>
                                 <NavLink className="nav-link" to="/guests">Guests</NavLink>
                                 <NavLink className="nav-link" to="/templates">Templates</NavLink>
                                 <NavLink className="nav-link" to="/users">Users</NavLink>
+                                <NavDropdown.Divider/>
                                 <NavLink className="nav-link" to="/merge">MERGE Guests</NavLink>
                             </NavDropdown.Item>
                         </NavDropdown>

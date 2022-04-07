@@ -31,6 +31,7 @@ import {listValue} from "../../util/Transformations";
 export interface Props {
     guest: Guest;                       // Guest for which to manage Bans
     handleAdd?: HandleAction;           // Handle request to add a Ban [not allowed]
+    handleBack: HandleAction;           // Handle request to return to previous view
     handleEdit?: HandleBan;             // Handle request to edit a Ban [not allowed]
 }
 
@@ -43,7 +44,7 @@ const BanOptions = (props: Props) => {
     const facilityContext = useContext(FacilityContext);
 
     const [active, setActive] = useState<boolean>(false);
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [currentPage] = useState<number>(1);
     const [pageSize] = useState<number>(100);
 
     const fetchBans = useFetchBans({
@@ -99,7 +100,7 @@ const BanOptions = (props: Props) => {
             />
 
             <Row className="mb-3 ms-1 me-1">
-                <Col className="text-start">
+                <Col>
                     <strong>
                         <span>Manage Bans for Guest&nbsp;</span>
                         <span className="text-info">{props.guest._title}</span>
@@ -112,14 +113,21 @@ const BanOptions = (props: Props) => {
                         name="activeOnly"
                         value={active}
                     />
-                    <Col className="text-end">
-                        <Button
-                            disabled={!props.handleAdd}
-                            onClick={props.handleAdd}
-                            size="sm"
-                            variant="primary"
-                        >Add</Button>
-                    </Col>
+                </Col>
+                <Col className="text-end">
+                    <Button
+                        className="me-2"
+                        disabled={!props.handleAdd}
+                        onClick={props.handleAdd}
+                        size="sm"
+                        variant="primary"
+                    >Add</Button>
+                    <Button
+                        onClick={() => props.handleBack()}
+                        size="sm"
+                        type="button"
+                        variant="success"
+                    >Back</Button>
                 </Col>
             </Row>
 
