@@ -20,6 +20,7 @@ import Navigation from "./components/general/Navigation";
 import GuestSegment from "./components/guests/GuestSegment";
 import MergeSegment from "./components/guests/MergeSegment";
 import {LoginContextProvider} from "./components/login/LoginContext";
+import BansReport from "./components/reports/BansReport";
 import GuestHistoryReport from "./components/reports/GuestHistoryReport";
 import MonthlySummaryReport from "./components/reports/MonthlySummaryReport";
 import TemplateSegment from "./components/templates/TemplateSegment";
@@ -52,6 +53,7 @@ function App() {
                                 <Route path="facilities" element={<FacilitySegment/>}/>
                                 <Route path="guests" element={<GuestSegment/>}/>
                                 <Route path="merge" element={<MergeSegment/>}/>
+                                <Route path="report-bans" element={<BansReport/>}/>
                                 <Route path="report-guests" element={<GuestHistoryReport/>}/>
                                 <Route path="report-month" element={<MonthlySummaryReport/>}/>
                                 <Route path="templates" element={<TemplateSegment/>}/>

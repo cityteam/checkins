@@ -46,6 +46,7 @@ function Navigation() {
                         <NavLink className="nav-link" to="/checkins">Checkins</NavLink>
                         <NavDropdown title="Reports">
                             <NavDropdown.Item>
+                                <NavLink className="nav-link" to="/report-bans">Daily Bans</NavLink>
                                 <NavLink className="nav-link" to="/report-guests">Guest History</NavLink>
                                 <NavLink className="nav-link" to="/report-month">Monthly Summary</NavLink>
                             </NavDropdown.Item>

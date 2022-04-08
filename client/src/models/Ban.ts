@@ -43,7 +43,7 @@ class Ban extends BanData {
     constructor(data: any = {}) {
         super(data);
         this.facility = data.facility ? ToModel.FACILITY(data.facility) : undefined;
-        this.guest = data.guest ? ToModel.GUEST(data.facility) : undefined;
+        this.guest = data.guest ? ToModel.GUEST(data.guest) : undefined;
         this._model = "Ban";
         this._title = `Guest ${this.guestId} from ${this.fromDate} to ${this.toDate}`;
     }
