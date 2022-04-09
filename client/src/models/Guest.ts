@@ -4,6 +4,7 @@
 
 // Internal Modules ----------------------------------------------------------
 
+import Ban from "./Ban";
 import Checkin from "./Checkin";
 import Facility from "./Facility";
 import * as ToModel from "../util/ToModel";
@@ -40,6 +41,7 @@ class Guest extends GuestData {
 
         super(data);
 
+        this.bans = data.bans ? ToModel.BANS(data.bans) : undefined;
         this.checkins = data.checkins ? ToModel.CHECKINS(data.checkins) : undefined;
         this.facility = data.facility ? ToModel.FACILITY(data.facility) : undefined;
 
@@ -48,6 +50,7 @@ class Guest extends GuestData {
 
     }
 
+    bans?: Ban[];
     checkins?: Checkin[];
     facility?: Facility;
 

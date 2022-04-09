@@ -115,6 +115,7 @@ const CheckinsUnassignedSubview = (props: Props) => {
             context: "CheckinsUnassignedSubview.handleSelectedGuest",
             guest: Abridgers.GUEST(theGuest),
         });
+        // Ensure this Guest has not already been checked in today
         if (theGuest.checkins) {
             let matNumber = -1;
             theGuest.checkins.forEach(checkin => {
@@ -127,6 +128,20 @@ const CheckinsUnassignedSubview = (props: Props) => {
                 return;
             }
         }
+        // Ensure this Guest does not have an active Ban for today
+        let banned = false;
+        if (theGuest.bans) {
+            theGuest.bans.forEach(ban => {
+                if (ban.active && (ban.fromDate <= props.checkinDate) && (ban.toDate >= props.checkinDate)) {
+                    banned = true;
+                }
+            });
+        }
+        if (banned) {
+            alert(`This Guest has an active Ban for ${props.checkinDate} and may not be checked in`);
+            return;
+        }
+        // Perform the assignment of this guest
         setAssign(configureAssign(theGuest));
         setGuest(theGuest);
     }

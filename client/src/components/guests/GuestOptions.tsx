@@ -16,6 +16,7 @@ import Table from "react-bootstrap/Table";
 
 // Internal Modules ----------------------------------------------------------
 
+import GuestStatus from "./GuestStatus";
 import FacilityContext from "../facilities/FacilityContext";
 import CheckBox from "../general/CheckBox";
 import FetchingProgress from "../general/FetchingProgress";
@@ -27,7 +28,6 @@ import Guest from "../../models/Guest";
 import * as Abridgers from "../../util/Abridgers";
 import logger from "../../util/ClientLogger";
 import * as Sorters from "../../util/Sorters";
-import {listValue} from "../../util/Transformations";
 
 // Incoming Properties -------------------------------------------------------
 
@@ -72,6 +72,7 @@ const GuestOptions = (props: Props) => {
         currentPage: currentPage,
         name: (searchText.length > 0) ? searchText : undefined,
         pageSize: pageSize,
+        withBans: true,
         withCheckins: checkinDates || props.checkinDates,
     });
 
@@ -237,7 +238,7 @@ const GuestOptions = (props: Props) => {
                             <th scope="col">Checkin Dates</th>
                         ) : (
                             <>
-                                <th scope="col">Active</th>
+                                <th className="text-center" scope="col">Status</th>
                                 <th scope="col">Comments</th>
                                 <th scope="col">Favorite</th>
                             </>
@@ -264,8 +265,8 @@ const GuestOptions = (props: Props) => {
                                 </td>
                             ) : (
                                 <>
-                                    <td key={`${prefix}GO-${ri}-active`}>
-                                        {listValue(guest.active)}
+                                    <td className="text-center" key={`${prefix}GO-${ri}-active`}>
+                                        <GuestStatus guest={guest}/>
                                     </td>
                                     <td key={`${prefix}GO-${ri}-comments`}>
                                         {guest.comments}

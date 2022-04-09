@@ -25,6 +25,7 @@ export interface Props {
     currentPage?: number;               // One-relative current page number [1]
     pageSize?: number;                  // Number of entries per page [25]
     name?: string;                      // Select Guests matching pattern [none]
+    withBans?: boolean;                 // Include child Bans? [false]
     withCheckins?: boolean;             // Include child Checkins? [false]
     withFacility?: boolean;             // Include parent Facility? [false]
 }
@@ -61,6 +62,7 @@ const useFetchGuests = (props: Props): State => {
                 limit: limit,
                 offset: offset,
                 name: props.name ? props.name : undefined,
+                withBans: props.withBans ? "" : undefined,
                 withCheckins: props.withCheckins ? "" : undefined,
                 withFacility: props.withFacility ? "" : undefined,
             }
