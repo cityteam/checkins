@@ -100,8 +100,8 @@ const useFetchGuests = (props: Props): State => {
 
         fetchGuests();
 
-    }, [props.active, props.currentPage,
-        props.pageSize, props.name, props.withCheckins, props.withFacility,
+    }, [props.active, props.currentPage, props.name, props.pageSize,
+        props.withBans, props.withCheckins, props.withFacility,
         alertPopup, facilityContext.facility]);
 
     return {
