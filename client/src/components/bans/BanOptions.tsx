@@ -31,8 +31,10 @@ import {listValue} from "../../util/Transformations";
 export interface Props {
     guest: Guest;                       // Guest for which to manage Bans
     handleAdd?: HandleAction;           // Handle request to add a Ban [not allowed]
-    handleBack: HandleAction;           // Handle request to return to previous view
+    handleBack?: HandleAction;          // Handle request to return to previous view [no button]
     handleEdit?: HandleBan;             // Handle request to edit a Ban [not allowed]
+    withActive?: boolean;               // With "Active Bans Only" checkbox? [true]
+    withHeading?: boolean;              // Include "Manage Bans" heading [true]
 }
 
 // Component Details ---------------------------------------------------------
@@ -46,6 +48,8 @@ const BanOptions = (props: Props) => {
     const [active, setActive] = useState<boolean>(false);
     const [currentPage] = useState<number>(1);
     const [pageSize] = useState<number>(100);
+    const [withActive] = useState<boolean>(props.withActive !== undefined ? props.withActive : true);
+    const [withHeading] = useState<boolean>(props.withHeading !== undefined ? props.withHeading : true);
 
     const fetchBans = useFetchBans({
         active: active,
@@ -63,11 +67,13 @@ const BanOptions = (props: Props) => {
             guest: Abridgers.GUEST(props.guest),
             active: active,
             currentPage: currentPage,
+            withActive: withActive,
+            withHeading: withHeading,
         })
 
     }, [facilityContext.facility,
-        props.guest,
-        active, currentPage,
+        props.guest, props.withActive, props.withHeading,
+        active, currentPage, withActive, withHeading,
         fetchBans.bans]);
 
     const expired = (theBan: Ban): boolean => {
@@ -84,12 +90,19 @@ const BanOptions = (props: Props) => {
         }
     }
 
+    const handleBack: HandleAction = () => {
+        if (props.handleBack) {
+            props.handleBack();
+        }
+    }
+
     const handleEdit: HandleBan = (theBan) => {
         if (props.handleEdit) {
             props.handleEdit(theBan);
         }
     }
 
+    // @ts-ignore
     return (
         <Container fluid id="BanOptions">
 
@@ -100,34 +113,42 @@ const BanOptions = (props: Props) => {
             />
 
             <Row className="mb-3 ms-1 me-1">
-                <Col>
-                    <strong>
-                        <span>Manage Bans for Guest&nbsp;</span>
-                        <span className="text-info">{props.guest._title}</span>
-                    </strong>
-                </Col>
-                <Col className="text-center">
-                    <CheckBox
-                        handleChange={handleActive}
-                        label="Active Bans Only?"
-                        name="activeOnly"
-                        value={active}
-                    />
-                </Col>
+                {withHeading ? (
+                    <Col>
+                        <strong>
+                            <span>Manage Bans for Guest&nbsp;</span>
+                            <span className="text-info">{props.guest._title}</span>
+                        </strong>
+                    </Col>
+                ) : null }
+                {withActive ? (
+                    <Col className="text-center">
+                        <CheckBox
+                            handleChange={handleActive}
+                            label="Active Bans Only?"
+                            name="activeOnly"
+                            value={active}
+                        />
+                    </Col>
+                ) : null }
                 <Col className="text-end">
-                    <Button
-                        className="me-2"
-                        disabled={!props.handleAdd}
-                        onClick={props.handleAdd}
-                        size="sm"
-                        variant="primary"
-                    >Add</Button>
-                    <Button
-                        onClick={() => props.handleBack()}
-                        size="sm"
-                        type="button"
-                        variant="success"
-                    >Back</Button>
+                    {props.handleAdd ? (
+                        <Button
+                            className="me-2"
+                            disabled={!props.handleAdd}
+                            onClick={props.handleAdd}
+                            size="sm"
+                            variant="primary"
+                        >Add</Button>
+                    ) : null }
+                    {props.handleBack ? (
+                        <Button
+                            onClick={handleBack}
+                            size="sm"
+                            type="button"
+                            variant="success"
+                        >Back</Button>
+                    ) : null }
                 </Col>
             </Row>
 
@@ -182,16 +203,18 @@ const BanOptions = (props: Props) => {
                 </Table>
             </Row>
 
-            <Row className="mb-3 ms-1 me-1">
-                <Col className="text-end">
-                    <Button
-                        disabled={!props.handleAdd}
-                        onClick={handleAdd}
-                        size="sm"
-                        variant="primary"
-                    >Add</Button>
-                </Col>
-            </Row>
+            {props.handleAdd ? (
+                <Row className="mb-3 ms-1 me-1">
+                    <Col className="text-end">
+                        <Button
+                            disabled={!props.handleAdd}
+                            onClick={handleAdd}
+                            size="sm"
+                            variant="primary"
+                        >Add</Button>
+                    </Col>
+                </Row>
+            ) : null }
 
         </Container>
     )

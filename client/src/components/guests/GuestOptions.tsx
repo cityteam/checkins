@@ -11,12 +11,14 @@ import React, {useContext, useEffect, useState} from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
+import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
 
 // Internal Modules ----------------------------------------------------------
 
 import GuestStatus from "./GuestStatus";
+import BanOptions from "../bans/BanOptions";
 import FacilityContext from "../facilities/FacilityContext";
 import CheckBox from "../general/CheckBox";
 import FetchingProgress from "../general/FetchingProgress";
@@ -53,9 +55,11 @@ const GuestOptions = (props: Props) => {
     const [active, setActive] = useState<boolean>(false);
     const [checkinDates, setCheckinDates] = useState<boolean>((props.selectCheckinDates !== undefined) ? props.selectCheckinDates : false);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [guest, setGuest] = useState<Guest>(new Guest());
     const [pageSize] = useState<number>(15);
     const [prefix] = useState<string>(props.prefix ? props.prefix : "");
     const [searchText, setSearchText] = useState<string>("");
+    const [showBans, setShowBans] = useState<boolean>(false);
     const [updateSearch] = useState<boolean>((props.updateSearch !== undefined) ? props.updateSearch : false);
     const [withActive] =
         useState<boolean>(props.withActive !== undefined ? props.withActive : true);
@@ -121,6 +125,10 @@ const GuestOptions = (props: Props) => {
         setCheckinDates(theCheckinDates);
     }
 
+    const handleCloseBans: HandleAction = () => {
+        setShowBans(false);
+    }
+
     const handleEdit: HandleGuest = (theGuest) => {
         if (updateSearch) {
             setSearchText(`${theGuest.firstName} ${theGuest.lastName}`);
@@ -134,11 +142,17 @@ const GuestOptions = (props: Props) => {
         setCurrentPage(currentPage + 1);
     }
 
+    const handleOpenBans: HandleGuest = (theGuest) => {
+        setGuest(theGuest);
+        setShowBans(true);
+    }
+
     const handlePrevious: HandleAction = () => {
         setCurrentPage(currentPage - 1);
     }
 
     return (
+        <>
         <Container fluid id={`${prefix}GuestOptions`}>
 
             <FetchingProgress
@@ -251,33 +265,49 @@ const GuestOptions = (props: Props) => {
                         <tr
                             className="table-default"
                             key={`${prefix}GO-${ri}-TR`}
-                            onClick={props.handleEdit ? (() => handleEdit(guest)) : undefined}
                         >
-                            <td key={`${prefix}GO-${ri}-firstName`}>
+                            <td
+                                key={`${prefix}GO-${ri}-firstName`}
+                                onClick={props.handleEdit ? (() => handleEdit(guest)) : undefined}
+                            >
                                 {guest.firstName}
                             </td>
-                            <td key={`${prefix}GO-${ri}-lastName`}>
+                            <td
+                                key={`${prefix}GO-${ri}-lastName`}
+                                onClick={props.handleEdit ? (() => handleEdit(guest)) : undefined}
+                            >
                                 {guest.lastName}
                             </td>
                             {(checkinDates) ? (
-                                <td key={`${prefix}GO-${ri}-checkins`}>
+                                <td
+                                    key={`${prefix}GO-${ri}-checkins`}
+                                    onClick={props.handleEdit ? (() => handleEdit(guest)) : undefined}
+                                >
                                     {checkins(guest)}
                                 </td>
                             ) : (
                                 <>
-                                    <td className="text-center" key={`${prefix}GO-${ri}-active`}>
+                                    <td
+                                        className="text-center"
+                                        key={`${prefix}GO-${ri}-active`}
+                                        onClick={() => handleOpenBans(guest)}
+                                    >
                                         <GuestStatus guest={guest}/>
                                     </td>
-                                    <td key={`${prefix}GO-${ri}-comments`}>
+                                    <td
+                                        key={`${prefix}GO-${ri}-comments`}
+                                        onClick={props.handleEdit ? (() => handleEdit(guest)) : undefined}
+                                    >
                                         {guest.comments}
                                     </td>
-                                    <td key={`${prefix}GO-${ri}-favorite`}>
+                                    <td
+                                        key={`${prefix}GO-${ri}-favorite`}
+                                        onClick={props.handleEdit ? (() => handleEdit(guest)) : undefined}
+                                    >
                                         {guest.favorite}
                                     </td>
                                 </>
                             )}
-
-
                         </tr>
                     ))}
                     </tbody>
@@ -299,6 +329,29 @@ const GuestOptions = (props: Props) => {
             ) : null }
 
         </Container>
+
+            {/* Modal for showing Bans for a Guest */}
+            <Modal
+                animation={false}
+                backdrop="static"
+                centered
+                onHide={handleCloseBans}
+                show={showBans}
+                size="lg"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Bans for {guest._title}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <BanOptions
+                        guest={guest}
+                        withActive={false}
+                        withHeading={false}
+                    />
+                </Modal.Body>
+            </Modal>
+
+        </>
     )
 
 }
