@@ -11,3 +11,4 @@ privkey.pem
 test/database.sqlite
 transfer/*.csv
 client/.eslintcache
+/cityteam-checkins.json
