@@ -157,11 +157,13 @@ const CheckinsUnassignedSubview = (props: Props) => {
     return (
         <Container fluid id="CheckinsUnassignedSubview">
 
+{/* Container goes away before the executing=false state change can happen
             <MutatingProgress
                 error={mutateCheckin.error}
                 executing={mutateCheckin.executing}
                 message={message}
             />
+*/}
 
             <MutatingProgress
                 error={mutateGuest.error}

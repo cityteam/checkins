@@ -9,6 +9,7 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
+import {Dates} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -19,7 +20,6 @@ import {HandleDate} from "../../types";
 import useFetchBans from "../../hooks/useFetchBans";
 import * as Abridgers from "../../util/Abridgers";
 import logger from "../../util/ClientLogger";
-import {todayDate} from "../../util/Dates"
 
 // Component Details ---------------------------------------------------------
 
@@ -38,7 +38,7 @@ const BansReport = () => {
 
     const [actives, setActives] = useState<Entry[]>([]);
     const [inactives, setInactives] = useState<Entry[]>([]);
-    const [reportDate, setReportDate] = useState<string>(todayDate());
+    const [reportDate, setReportDate] = useState<string>(Dates.today());
 
     const fetchBans = useFetchBans({
         alertPopup: false,

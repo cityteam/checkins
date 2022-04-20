@@ -5,6 +5,7 @@
 // External Modules ----------------------------------------------------------
 
 import React, {useContext, useEffect, useState} from "react";
+import {Dates} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -20,7 +21,6 @@ import Ban from "../../models/Ban";
 import Guest from "../../models/Guest";
 import * as Abridgers from "../../util/Abridgers";
 import logger from "../../util/ClientLogger";
-import {todayDate} from "../../util/Dates";
 
 // Component Details ---------------------------------------------------------
 
@@ -32,7 +32,7 @@ enum View {
 
 const BanSegment = () => {
 
-    const TODAY = todayDate();
+    const TODAY = Dates.today();
 
     const facilityContext = useContext(FacilityContext);
     const loginContext = useContext(LoginContext);

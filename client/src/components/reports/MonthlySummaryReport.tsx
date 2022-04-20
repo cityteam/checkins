@@ -8,6 +8,7 @@ import React, {useContext, useEffect, useState} from "react";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import {Months} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -20,7 +21,6 @@ import useFetchSummaries from "../../hooks/useFetchSummaries";
 import Summary from "../../models/Summary";
 import * as Abridgers from "../../util/Abridgers";
 import logger from "../../util/ClientLogger";
-import {endDate, startDate, todayMonth} from "../../util/Months";
 
 // Component Details ---------------------------------------------------------
 
@@ -30,7 +30,7 @@ const MonthlySummaryReport = () => {
 
     const [checkinDateFrom, setCheckinDateFrom] = useState<string>("2021-08-01");
     const [checkinDateTo, setCheckinDateTo] = useState<string>("2021-08-31");
-    const [reportMonth, setReportMonth] = useState<string>(todayMonth());
+    const [reportMonth, setReportMonth] = useState<string>(Months.today());
     const [title, setTitle] = useState<string>(`Monthly Totals for ${reportMonth}`);
     const [totals, setTotals] = useState<Summary>(new Summary());
 
@@ -40,8 +40,8 @@ const MonthlySummaryReport = () => {
     });
 
     useEffect(() => {
-        const newCheckinDateFrom = startDate(reportMonth);
-        const newCheckinDateTo = endDate(reportMonth);
+        const newCheckinDateFrom = Months.start(reportMonth);
+        const newCheckinDateTo = Months.end(reportMonth);
         logger.info({
             context: "MonthlySummaryReport.useEffect",
             facility: Abridgers.FACILITY(facilityContext.facility),
@@ -66,8 +66,8 @@ const MonthlySummaryReport = () => {
             month: theReportMonth,
         });
         setReportMonth(theReportMonth);
-        setCheckinDateFrom(startDate(theReportMonth));
-        setCheckinDateTo(endDate(theReportMonth));
+        setCheckinDateFrom(Months.start(theReportMonth));
+        setCheckinDateTo(Months.end(theReportMonth));
     }
 
     return (

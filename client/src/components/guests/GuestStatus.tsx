@@ -9,11 +9,11 @@ import React, {useState} from "react";
 import {
     CheckCircleFill, XSquareFill,
 } from "react-bootstrap-icons";
+import {Dates} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
 import Guest from "../../models/Guest";
-import {todayDate} from "../../util/Dates";
 
 // Incoming Properties -------------------------------------------------------
 
@@ -26,7 +26,7 @@ export interface Props {
 
 const GuestStatus = (props: Props) => {
 
-    const [date] = useState<string>(props.date ? props.date : todayDate());
+    const [date] = useState<string>(props.date ? props.date : Dates.today());
 
     const icon = () => {
         let activeBan = false;
