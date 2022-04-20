@@ -24,13 +24,6 @@ export const validateEmail = (email: string): boolean => {
     }
 }
 
-export const validateFacilityScope = (scope: string | undefined): boolean => {
-    if (!scope || (scope.length === 0)) {
-        return true;
-    }
-    return scope.match(scopePattern) !== null;
-}
-
 export const validateMonth = (month: string): boolean => {
     if (!month || (month.length === 0)) {
         return true;
@@ -93,8 +86,6 @@ const emailPattern: RegExp
 const monthPattern: RegExp = /^\d{4}-\d{2}$/;
 
 const phonePattern: RegExp = /^\d{3}-\d{3}-\d{4}$/;
-
-const scopePattern: RegExp = /^[a-zA-Z0-9]+$/;
 
 const stateAbbreviations: string[] =
     [ "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC",

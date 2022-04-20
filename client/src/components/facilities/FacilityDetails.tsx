@@ -22,6 +22,9 @@ import TextField from "../general/TextField";
 import {HandleAction, HandleFacility} from "../../types";
 import Facility, {FacilityData} from "../../models/Facility";
 import {
+    validateFacilityScope,
+} from "../../util/ApplicationValidators";
+import {
     validateFacilityNameUnique,
     validateFacilityScopeUnique
 } from "../../util/AsyncValidators";
@@ -29,7 +32,6 @@ import * as ToModel from "../../util/ToModel";
 import {toNullValues} from "../../util/Transformations";
 import {
     validateEmail,
-    validateFacilityScope,
     validatePhone,
     validateState,
     validateZipCode
