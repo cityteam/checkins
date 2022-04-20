@@ -9,12 +9,12 @@
 
 import React, {useEffect, useState} from "react";
 import Button from "react-bootstrap/Button";
-import {Validators} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
 import {HandleMonth, OnChangeInput, OnClick, OnKeyDown} from "../../types";
 import logger from "../../util/ClientLogger";
+import {validateMonth} from "../../util/Validators";
 
 // Incoming Properties -------------------------------------------------------
 
@@ -66,7 +66,7 @@ const MonthSelector = (props: Props) => {
     const processValue = (newValue: string): void => {
 
         // Validate the response
-        let newValid = Validators.month(newValue);
+        let newValid = validateMonth(newValue);
         if (props.required && (newValue === "")) {
             newValid = false;
         } else if (props.max && (newValue > props.max)) {

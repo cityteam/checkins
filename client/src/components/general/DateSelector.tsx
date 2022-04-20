@@ -9,12 +9,12 @@
 
 import React, {useEffect, useState} from "react";
 import Button from "react-bootstrap/Button";
-import {Validators} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
 import {HandleDate, OnChangeInput, OnClick, OnKeyDown} from "../../types";
 import logger from "../../util/ClientLogger";
+import {validateDate} from "../../util/Validators";
 
 // Incoming Properties -------------------------------------------------------
 
@@ -66,7 +66,7 @@ const DateSelector = (props: Props) => {
     const processValue = (theValue: string) => {
 
         // Validate the response
-        let isValid = Validators.date(theValue);
+        let isValid = validateDate(theValue);
         if (props.required && (theValue === "")) {
             isValid = false;
         } else if (props.max && (theValue > props.max)) {

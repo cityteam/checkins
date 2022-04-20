@@ -19,7 +19,7 @@ import Row from "react-bootstrap/Row";
 import CheckinSelector from "./CheckinSelector";
 import AssignDetails from "../assigns/AssignDetails";
 import FetchingProgress from "../general/FetchingProgress";
-//import MutatingProgress from "../general/MutatingProgress";
+import MutatingProgress from "../general/MutatingProgress";
 import {HandleAction, HandleAssign, HandleCheckin, OnAction} from "../../types";
 import useFetchCheckins from "../../hooks/useFetchCheckins";
 import useMutateCheckin from "../../hooks/useMutateCheckin";
@@ -41,7 +41,7 @@ const CheckinsAssignedSubview = (props: Props) => {
 
     // General Support -------------------------------------------------------
 
-//    const [message, setMessage] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
 
     const mutateCheckin = useMutateCheckin({
         alertPopup: false,
@@ -78,7 +78,7 @@ const CheckinsAssignedSubview = (props: Props) => {
             showerTime: theAssign.showerTime,
             wakeupTime: theAssign.wakeupTime,
         });
-//        setMessage(`Handling assignment to mat ${theCheckin.matNumber}`);
+        setMessage(`Handling assignment to mat ${theCheckin.matNumber}`);
         const updated: Checkin = await mutateCheckin.update(theCheckin);
         logger.debug({
             context: "CheckinsAssignedSubview.handleAssign",
@@ -119,7 +119,7 @@ const CheckinsAssignedSubview = (props: Props) => {
                 showerTime: props.checkin.showerTime,
                 wakeupTime: props.checkin.wakeupTime,
             });
-//            setMessage(`Handling reassignment from mat ${props.checkin.matNumber}`);
+            setMessage(`Handling reassignment from mat ${props.checkin.matNumber}`);
             const reassigned = await mutateCheckin.reassign(assign);
             logger.debug({
                 context: "CheckinsAssignedSubview.handleReassign",
@@ -143,7 +143,7 @@ const CheckinsAssignedSubview = (props: Props) => {
 
     const onDeassignConfirmPositive: OnAction = async () => {
         setShowDeassignConfirm(false);
-//        setMessage(`Handling deassignment from mat ${props.checkin.matNumber}`);
+        setMessage(`Handling deassignment from mat ${props.checkin.matNumber}`);
         const removed: Checkin = await mutateCheckin.deassign(props.checkin);
         logger.debug({
             context: "CheckinsAssignedSubview.onDeassignConfirmPositive",
@@ -157,13 +157,11 @@ const CheckinsAssignedSubview = (props: Props) => {
     return (
         <Container fluid id="CheckinsAssignedSubview">
 
-{/* Container goes away before the executing=false state change can happen
             <MutatingProgress
                 error={mutateCheckin.error}
                 executing={mutateCheckin.executing}
                 message={message}
             />
-*/}
 
             {/* Overall Header and Back Link ----------------------------- */}
             <Row className="mb-3">

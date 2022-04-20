@@ -13,13 +13,6 @@ import MatsList from "./MatsList";
 
 // Public Objects ------------------------------------------------------------
 
-export const validateFacilityScope = (scope: string | undefined): boolean => {
-    if (!scope || (scope.length === 0)) {
-        return true;
-    }
-    return scope.match(scopePattern) !== null;
-}
-
 export const validateFeatures = (features: string): boolean => {
     if (features) {
         for (let i: number = 0; i < features.length; i++) {
@@ -85,8 +78,6 @@ export const validatePaymentType = (paymentType: string): boolean => {
 }
 
 // Private Objects -----------------------------------------------------------
-
-const scopePattern: RegExp = /^[a-zA-Z0-9]+$/;
 
 const validFeatures: string = "HSW";
 

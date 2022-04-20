@@ -11,7 +11,6 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
-import {Dates} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -24,6 +23,7 @@ import Ban from "../../models/Ban";
 import Guest from "../../models/Guest";
 import * as Abridgers from "../../util/Abridgers";
 import logger from "../../util/ClientLogger";
+import {todayDate} from "../../util/Dates";
 import {listValue} from "../../util/Transformations";
 
 // Incoming Properties -------------------------------------------------------
@@ -41,7 +41,7 @@ export interface Props {
 
 const BanOptions = (props: Props) => {
 
-    const today = Dates.today();
+    const today = todayDate();
 
     const facilityContext = useContext(FacilityContext);
 

@@ -14,7 +14,6 @@ import Row from "react-bootstrap/Row";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import {Validators} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -22,13 +21,19 @@ import CheckBoxField from "../general/CheckBoxField";
 import TextField from "../general/TextField";
 import {HandleAction, HandleFacility} from "../../types";
 import Facility, {FacilityData} from "../../models/Facility";
-import {validateFacilityScope} from "../../util/ApplicationValidators";
 import {
     validateFacilityNameUnique,
     validateFacilityScopeUnique
 } from "../../util/AsyncValidators";
 import * as ToModel from "../../util/ToModel";
 import {toNullValues} from "../../util/Transformations";
+import {
+    validateEmail,
+    validateFacilityScope,
+    validatePhone,
+    validateState,
+    validateZipCode
+} from "../../util/Validators";
 
 // Incoming Properties ------------------------------------------------------
 
@@ -88,7 +93,7 @@ const FacilityDetails = (props: Props) => {
             .test("valid-email",
                 "Invalid email format",
                 function (value) {
-                    return Validators.email(value ? value : "");
+                    return validateEmail(value ? value : "");
                 }),
         name: Yup.string()
             .required("Name is required")
@@ -103,7 +108,7 @@ const FacilityDetails = (props: Props) => {
             .test("valid-phone",
                 "Invalid phone number format",
                 function (value) {
-                    return Validators.phone(value ? value : "");
+                    return validatePhone(value ? value : "");
                 }),
         scope: Yup.string()
             .required("Scope is required")
@@ -122,14 +127,14 @@ const FacilityDetails = (props: Props) => {
             .test("valid-state",
                 "Invalid state abbreviation",
                 function(value) {
-                    return Validators.state(value ? value : "");
+                    return validateState(value ? value : "");
                 }),
         zipCode: Yup.string()
             .nullable()
             .test("valid-zip-code",
                 "Invalid zip code format",
                 function(value) {
-                    return Validators.zipCode(value ? value : "");
+                    return validateZipCode(value ? value : "");
                 }),
         });
 

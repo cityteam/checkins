@@ -8,7 +8,6 @@ import React, {useContext, useEffect, useState} from "react";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import {Dates} from "@craigmcc/shared-utils";
 
 // Internal Modules ---------------------------------------------------------
 
@@ -22,6 +21,7 @@ import {HandleCheckin, HandleDate, Scope} from "../../types";
 import Checkin from "../../models/Checkin";
 import * as Abridgers from "../../util/Abridgers";
 import logger from "../../util/ClientLogger";
+import {todayDate} from "../../util/Dates"
 
 // Component Details ---------------------------------------------------------
 
@@ -39,8 +39,7 @@ const CheckinsView = () => {
 
     const [canProcess, setCanProcess] = useState<boolean>(false);
     const [checkin, setCheckin] = useState<Checkin | null>(null);
-//    const [checkinDate, setCheckinDate] = useState<string>(todayDate());
-    const [checkinDate, setCheckinDate] = useState<string>(Dates.today());
+    const [checkinDate, setCheckinDate] = useState<string>(todayDate());
     const [stage, setStage] = useState<Stage>(Stage.None);
 
     useEffect(() => {

@@ -14,7 +14,6 @@ import Row from "react-bootstrap/Row";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import {Validators} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -25,6 +24,7 @@ import Ban, {BanData} from "../../models/Ban";
 import Guest from "../../models/Guest";
 import * as ToModel from "../../util/ToModel";
 import {toNullValues} from "../../util/Transformations";
+import {validateDate} from "../../util/Validators";
 
 // Incoming Properties -------------------------------------------------------
 
@@ -83,7 +83,7 @@ const BanDetails = (props: Props) => {
             .test("valid-from-date",
                 "Invalid from date, must be YYYY-MM-DD",
                 function(value) {
-                    return Validators.date(value ? value : "");
+                    return validateDate(value ? value : "");
                 }),
         staff: Yup.string()
             .nullable(),
@@ -93,7 +93,7 @@ const BanDetails = (props: Props) => {
                 "Invalid to date, must be YYYY-MM-DD and not before from date",
                 function(this) {
                     const ban = ToModel.BAN(toNullValues(this.parent));
-                    if (Validators.date(ban.toDate ? ban.toDate : "")) {
+                    if (validateDate(ban.toDate ? ban.toDate : "")) {
                         if (ban.fromDate && (ban.fromDate <= ban.toDate)) {
                             return true;
                         }
