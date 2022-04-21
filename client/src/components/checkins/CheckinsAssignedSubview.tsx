@@ -19,10 +19,8 @@ import Row from "react-bootstrap/Row";
 import CheckinSelector from "./CheckinSelector";
 import AssignDetails from "../assigns/AssignDetails";
 import FetchingProgress from "../general/FetchingProgress";
-import MutatingProgress from "../general/MutatingProgress";
 import {HandleAction, HandleAssign, HandleCheckin, OnAction} from "../../types";
 import useFetchCheckins from "../../hooks/useFetchCheckins";
-import useMutateCheckin from "../../hooks/useMutateCheckin";
 import Assign from "../../models/Assign";
 import Checkin from "../../models/Checkin";
 import * as Abridgers from "../../util/Abridgers";
@@ -33,6 +31,9 @@ import logger from "../../util/ClientLogger";
 export interface Props {
     checkin: Checkin;                   // The (assigned) Checkin to process
     handleCompleted: HandleCheckin;     // Handle Checkin after completion
+    handleDeassigned: HandleCheckin;    // Handle deassignment of an assigned Guest
+    handleReassigned: HandleAssign;     // Handle reassignment of an assigned Guest
+    handleUpdated: HandleAssign;        // Handle update of Checkin details
 }
 
 // Component Details ---------------------------------------------------------
@@ -40,13 +41,6 @@ export interface Props {
 const CheckinsAssignedSubview = (props: Props) => {
 
     // General Support -------------------------------------------------------
-
-    const [message, setMessage] = useState<string>("");
-
-    const mutateCheckin = useMutateCheckin({
-        alertPopup: false,
-        checkin: props.checkin,
-    });
 
     useEffect(() => {
         logger.debug({
@@ -66,25 +60,6 @@ const CheckinsAssignedSubview = (props: Props) => {
             showerTime: theCheckin.showerTime,
             wakeupTime: theCheckin.wakeupTime,
         });
-    }
-
-    const handleAssign: HandleAssign = async (theAssign) => {
-        const theCheckin = new Checkin({
-            ...props.checkin,
-            comments: theAssign.comments,
-            // guestId: theAssign.guestId,     // Should not have been changed
-            paymentAmount: theAssign.paymentAmount,
-            paymentType: theAssign.paymentType,
-            showerTime: theAssign.showerTime,
-            wakeupTime: theAssign.wakeupTime,
-        });
-        setMessage(`Handling assignment to mat ${theCheckin.matNumber}`);
-        const updated: Checkin = await mutateCheckin.update(theCheckin);
-        logger.debug({
-            context: "CheckinsAssignedSubview.handleAssign",
-            checkin: Abridgers.CHECKIN(updated),
-        });
-        props.handleCompleted(updated);
     }
 
     // For Option 2 ----------------------------------------------------------
@@ -119,13 +94,7 @@ const CheckinsAssignedSubview = (props: Props) => {
                 showerTime: props.checkin.showerTime,
                 wakeupTime: props.checkin.wakeupTime,
             });
-            setMessage(`Handling reassignment from mat ${props.checkin.matNumber}`);
-            const reassigned = await mutateCheckin.reassign(assign);
-            logger.debug({
-                context: "CheckinsAssignedSubview.handleReassign",
-                checkin: Abridgers.CHECKIN(reassigned),
-            });
-            props.handleCompleted(reassigned);
+            props.handleReassigned(assign);
         }
     }
 
@@ -143,25 +112,13 @@ const CheckinsAssignedSubview = (props: Props) => {
 
     const onDeassignConfirmPositive: OnAction = async () => {
         setShowDeassignConfirm(false);
-        setMessage(`Handling deassignment from mat ${props.checkin.matNumber}`);
-        const removed: Checkin = await mutateCheckin.deassign(props.checkin);
-        logger.debug({
-            context: "CheckinsAssignedSubview.onDeassignConfirmPositive",
-            checkin: Abridgers.CHECKIN(removed),
-        });
-        props.handleCompleted(removed);
+        props.handleDeassigned(props.checkin);
     }
 
     // User Interface --------------------------------------------------------
 
     return (
         <Container fluid id="CheckinsAssignedSubview">
-
-            <MutatingProgress
-                error={mutateCheckin.error}
-                executing={mutateCheckin.executing}
-                message={message}
-            />
 
             {/* Overall Header and Back Link ----------------------------- */}
             <Row className="mb-3">
@@ -204,7 +161,7 @@ const CheckinsAssignedSubview = (props: Props) => {
                         <Row>
                             <AssignDetails
                                 assign={configureAssign(props.checkin)}
-                                handleAssign={handleAssign}
+                                handleAssign={props.handleUpdated}
                             />
                         </Row>
                     </>

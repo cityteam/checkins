@@ -19,7 +19,6 @@ import AssignDetails from "../assigns/AssignDetails";
 import GuestDetails from "../guests/GuestDetails";
 import GuestOptions from "../guests/GuestOptions";
 import {HandleAssign, HandleCheckin, HandleGuest, OnAction} from "../../types";
-import useMutateCheckin from "../../hooks/useMutateCheckin";
 import useMutateGuest from "../../hooks/useMutateGuest";
 import Assign from "../../models/Assign";
 import Checkin from "../../models/Checkin";
@@ -33,6 +32,7 @@ import MutatingProgress from "../general/MutatingProgress";
 export interface Props {
     checkin: Checkin;                   // The (unassigned) Checkin to process
     checkinDate: string;                // Checkin date we are assigning for
+    handleAssigned: HandleAssign;       // Handle assignment of a Guest to this Checkin
     handleCompleted: HandleCheckin;     // Handle Checkin after completion
 }
 
@@ -44,11 +44,6 @@ const CheckinsUnassignedSubview = (props: Props) => {
     const [assign, setAssign] = useState<Assign | null>(null);
     const [guest, setGuest] = useState<Guest | null>(null);
     const [message, setMessage] = useState<string>("");
-
-    const mutateCheckin = useMutateCheckin({
-        alertPopup: false,
-        checkin: props.checkin,
-    });
 
     const mutateGuest = useMutateGuest({
         alertPopup: false,
@@ -70,16 +65,6 @@ const CheckinsUnassignedSubview = (props: Props) => {
         });
     }
 
-    const handleAssignedGuest: HandleAssign = async (theAssign) => {
-        setMessage(`Handling assignment to mat ${props.checkin.matNumber}`);
-        const assigned: Checkin = await mutateCheckin.assign(theAssign);
-        logger.debug({
-            context: "CheckinsUnassignedSubview.handleAssignedGuest",
-            checkin: Abridgers.CHECKIN(assigned),
-        });
-        props.handleCompleted(assigned);
-    }
-
     const handleBack: OnAction = () => {
         logger.error({
             context: "CheckinsUnassignedSubview.handleBack",
@@ -87,6 +72,7 @@ const CheckinsUnassignedSubview = (props: Props) => {
         });
     }
 
+    // Handle add of a new Guest
     const handleInsertedGuest: HandleGuest = async (theGuest) => {
         setMessage(`Handling insert of Guest '${theGuest.lastName}, ${theGuest.firstName}'`);
         const inserted: Guest = await mutateGuest.insert(theGuest);
@@ -98,6 +84,7 @@ const CheckinsUnassignedSubview = (props: Props) => {
         setGuest(inserted);
     }
 
+    // Handle request to add a new Guest
     const handleNewGuest: OnAction = () => {
         setAdding(true);
     }
@@ -110,6 +97,7 @@ const CheckinsUnassignedSubview = (props: Props) => {
         });
     }
 
+    // Handle a request to propose a specific Guest for assignment
     const handleSelectedGuest: HandleGuest = (theGuest) => {
         logger.debug({
             context: "CheckinsUnassignedSubview.handleSelectedGuest",
@@ -156,12 +144,6 @@ const CheckinsUnassignedSubview = (props: Props) => {
 
     return (
         <Container fluid id="CheckinsUnassignedSubview">
-
-            <MutatingProgress
-                error={mutateCheckin.error}
-                executing={mutateCheckin.executing}
-                message={message}
-            />
 
             <MutatingProgress
                 error={mutateGuest.error}
@@ -245,13 +227,10 @@ const CheckinsUnassignedSubview = (props: Props) => {
                     {(assign) ? (
                         <AssignDetails
                             assign={assign}
-                            handleAssign={handleAssignedGuest}
+                            handleAssign={props.handleAssigned}
                         />
                     ) : null }
                 </Col>
-
-
-
 
             </Row>
 
