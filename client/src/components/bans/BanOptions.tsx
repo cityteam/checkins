@@ -11,12 +11,12 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
+import {CheckBox} from "@craigmcc/shared-react";
 import {Dates} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
 import FacilityContext from "../facilities/FacilityContext";
-import CheckBox from "../general/CheckBox";
 import FetchingProgress from "../general/FetchingProgress";
 import {HandleAction, HandleBan, HandleBoolean} from "../../types";
 import useFetchBans from "../../hooks/useFetchBans";

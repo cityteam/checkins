@@ -14,16 +14,14 @@ import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
+import {CheckBox, Pagination, SearchBar} from "@craigmcc/shared-react";
 
 // Internal Modules ----------------------------------------------------------
 
 import GuestStatus from "./GuestStatus";
 import BanOptions from "../bans/BanOptions";
 import FacilityContext from "../facilities/FacilityContext";
-import CheckBox from "../general/CheckBox";
 import FetchingProgress from "../general/FetchingProgress";
-import Pagination from "../general/Pagination";
-import SearchBar from "../general/SearchBar";
 import {HandleAction, HandleBoolean, HandleGuest, HandleValue} from "../../types";
 import useFetchGuests from "../../hooks/useFetchGuests";
 import Guest from "../../models/Guest";

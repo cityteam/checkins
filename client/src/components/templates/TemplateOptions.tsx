@@ -11,14 +11,12 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
+import {CheckBox, Pagination, SearchBar} from "@craigmcc/shared-react";
 
 // Internal Modules ----------------------------------------------------------
 
 import FacilityContext from "../facilities/FacilityContext";
-import CheckBox from "../general/CheckBox";
 import FetchingProgress from "../general/FetchingProgress";
-import Pagination from "../general/Pagination";
-import SearchBar from "../general/SearchBar";
 import {HandleAction, HandleBoolean, HandleTemplate, HandleValue} from "../../types";
 import useFetchTemplates from "../../hooks/useFetchTemplates";
 import * as Abridgers from "../../util/Abridgers";
