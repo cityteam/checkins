@@ -13,6 +13,7 @@ import Row from "react-bootstrap/Row";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import {Validators} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -20,7 +21,6 @@ import SelectField, {SelectOption} from "../general/SelectField";
 import {HandleAssign, PaymentType} from "../../types";
 import Assign from "../../models/Assign";
 import * as ToModel from "../../util/ToModel";
-import {validateNumber, validateTime} from "../../util/Validators";
 import TextField from "../general/TextField";
 
 // Incoming Properties -------------------------------------------------------
@@ -59,7 +59,7 @@ const AssignForm = (props: Props) => {
             .test("valid-payment-amount",
                 "Payment amount must be a number",
                 function (value) {
-                    return validateNumber(value);
+                    return Validators.number(value);
                 }),
         paymentType: Yup.string()
             .required("Payment Type is required"),
@@ -68,14 +68,14 @@ const AssignForm = (props: Props) => {
             .test("valid-shower-time",
                 "Invalid Shower Time format, must be 99:99 or 99:99:99",
                 function (value) {
-                    return validateTime(value ? value : "");
+                    return Validators.time(value ? value : "");
                 }),
         wakeupTime: Yup.string()
             .nullable()
             .test("valid-wakeup-time",
                 "Invalid Wakeup Time format, must be 99:99 or 99:99:99",
                 function (value) {
-                    return validateTime(value ? value : "");
+                    return Validators.time(value ? value : "");
                 }),
     });
 
