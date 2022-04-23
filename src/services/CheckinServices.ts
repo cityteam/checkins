@@ -5,6 +5,7 @@
 // External Modules ----------------------------------------------------------
 
 import {FindOptions, Op, ValidationError} from "sequelize";
+import {Dates} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -15,7 +16,6 @@ import Facility from "../models/Facility";
 import Guest from "../models/Guest";
 import Summary from "../models/Summary";
 import Template from "../models/Template";
-import {toDateObject} from "../util/Dates";
 import {BadRequest, NotFound, ServerError} from "../util/HttpErrors";
 import MatsList from "../util/MatsList";
 import {appendPaginationOptions} from "../util/QueryParameters";
@@ -342,7 +342,7 @@ class CheckinServices extends AbstractChildServices<Checkin> {
                 features = null;
             }
             inputs.push({
-                checkinDate: toDateObject(checkinDate),
+                checkinDate: Dates.toObject(checkinDate),
                 facilityId: facilityId,
                 features: features ? features : undefined,
                 matNumber: matNumber,

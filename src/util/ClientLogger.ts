@@ -8,7 +8,7 @@ import rfs = require("rotating-file-stream");
 
 // Internal Modules ----------------------------------------------------------
 
-import {nowLocalISO} from "./Timestamps";
+import {Timestamps} from "@craigmcc/shared-utils";
 
 // Public Objects ------------------------------------------------------------
 
@@ -20,14 +20,14 @@ const logger = (CLIENT_LOG === "stderr") || (CLIENT_LOG === "stdout")
         base: null, // Remove "hostname", "name", and "pid"
         level: (NODE_ENV === "production") ? "info" : "debug",
         timestamp: function (): string {
-            return ',"time":"' + nowLocalISO() + '"';
+            return ',"time":"' + Timestamps.iso() + '"';
         }
       }, (CLIENT_LOG === "stderr") ? process.stderr : process.stdout)
     : require("pino")({
         base: null, // Remove "hostname", "name", and "pid"
         level: (NODE_ENV === "production") ? "info" : "debug",
         timestamp: function (): string {
-            return ',"time":"' + nowLocalISO() + '"';
+            return ',"time":"' + Timestamps.iso() + '"';
         }
     }, rfs.createStream(CLIENT_LOG, {
         interval: "1d",

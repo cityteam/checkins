@@ -4,19 +4,19 @@
 
 // External Modules ----------------------------------------------------------
 
-import {loadTestData, lookupFacility, lookupGuest, lookupTemplate} from "../util/TestUtils";
 
 const chai = require("chai");
 const expect = chai.expect;
+import {Dates} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
 import CheckinServices from "./CheckinServices";
+import FacilityServices from "./FacilityServices";
 import Checkin from "../models/Checkin";
-import {fromDateObject, toDateObject} from "../util/Dates";
 import {BadRequest, NotFound} from "../util/HttpErrors";
 import * as SeedData from "../util/SeedData";
-import FacilityServices from "./FacilityServices";
+import {loadTestData, lookupFacility, lookupGuest, lookupTemplate} from "../util/TestUtils";
 
 // Test Specifications -------------------------------------------------------
 
@@ -515,7 +515,7 @@ describe("CheckinServices Functional Tests", () => {
             const facility = await lookupFacility(SeedData.FACILITY_NAME_THIRD);
             const guest = await lookupGuest(facility.id, SeedData.GUEST_FIRST_NAME_SECOND, SeedData.GUEST_LAST_NAME_SECOND);
             const INPUT = {
-                checkinDate: toDateObject(SeedData.CHECKIN_DATE_ONE),
+                checkinDate: Dates.toObject(SeedData.CHECKIN_DATE_ONE),
                 guestId: guest.id,
                 matNumber: 5,
             }
@@ -750,7 +750,7 @@ export function compareCheckinNew(OUTPUT: Partial<Checkin>, INPUT: Partial<Check
 
     expect(OUTPUT.id).to.exist;
     // @ts-ignore (we will never try this without an actual checkinDate)
-    expect(OUTPUT.checkinDate).to.equal(fromDateObject(INPUT.checkinDate));
+    expect(OUTPUT.checkinDate).to.equal(Dates.fromObject(INPUT.checkinDate));
     expect(OUTPUT.facilityId).to.exist;
     expect(OUTPUT.guestId).to.equal(INPUT.guestId ? INPUT.guestId : null);
     expect(OUTPUT.matNumber).to.equal(INPUT.matNumber);

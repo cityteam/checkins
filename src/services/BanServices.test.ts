@@ -6,13 +6,13 @@
 
 const chai = require("chai");
 const expect = chai.expect;
+import {Dates} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
 import BanServices from "./BanServices";
 import FacilityServices from "./FacilityServices";
 import Ban from "../models/Ban";
-import {fromDateObject, toDateObject} from "../util/Dates";
 import {BadRequest, NotFound} from "../util/HttpErrors";
 import * as SeedData from "../util/SeedData";
 import {loadTestData, lookupFacility} from "../util/TestUtils";
@@ -261,10 +261,10 @@ describe("BanServices Functional Tests", () => {
                 active: false,
                 comments: "New Ban",
                 facilityId: FACILITY.id,
-                fromDate: toDateObject("2020-02-14"),
+                fromDate: Dates.toObject("2020-02-14"),
                 guestId: GUESTS[1].id,
                 staff: "Boss",
-                toDate: toDateObject("2020-02-14"),
+                toDate: Dates.toObject("2020-02-14"),
             }
 
             const OUTPUT = await BanServices.insert(FACILITY.id, INPUT);
@@ -393,11 +393,11 @@ export function compareBanNew(OUTPUT: Partial<Ban>, INPUT: Partial<Ban>) {
     expect(OUTPUT.comments).to.equal(INPUT.comments ? INPUT.comments : null);
     expect(OUTPUT.facilityId).to.exist;
     // @ts-ignore - always present
-    expect(OUTPUT.fromDate).to.equal(fromDateObject(INPUT.fromDate));
+    expect(OUTPUT.fromDate).to.equal(Dates.fromObject(INPUT.fromDate));
     expect(OUTPUT.guestId).to.exist;
     expect(OUTPUT.staff).to.equal(INPUT.staff ? INPUT.staff : null);
     // @ts-ignore - always present
-    expect(OUTPUT.toDate).to.equal(fromDateObject(INPUT.toDate));
+    expect(OUTPUT.toDate).to.equal(Dates.fromObject(INPUT.toDate));
 }
 
 export function compareBanOld(OUTPUT: Partial<Ban>, INPUT: Partial<Ban>) {

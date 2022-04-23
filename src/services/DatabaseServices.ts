@@ -10,13 +10,13 @@ const {execSync} = require("child_process");
 const fs = require("fs");
 const path = require("path");
 import {Op} from "sequelize";
+import {Timestamps} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
 import AccessToken from "../models/AccessToken";
 import RefreshToken from "../models/RefreshToken";
 import logger from "../util/ServerLogger";
-import {nowDateTime} from "../util/Timestamps";
 
 // Public Objects ------------------------------------------------------------
 
@@ -39,7 +39,7 @@ class DatabaseServices {
         if (!fs.existsSync(BACKUP_DIRECTORY)) {
             fs.mkdirSync(BACKUP_DIRECTORY);
         }
-        const FILENAME = `${this.databaseName()}-${nowDateTime()}.sql`;
+        const FILENAME = `${this.databaseName()}-${Timestamps.local()}.sql`;
         const PATHNAME = path.resolve(BACKUP_DIRECTORY, FILENAME);
         const THE_COMMAND = `pg_dump ${DATABASE_URL} > ${PATHNAME}`;
 

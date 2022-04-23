@@ -10,6 +10,7 @@ import express from "express";
 import morgan from "morgan";
 import path from "path";
 const rfs = require("rotating-file-stream");
+import {Timestamps} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -19,7 +20,6 @@ import OAuthTokenRouter from "../oauth/OAuthTokenRouter";
 import {handleOAuthError} from "../oauth/OAuthMiddleware";
 import {handleHttpError, handleServerError, handleValidationError} from "../util/Middleware";
 import logger from "../util/ServerLogger";
-import {toLocalISO} from "../util/Timestamps";
 
 // Public Objects ------------------------------------------------------------
 
@@ -34,7 +34,7 @@ const app = express();
 // Configure access log management
 const ACCESS_LOG = process.env.ACCESS_LOG ? process.env.ACCESS_LOG : "stderr";
 morgan.token("date", (req, res): string => {
-    return toLocalISO(new Date());
+    return Timestamps.iso();
 });
 const REMOTE_USER_HEADER = "x-ct-username";
 morgan.token("remote-user", (req, res): string => {
