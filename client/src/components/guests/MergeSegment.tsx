@@ -10,12 +10,12 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
+import {MutatingProgress} from "@craigmcc/shared-react";
 
 // Internal Modules ----------------------------------------------------------
 
 import GuestOptions from "./GuestOptions";
 import FacilityContext from "../facilities/FacilityContext";
-import MutatingProgress from "../general/MutatingProgress";
 import LoginContext from "../login/LoginContext";
 import {HandleAction, HandleGuest, Scope} from "../../types";
 import useMutateGuest from "../../hooks/useMutateGuest";

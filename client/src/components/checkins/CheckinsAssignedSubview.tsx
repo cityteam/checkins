@@ -13,12 +13,12 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
+import {FetchingProgress} from "@craigmcc/shared-react";
 
 // Internal Modules ----------------------------------------------------------
 
 import CheckinSelector from "./CheckinSelector";
 import AssignDetails from "../assigns/AssignDetails";
-import FetchingProgress from "../general/FetchingProgress";
 import {HandleAction, HandleAssign, HandleCheckin, OnAction} from "../../types";
 import useFetchCheckins from "../../hooks/useFetchCheckins";
 import Assign from "../../models/Assign";

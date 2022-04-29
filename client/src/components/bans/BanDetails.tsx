@@ -14,12 +14,11 @@ import Row from "react-bootstrap/Row";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import {CheckBoxField, TextField} from "@craigmcc/shared-react";
 import {Validators} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
-import CheckBoxField from "../general/CheckBoxField";
-import TextField from "../general/TextField";
 import {HandleAction, HandleBan} from "../../types";
 import Ban, {BanData} from "../../models/Ban";
 import Guest from "../../models/Guest";

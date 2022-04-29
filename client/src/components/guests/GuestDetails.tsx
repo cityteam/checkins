@@ -16,6 +16,7 @@ import Row from "react-bootstrap/Row";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import {CheckBoxField, TextField} from "@craigmcc/shared-react";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -25,8 +26,6 @@ import Guest, {GuestData} from "../../models/Guest";
 import {validateGuestNameUnique} from "../../util/AsyncValidators";
 import * as ToModel from "../../util/ToModel";
 import {toNullValues} from "../../util/Transformations";
-import TextField from "../general/TextField";
-import CheckBoxField from "../general/CheckBoxField";
 
 // Incoming Properties -------------------------------------------------------
 

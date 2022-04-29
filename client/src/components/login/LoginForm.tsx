@@ -13,10 +13,10 @@ import Row from "react-bootstrap/Row";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import {TextField} from "@craigmcc/shared-react";
 
 // Internal Modules ----------------------------------------------------------
 
-import TextField from "../general/TextField";
 import {HandleCredentials} from "../../types";
 import Credentials from "../../models/Credentials";
 

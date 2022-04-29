@@ -13,15 +13,14 @@ import Row from "react-bootstrap/Row";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import {SelectField, SelectOption, TextField} from "@craigmcc/shared-react";
 import {Validators} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
-import SelectField, {SelectOption} from "../general/SelectField";
 import {HandleAssign, PaymentType} from "../../types";
 import Assign from "../../models/Assign";
 import * as ToModel from "../../util/ToModel";
-import TextField from "../general/TextField";
 
 // Incoming Properties -------------------------------------------------------
 

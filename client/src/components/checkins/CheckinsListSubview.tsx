@@ -10,12 +10,12 @@
 import React, {useContext, useEffect, useState} from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import {FetchingProgress, MutatingProgress} from "@craigmcc/shared-react";
 
 // Internal Modules ----------------------------------------------------------
 
 import CheckinsTable from "./CheckinsTable";
 import FacilityContext from "../facilities/FacilityContext";
-import FetchingProgress from "../general/FetchingProgress";
 import SummariesTable from "../summaries/SummariesTable";
 import TemplateSelector from "../templates/TemplateSelector";
 import {HandleCheckin, HandleTemplate} from "../../types";
@@ -26,7 +26,6 @@ import Checkin from "../../models/Checkin";
 import Summary from "../../models/Summary";
 import * as Abridgers from"../../util/Abridgers";
 import logger from "../../util/ClientLogger";
-import MutatingProgress from "../general/MutatingProgress";
 
 // Incoming Properties ------------------------------------------------------
 

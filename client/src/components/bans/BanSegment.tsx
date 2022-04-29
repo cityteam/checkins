@@ -5,6 +5,7 @@
 // External Modules ----------------------------------------------------------
 
 import React, {useContext, useEffect, useState} from "react";
+import {MutatingProgress} from "@craigmcc/shared-react";
 import {Dates} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
@@ -12,7 +13,6 @@ import {Dates} from "@craigmcc/shared-utils";
 import BanDetails from "./BanDetails";
 import BanOptions from "./BanOptions";
 import FacilityContext from "../facilities/FacilityContext";
-import MutatingProgress from "../general/MutatingProgress";
 import GuestOptions from "../guests/GuestOptions";
 import LoginContext from "../login/LoginContext";
 import {HandleAction, HandleBan, HandleGuest, Scope} from "../../types";

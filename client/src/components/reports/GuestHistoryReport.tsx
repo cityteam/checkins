@@ -9,12 +9,12 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import {FetchingProgress} from "@craigmcc/shared-react";
 
 // Internal Modules ----------------------------------------------------------
 
 import CheckinsTable from "../checkins/CheckinsTable";
 import FacilityContext from "../facilities/FacilityContext";
-import FetchingProgress from "../general/FetchingProgress";
 import GuestOptions from "../guests/GuestOptions";
 import {HandleGuest} from "../../types";
 import useFetchCheckins from "../../hooks/useFetchCheckins";

@@ -8,6 +8,7 @@ import React, {useContext, useEffect, useState} from "react";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import {MutatingProgress} from "@craigmcc/shared-react";
 import {Dates} from "@craigmcc/shared-utils";
 
 // Internal Modules ---------------------------------------------------------
@@ -17,7 +18,6 @@ import CheckinsListSubview from "./CheckinsListSubview";
 import CheckinsUnassignedSubview from "./CheckinsUnassignedSubview";
 import FacilityContext from "../facilities/FacilityContext";
 import DateSelector from "../general/DateSelector";
-import MutatingProgress from "../general/MutatingProgress";
 import LoginContext from "../login/LoginContext";
 import {HandleAssign, HandleCheckin, HandleDate, Scope} from "../../types";
 import useMutateCheckin from "../../hooks/useMutateCheckin";

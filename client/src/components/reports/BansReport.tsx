@@ -10,12 +10,12 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
 import {Dates} from "@craigmcc/shared-utils";
+import {FetchingProgress} from "@craigmcc/shared-react";
 
 // Internal Modules ----------------------------------------------------------
 
 import FacilityContext from "../facilities/FacilityContext";
 import DateSelector from "../general/DateSelector";
-import FetchingProgress from "../general/FetchingProgress";
 import {HandleDate} from "../../types";
 import useFetchBans from "../../hooks/useFetchBans";
 import * as Abridgers from "../../util/Abridgers";

@@ -9,10 +9,10 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import {MutatingProgress} from "@craigmcc/shared-react";
 
 // Internal Modules ----------------------------------------------------------
 
-import MutatingProgress from "../general/MutatingProgress";
 import useMutateDatabase from "../../hooks/useMutateDatabase";
 
 // Component Details ---------------------------------------------------------

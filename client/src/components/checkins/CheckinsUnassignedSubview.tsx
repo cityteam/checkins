@@ -12,6 +12,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import {MutatingProgress} from "@craigmcc/shared-react";
 
 // Internal Modules ----------------------------------------------------------
 
@@ -25,7 +26,6 @@ import Checkin from "../../models/Checkin";
 import Guest from "../../models/Guest";
 import * as Abridgers from "../../util/Abridgers";
 import logger from "../../util/ClientLogger";
-import MutatingProgress from "../general/MutatingProgress";
 
 // Incoming Properties -------------------------------------------------------
 

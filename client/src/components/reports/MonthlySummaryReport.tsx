@@ -8,12 +8,12 @@ import React, {useContext, useEffect, useState} from "react";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import {FetchingProgress} from "@craigmcc/shared-react";
 import {Months} from "@craigmcc/shared-utils";
 
 // Internal Modules ----------------------------------------------------------
 
 import FacilityContext from "../facilities/FacilityContext";
-import FetchingProgress from "../general/FetchingProgress";
 import MonthSelector from "../general/MonthSelector";
 import SummariesTable from "../summaries/SummariesTable";
 import {HandleMonth} from "../../types";
