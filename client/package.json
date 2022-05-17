@@ -6,7 +6,7 @@
   "dependencies": {
     "@craigmcc/shared-react": "^1.2.0",
     "@craigmcc/shared-utils": "^1.0.2",
-    "@hookform/resolvers": "^2.8.8",
+    "@hookform/resolvers": "^2.8.10",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^14.1.1",
@@ -24,7 +24,7 @@
     "react-bootstrap": "^2.3.1",
     "react-bootstrap-icons": "^1.8.2",
     "react-dom": "^18.1.0",
-    "react-hook-form": "^7.30.0",
+    "react-hook-form": "^7.31.1",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-toastify": "^9.0.1",
