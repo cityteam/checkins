@@ -42,7 +42,7 @@
   },
   "homepage": "https://github.com/cityteam/checkins#readme",
   "dependencies": {
-    "@craigmcc/oauth-orchestrator": "^1.0.1",
+    "@craigmcc/oauth-orchestrator": "^1.0.4",
     "@craigmcc/openapi-builders": "^2.0.2",
     "@craigmcc/shared-utils": "^1.0.3",
     "bcrypt": "^5.1.0",
