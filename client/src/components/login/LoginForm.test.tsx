@@ -38,9 +38,7 @@ test("invalid data does not submit", async () => {
     const {login} = elements();
     const client = userEvent.setup();
 
-    await act(async () => {
-        await client.click(login);
-    })
+    await client.click(login);
 
     await waitFor(() => {
         expect(handleCredentials).not.toBeCalled();
@@ -61,10 +59,8 @@ xtest("valid data with enter after last field", async () => {
     const {username, password} = elements();
     const client = userEvent.setup();
 
-    await act(async () => {
-        await client.type(username, VALID_USERNAME);
-        await client.type(password, VALID_PASSWORD + "{enter}");
-    });
+    await client.type(username, VALID_USERNAME);
+    await client.type(password, VALID_PASSWORD + "{enter}");
 
     await waitFor(() => {
         expect(handleCredentials).toHaveBeenCalledWith({
@@ -87,11 +83,9 @@ test("valid data with submit button", async () => {
     const {username, password, login} = elements();
     const client = userEvent.setup();
 
-    await act(async () => {
-        await client.type(username, VALID_USERNAME);
-        await client.type(password, VALID_PASSWORD);
-        await client.click(login);
-    });
+    await client.type(username, VALID_USERNAME);
+    await client.type(password, VALID_PASSWORD);
+    await client.click(login);
 
     await waitFor(() => {
         expect(handleCredentials).toHaveBeenCalledWith({
