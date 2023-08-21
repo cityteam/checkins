@@ -45,7 +45,7 @@
     "@craigmcc/oauth-orchestrator": "^1.0.4",
     "@craigmcc/openapi-builders": "^2.0.2",
     "@craigmcc/shared-utils": "^1.0.3",
-    "bcrypt": "^5.1.0",
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
