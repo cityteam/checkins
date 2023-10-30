@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "@types/chai": "^4.3.6",
-    "@types/cors": "^2.8.14",
+    "@types/cors": "^2.8.15",
     "@types/express": "^4.17.20",
     "@types/mocha": "^10.0.3",
     "@types/morgan": "^1.9.7",
