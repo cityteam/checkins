@@ -58,6 +58,6 @@
     ]
   },
   "devDependencies": {
-    "@types/react-html-parser": "^2.0.2"
+    "@types/react-html-parser": "^2.0.4"
   }
 }
