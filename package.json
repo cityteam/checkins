@@ -67,7 +67,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.20",
     "@types/mocha": "^10.0.3",
-    "@types/morgan": "^1.9.7",
+    "@types/morgan": "^1.9.9",
     "chai": "^4.3.10",
     "chai-http": "^4.4.0",
     "concurrently": "^8.2.2",
