@@ -264,13 +264,13 @@ NOTE:  Installing this software requires a web browser and an Internet connectio
 
 Open a command line window (if not already open) and type:
 ```shell
-git clone https://github.com/craigmcc/cityteam-checkins
+git clone https://github.com/cityteam/checkins
 ```
 
 This will download all of the source code for the application.  To build the
 executable version, type the following commands:
 ```shell
-cd cityteam-checkins
+cd checkins
 npm install
 npm run server:build
 cd client
@@ -279,7 +279,7 @@ npm run build
 cd ..
 ```
 
-This will leave you in the *cityteam-checkins* directory, where the
+This will leave you in the *checkins* directory, where the
 subsequent steps will be performed.
 
 ### 4.2 Seed Database Structure
@@ -289,7 +289,7 @@ into one that contains the table structures required by this application.
 In order to do this, we must first set some environment variables.
 
 Open a command line window (if not already open), and make sure you are
-in the *cityteam-checkins* directory.  Now, type the following commands, but
+in the *checkins* directory.  Now, type the following commands, but
 replace the placeholder names (such as {DBUSERNAME}) with the values from
 the previous steps.
 
@@ -321,7 +321,7 @@ and {APPPORT} is the network port (on the {APPHOST} system) for the application 
 listen on (use 8080 unless not allowed in your environment).
 
 Use Visual Studio Code (or another text editor) to create a file **.env.development**
-(do not forget the leading period) in the *cityteam-checkins* directory:
+(do not forget the leading period) in the *checkins* directory:
 ```dotenv
 ACCESS_LOG=stdout
 CLIENT_LOG=stdout
@@ -367,7 +367,7 @@ to set up an initial (temporary) user account, which we can then use to log in
 and set up all the actual accounts.
 
 Open a command line window (if not already open), and make sure you are
-in the *cityteam-checkins* directory.
+in the *checkins* directory.
 
 ```shell
 npm run run:dev
@@ -496,7 +496,7 @@ to run the CityTeam Checkins Application as a background service, and ensure
 that it survives a Windows restart.
 
 Open a command line window (if needed), and make sure you are in the
-**cityteam-checkins** directory.  Now, type the following command:
+**checkins** directory.  Now, type the following command:
 
 ```shell
 pm2 start loadserver.js --name checkins --env production
@@ -521,9 +521,15 @@ Next, we must ensure that the current state of all services started by *pm2* is 
 pm2 save
 ```
 
-Next, restart your Windows box, and open a command line window again.  Typing
-this command should show you that the *checkins* application was restarted.
+If you are on Windows, you need one more step to ensure that the *pm2* service starts up
+when Windows starts up:
 
+```shell
+npm install pm2-windows-startup -g
+pm2-startup install
+```
+
+You should be able to log in to the Checkins app from a browser, and see that it is running.
 
 ## 5.  END USER ENVIRONMENT
 
